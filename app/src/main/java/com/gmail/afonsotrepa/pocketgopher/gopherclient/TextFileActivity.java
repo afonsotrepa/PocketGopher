@@ -117,7 +117,8 @@ public class TextFileActivity extends AppCompatActivity{
                                 "0"+"\t"+ //type
                                 selector+"\t"+ //selector
                                 server+"\t"+ //server
-                                port.toString()+"\t" //port
+                                port.toString()+"\t"+ //port
+                                Integer.toString(0) + "\t" //id (default)
                 );
                 //start the intent
                 startActivity(intent);

@@ -121,11 +121,12 @@ public class MenuActivity extends AppCompatActivity {
                         .class);
                 //send the message with the values for the bookmark
                 intent.putExtra(EXTRA_MESSAGE,
-                        "" + "\t" + //name (empty)
-                                "1" + "\t" + //type
-                                selector + query + "\t" + //selector
-                                server + "\t" + //server
-                                port.toString() + "\t" //port
+                        ""+"\t"+ //name (empty)
+                                "1"+"\t"+ //type
+                                selector+query+"\t"+ //selector
+                                server+"\t"+ //server
+                                port.toString()+"\t"+ //port
+                                Integer.toString(0)+"\t" //id (default)
                 );
                 //start the intent
                 startActivity(intent);
