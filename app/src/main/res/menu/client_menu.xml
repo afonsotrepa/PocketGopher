@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/addBookmarkButton"
+        android:background="@android:color/background_dark"
+        android:checkable="true"
+        android:enabled="true"
+        android:icon="@android:drawable/ic_input_add"
+        android:tint="@android:color/white"
+        android:title=""
+        android:visible="true"
+        app:showAsAction="always" />
+
+
+</menu>

@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Pocket Gopher</string>
+    <string name="search_button">Search</string>
+    <string name="booksmarks_file_key">com.gmail.afonsotrepa.pocketgopher.BOOKMARKS_FILE_KEY</string>
+</resources>
