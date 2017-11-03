@@ -20,10 +20,12 @@ public class Bookmark {
     public String selector;
     public String server;
     public Integer port;
-    public Class activity; //the activity to call when opening the bookmarked page
 
-    Bookmark(String name, Character type, String selector, String server, Integer port) throws
-            Exception {
+    public Class activity; //the activity to call when opening the bookmarked page
+    public Integer id; //a unique id that identifies the bookmark
+
+    Bookmark(Context context, String name, Character type, String selector, String server,
+             Integer port) throws Exception {
         this.name = name;
         this.type = type;
         this.selector = selector;
@@ -47,8 +49,45 @@ public class Bookmark {
             default:
                 throw new Exception("Invalid type");
         }
+
+        //generate a new unique id
+        String file = context.getResources().getString(R.string.booksmarks_file_key);
+        SharedPreferences sharedPref = context.getSharedPreferences(file, Context.MODE_PRIVATE);
+        id = sharedPref.getInt("id", 0);
+
+        //update the (id part in the) file
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putInt("id", id+1);
+        editor.apply();
     }
 
+    Bookmark(Context context, String name, Character type, String selector, String server,
+             Integer port, Integer id) throws Exception {
+        this.name = name;
+        this.type = type;
+        this.selector = selector;
+        this.server = server;
+        this.port = port;
+        this.id = id;
+
+        //determine which activity to call
+        switch (type) {
+            case '0':
+                this.activity = TextFileActivity.class;
+                break;
+
+            case '1':
+                this.activity = MenuActivity.class;
+                break;
+
+            case '7':
+                this.activity = SearchActivity.class;
+                break;
+
+            default:
+                throw new Exception("Invalid type");
+        }
+    }
 
     /**
      * Save bookmarks to a SharedPreferences file
@@ -68,6 +107,7 @@ public class Bookmark {
             csvbookmarks.append(b.selector).append("\t");
             csvbookmarks.append(b.server).append("\t");
             csvbookmarks.append(b.port.toString()).append("\t");
+            csvbookmarks.append(b.id.toString()).append("\t");
             csvbookmarks.append("\n");
         }
 
@@ -80,13 +120,13 @@ public class Bookmark {
 
     /**
      * Read the bookmarks from a  SharedPreferences file
+     *
      * @return a list of all the bookmarks in the bookmarks file
      */
     static List<Bookmark> read(Context context) throws Exception {
         String file = context.getResources().getString(R.string.booksmarks_file_key);
         //open/create the file in private mode
-        SharedPreferences sharedPref = context.getSharedPreferences(file,
-                Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = context.getSharedPreferences(file, Context.MODE_PRIVATE);
 
 
         List<Bookmark> bookmarks = new ArrayList<>();
@@ -99,11 +139,13 @@ public class Bookmark {
             if (bsplit.length > 1) {
                 //parse the bookmark
                 Bookmark bookmark = new Bookmark(
+                        context,
                         bsplit[0], //name
                         bsplit[1].charAt(0), //type
                         bsplit[2], //selector
                         bsplit[3], //server
-                        Integer.parseInt(bsplit[4])); //port
+                        Integer.parseInt(bsplit[4]), //port
+                        Integer.parseInt(bsplit[5])); //id
 
                 //add it to the list of bookmarks
                 bookmarks.add(bookmark);

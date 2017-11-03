@@ -25,17 +25,12 @@ public class EditBookmarkActivity extends Activity {
         final String selector;
         final String server;
         final Integer port;
+        final Integer id;
 
         //load old values if editing (instead of making) a bookmark
         String m = getIntent().getStringExtra(MainActivity.EXTRA_MESSAGE);
         if (m != null && !m.equals("")) {
             String[] message = m.split("\t");
-
-            Log.d("EBA", message[0]);
-            Log.d("EBA", message[1]);
-            Log.d("EBA", message[2]);
-            Log.d("EBA", message[3]);
-            Log.d("EBA", message[4]);
 
             //"old" values
             name = message[0];
@@ -43,6 +38,7 @@ public class EditBookmarkActivity extends Activity {
             selector = message[2];
             server = message[3];
             port = Integer.parseInt(message[4]);
+            id = Integer.parseInt(message[5]);
         } else {
             //default values
             name = "";
@@ -50,6 +46,7 @@ public class EditBookmarkActivity extends Activity {
             selector = "";
             server = "";
             port = 70;
+            id = 0;
         }
 
 
@@ -72,33 +69,34 @@ public class EditBookmarkActivity extends Activity {
             @Override
             public void onClick(View v) {
                 try {
-                    //make the bookmark and initiate it
-                    Bookmark b = new Bookmark(
-                            editName.getText().toString(),
-                            editType.getText().toString().charAt(0),
-                            editSelector.getText().toString(),
-                            editServer.getText().toString(),
-                            Integer.parseInt(editPort.getText().toString()));
-
-
-                    //list containing all current bookmarks
                     List<Bookmark> bookmarks = Bookmark.read(getApplicationContext());
 
-                    //remove the bookmark with the same name in bookmarks (if it exists)
-                    //(presumes there's only one max)
-                    for (Bookmark bookmark : bookmarks) {
-                        if (bookmark.name.equals(b.name)) {
-                            bookmarks.remove(bookmark);
-                            break;
+                    //if editing a bookmark that already exists
+                    if (id !=0) {
+                        //remove the old bookmark
+                        for (Bookmark b : bookmarks) {
+                            if (b.id.equals(id)) {
+                                bookmarks.remove(b);
+                            }
                         }
                     }
+                    //create the new bookmark
+                    Bookmark b = new Bookmark(
+                            getApplicationContext(),
+                            editName.getText().toString(),
+                            editType.getText().charAt(0),
+                            editSelector.getText().toString(),
+                            editServer.getText().toString(),
+                            Integer.parseInt(editPort.getText().toString())
+                    );
 
-                    //add to the bookmarks list
+                    //add it to the list
                     bookmarks.add(b);
-                    //write/save the bookmarks list to the file
+
+                    //save the changes to the file
                     Bookmark.save(getApplicationContext(), bookmarks);
 
-                    //signal "Bookmark saved" and exit this activity
+                    //show "Bookmark saved" and exit this activity
                     Toast.makeText(getApplicationContext(), "Bookmark saved", Toast.LENGTH_SHORT)
                             .show();
                     finish();
@@ -120,10 +118,12 @@ public class EditBookmarkActivity extends Activity {
                 try {
                     List<Bookmark> bookmarks = Bookmark.read(getApplicationContext());
 
+
                     //remove the bookmark from bookmarks (if it exists)
-                    //(presumes there's only one max)
                     for (Bookmark bookmark : bookmarks) {
-                        if (bookmark.name.equals(editName.getText().toString())) {
+                        Log.d("EBA", bookmark.id.toString());
+                        Log.d("EBA", id.toString());
+                        if (bookmark.id.equals(id)) {
                             bookmarks.remove(bookmark);
                             break;
                         }

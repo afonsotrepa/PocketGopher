@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //make the items "long clickable" (edit the bookmark when clicked)
+        //make the items "long clickable" (edit the bookmark when long clicked)
         listView.setLongClickable(true);
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -79,11 +79,12 @@ public class MainActivity extends AppCompatActivity {
                 //setup the intent and then call it
                 final Intent intent = new Intent(getApplication(), EditBookmarkActivity.class);
                 intent.putExtra(EXTRA_MESSAGE,
-                        bookmark.name+"\t"+
-                                bookmark.type.toString()+"\t"+
-                                bookmark.selector+"\t"+
-                                bookmark.server+"\t"+
-                                bookmark.port.toString());
+                                bookmark.name+"\t"+
+                                        bookmark.type.toString()+"\t"+
+                                        bookmark.selector+"\t"+
+                                        bookmark.server+"\t"+
+                                        bookmark.port.toString()+"\t"+
+                                        bookmark.id.toString());
                 getApplication().startActivity(intent);
 
                 return true;
