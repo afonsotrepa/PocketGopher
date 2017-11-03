@@ -3,6 +3,8 @@ package com.gmail.afonsotrepa.pocketgopher.gopherclient;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.SpannableStringBuilder;
+import android.text.style.ImageSpan;
 import android.widget.TextView;
 
 /**
@@ -10,22 +12,26 @@ import android.widget.TextView;
  */
 
 public class UnknownGopherLine extends GopherLine {
-    Character type;
+    private static final Integer IMAGE_TAG = android.R.drawable.ic_dialog_alert;
 
-    UnknownGopherLine(String text, Character type) {
+    private Character type_tag;
+
+    UnknownGopherLine(String text, Character type_tag) {
         this.text = text;
-        this.type = type;
+        this.type_tag = type_tag;
     }
 
-    public void render(final TextView textView, Context context) {
+    public void render(final TextView textView, final Context context) {
         final Handler handler = new Handler(Looper.getMainLooper());
-        final String text = this.text;
-        final Character type = this.type;
+        final SpannableStringBuilder text = new SpannableStringBuilder(" "+this.text+
+                " <"+this.type_tag+">\n");
 
         handler.post(new Runnable() {
             @Override
             public void run() {
-                textView.append(text + " <"+type+">\n");
+                //set the image tag behind (left of) the text
+                text.setSpan(new ImageSpan(context, IMAGE_TAG), 0, 1, 0);
+                textView.append(text);
             }
         });
     }

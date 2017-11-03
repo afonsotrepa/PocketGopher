@@ -7,11 +7,15 @@ import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.ImageSpan;
 import android.view.View;
 import android.widget.TextView;
+
+import com.gmail.afonsotrepa.pocketgopher.R;
 
 
 /**
@@ -20,6 +24,8 @@ import android.widget.TextView;
 
 class MenuGopherLine extends GopherLine {
     private static final Integer COLOR_TAG = Color.BLUE;
+    private static final Integer IMAGE_TAG = android.R.drawable.ic_menu_view;
+
     private static final String EXTRA_MESSAGE = "com.gmail.afonsotrepa.pocketgopher.MESSAGE";
 
     MenuGopherLine(String text, String selector, String server, Integer port) {
@@ -32,7 +38,7 @@ class MenuGopherLine extends GopherLine {
     public void render(final TextView textView, final Context context){
         //handler to the main thread
         final Handler handler = new Handler(Looper.getMainLooper());
-        final SpannableString text = new SpannableString(this.text+"\n");
+        final SpannableStringBuilder text = new SpannableStringBuilder(" "+this.text+"\n");
 
         //make and setup the new intent
         final Intent intent = new Intent(context, MenuActivity.class);
@@ -47,15 +53,17 @@ class MenuGopherLine extends GopherLine {
         };
 
 
-        //apply the span to text and append text to textview
+        //apply the span to text and append text to textView
         handler.post(new Runnable() {
             @Override
             public void run() {
                 //make it clickable
                 text.setSpan(cs, 0, text.length()-1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                //set the color
+                //set the image tag behind (left of) the text
+                text.setSpan(new ImageSpan(context, IMAGE_TAG), 0, 1, 0);
+                //set the color tag
                 text.setSpan(new ForegroundColorSpan(COLOR_TAG), 0, text.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                //add it to the end of textview
+                //add it to the end of textView
                 textView.append(text);
             }
         });

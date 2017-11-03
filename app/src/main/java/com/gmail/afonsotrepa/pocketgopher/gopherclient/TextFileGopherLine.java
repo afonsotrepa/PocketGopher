@@ -9,6 +9,7 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.ImageSpan;
 import android.view.View;
 import android.widget.TextView;
 
@@ -18,6 +19,8 @@ import android.widget.TextView;
  */
 public class TextFileGopherLine extends GopherLine {
     private static final Integer COLOR_TAG = Color.DKGRAY;
+    private static final Integer IMAGE_TAG = android.R.drawable.ic_menu_sort_by_size;
+
     private static final String EXTRA_MESSAGE = "com.gmail.afonsotrepa.pocketgopher.MESSAGE";
 
     TextFileGopherLine(String text, String selector, String server, Integer port) {
@@ -30,7 +33,7 @@ public class TextFileGopherLine extends GopherLine {
     public void render(final TextView textView, final Context context) {
         //handler to the main thread
         final Handler handler = new Handler(Looper.getMainLooper());
-        final SpannableString text = new SpannableString(this.text+"\n");
+        final SpannableString text = new SpannableString(" "+this.text+"\n");
 
         //make and setup the new intent
         final Intent intent = new Intent(context, TextFileActivity.class);
@@ -50,9 +53,11 @@ public class TextFileGopherLine extends GopherLine {
             public void run() {
                 //make it clickable
                 text.setSpan(cs, 0, text.length()-1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                //set the color
+                //set the image tag behind (left of) the text
+                text.setSpan(new ImageSpan(context, IMAGE_TAG), 0, 1, 0);
+                //set the color tag
                 text.setSpan(new ForegroundColorSpan(COLOR_TAG), 0, text.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                //add it to the end of textview
+                //add it to the end of textView
                 textView.append(text);
             }
         });

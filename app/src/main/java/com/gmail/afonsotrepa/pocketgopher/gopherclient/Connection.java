@@ -75,6 +75,10 @@ class Connection {
 		List<GopherLine> response = new ArrayList<>();
 
 		for (String line : lines) {
+			//skip line if empty
+			if (line.equals(""))
+				continue;
+
             String[] linesplit = line.split("\t");
 			switch (line.charAt(0)) {
 				case '0': //text file
