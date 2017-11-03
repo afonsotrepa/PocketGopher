@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/saveButton"
+        android:background="@android:color/background_dark"
+        android:checkable="true"
+        android:enabled="true"
+        android:icon="@android:drawable/ic_menu_save"
+        android:tint="@android:color/white"
+        android:title=""
+        android:visible="true"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/removeButton"
+        android:background="@android:color/background_dark"
+        android:checkable="true"
+        android:enabled="true"
+        android:icon="@android:drawable/ic_menu_delete"
+        android:tint="@android:color/white"
+        android:title=""
+        android:visible="true"
+        app:showAsAction="ifRoom" />
+
+</menu>

@@ -1,34 +1,42 @@
 package com.gmail.afonsotrepa.pocketgopher;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import java.util.List;
 
+import static com.gmail.afonsotrepa.pocketgopher.MainActivity.EXTRA_MESSAGE;
+
 /**
  * Used to create or edit a bookmark
  */
 
-public class EditBookmarkActivity extends Activity {
+public class EditBookmarkActivity extends AppCompatActivity {
+    EditText editName;
+    EditText editType;
+    EditText editSelector;
+    EditText editServer;
+    EditText editPort;
+    Integer id;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editbookmark);
 
-        final String name;
-        final Character type;
-        final String selector;
-        final String server;
-        final Integer port;
-        final Integer id;
+        String name;
+        Character type;
+        String selector;
+        String server;
+        Integer port;
 
         //load old values if editing (instead of making) a bookmark
-        String m = getIntent().getStringExtra(MainActivity.EXTRA_MESSAGE);
+        String m = getIntent().getStringExtra(EXTRA_MESSAGE);
         if (m != null && !m.equals("")) {
             String[] message = m.split("\t");
 
@@ -51,23 +59,58 @@ public class EditBookmarkActivity extends Activity {
 
 
         //setup the text boxes to be used
-        final EditText editName = findViewById(R.id.editName);
+        editName = findViewById(R.id.editName);
         editName.setText(name);
-        final EditText editType = findViewById(R.id.editType);
+        editType = findViewById(R.id.editType);
         editType.setText(type.toString());
-        final EditText editSelector = findViewById(R.id.editSelector);
+        editSelector = findViewById(R.id.editSelector);
         editSelector.setText(selector);
-        final EditText editServer = findViewById(R.id.editServer);
+        editServer = findViewById(R.id.editServer);
         editServer.setText(server);
-        final EditText editPort = findViewById(R.id.editPort);
+        editPort = findViewById(R.id.editPort);
         editPort.setText(port.toString());
+    }
 
 
-        //on click of "Save" button: make/edit bookmark and save it to the file
-        final Button saveButton = findViewById(R.id.saveButton);
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    //setup the menu/title bar
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.client_editbookmark, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            //on click of button: remove the entry from the bookmarks if it exists
+            case R.id.removeButton:
+                try {
+                    List<Bookmark> bookmarks = Bookmark.read(getApplicationContext());
+
+                    //remove the bookmark from bookmarks (if it exists)
+                    for (Bookmark bookmark : bookmarks) {
+                        Log.d("EBA", bookmark.id.toString());
+                        Log.d("EBA", id.toString());
+                        if (bookmark.id.equals(id)) {
+                            bookmarks.remove(bookmark);
+                            break;
+                        }
+                    }
+
+                    //save the edited bookmarks list
+                    Bookmark.save(getApplicationContext(), bookmarks);
+
+                    finish();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG) .show();
+                    finish();
+                }
+
+                return true;
+
+            //on click of button: make/edit bookmark and save it to the file
+            case R.id.saveButton:
                 try {
                     List<Bookmark> bookmarks = Bookmark.read(getApplicationContext());
 
@@ -106,40 +149,11 @@ public class EditBookmarkActivity extends Activity {
                             .show();
                     finish();
                 }
-            }
-        });
 
+                return true;
 
-        //on click of "Remove" button: remove the entry from the bookmarks if it exists
-        final Button removeButton = findViewById(R.id.removeButton);
-        removeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    List<Bookmark> bookmarks = Bookmark.read(getApplicationContext());
-
-
-                    //remove the bookmark from bookmarks (if it exists)
-                    for (Bookmark bookmark : bookmarks) {
-                        Log.d("EBA", bookmark.id.toString());
-                        Log.d("EBA", id.toString());
-                        if (bookmark.id.equals(id)) {
-                            bookmarks.remove(bookmark);
-                            break;
-                        }
-                    }
-
-                    //save the edited bookmarks list
-                    Bookmark.save(getApplicationContext(), bookmarks);
-
-                    finish();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG)
-                            .show();
-                    finish();
-                }
-            }
-        });
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
