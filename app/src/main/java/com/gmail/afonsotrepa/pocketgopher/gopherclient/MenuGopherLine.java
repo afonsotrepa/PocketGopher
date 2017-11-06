@@ -42,7 +42,9 @@ class MenuGopherLine extends GopherLine {
 
         //make and setup the new intent
         final Intent intent = new Intent(context, MenuActivity.class);
-        intent.putExtra(EXTRA_MESSAGE, selector+"\t"+server+"\t"+port);
+        intent.putExtra("selector", selector);
+        intent.putExtra("server", server);
+        intent.putExtra("port", port);
 
         //create the span (and the function to be run when it's clicked)
         final ClickableSpan cs = new ClickableSpan() {

@@ -11,10 +11,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.gmail.afonsotrepa.pocketgopher.EditBookmarkActivity;
-import com.gmail.afonsotrepa.pocketgopher.MainActivity;
 import com.gmail.afonsotrepa.pocketgopher.R;
 
-import static com.gmail.afonsotrepa.pocketgopher.MainActivity.EXTRA_MESSAGE;
 
 /**
  *
@@ -32,10 +30,10 @@ public class SearchActivity extends AppCompatActivity{
         setContentView(R.layout.activity_search);
 
         //get info
-        final String[] message= getIntent().getStringExtra(MainActivity.EXTRA_MESSAGE).split("\t");
-        selector = message[0];
-        server = message[1];
-        port = Integer.parseInt(message[2]);
+        Intent i= getIntent();
+        selector = i.getStringExtra("selector");
+        server = i.getStringExtra("server");
+        port = i.getIntExtra("port", 70);
 
 
         //setup the widgets
@@ -50,7 +48,11 @@ public class SearchActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 final String query = editText.getText().toString();
-                intent.putExtra(EXTRA_MESSAGE, selector+"\t"+server+"\t"+port+"\t"+query);
+                intent.putExtra("selector", selector);
+                intent.putExtra("server", server);
+                intent.putExtra("port", port);
+                intent.putExtra("query", query);
+
                 context.startActivity(intent);
             }
         });
@@ -70,14 +72,13 @@ public class SearchActivity extends AppCompatActivity{
                 //setup the intent
                 final Intent intent = new Intent(getApplicationContext(), EditBookmarkActivity.class);
                 //send the message with the values for the bookmark
-                intent.putExtra(EXTRA_MESSAGE,
-                        ""+"\t"+ //name (empty)
-                                "7"+"\t"+ //type
-                                selector+"\t"+ //selector
-                                server+"\t"+ //server
-                                port.toString()+"\t"+ //port
-                                Integer.toString(0) + "\t" //id (default)
-                );
+                intent.putExtra("name", ""); //name (empty)
+                intent.putExtra("type", '7'); //type
+                intent.putExtra("selector", selector); //selector
+                intent.putExtra("server", server); //server
+                intent.putExtra("port", port); //port
+                intent.putExtra("id", 0); //id (defaults to 0)
+
                 //start the intent
                 startActivity(intent);
 

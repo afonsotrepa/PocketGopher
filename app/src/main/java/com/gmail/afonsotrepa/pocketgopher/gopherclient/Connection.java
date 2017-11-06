@@ -36,8 +36,6 @@ class Connection {
 	 * @param message string to send to the server
 	 */
 	private void write(String message) {
-	    if (os == null)
-	        Log.d("Connection", "null os");
         os.println(message);
         os.flush();
 	}
@@ -112,7 +110,8 @@ class Connection {
                     break;
 
 				default:
-					response.add(new UnknownGopherLine(linesplit[0].substring(1), line.charAt(0)));
+					//using substring(1) will crash sometimes (no idea why)
+					response.add(new UnknownGopherLine(linesplit[0].substring(0), line.charAt(0)));
 			}
 		}
 

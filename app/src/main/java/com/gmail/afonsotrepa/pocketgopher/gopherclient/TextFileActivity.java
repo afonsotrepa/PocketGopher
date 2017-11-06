@@ -12,13 +12,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gmail.afonsotrepa.pocketgopher.EditBookmarkActivity;
-import com.gmail.afonsotrepa.pocketgopher.MainActivity;
 import com.gmail.afonsotrepa.pocketgopher.R;
 
 import java.io.IOException;
 import java.util.List;
 
-import static com.gmail.afonsotrepa.pocketgopher.MainActivity.EXTRA_MESSAGE;
 
 /**
  *
@@ -45,11 +43,10 @@ public class TextFileActivity extends AppCompatActivity{
                 final Handler handler = new Handler(Looper.getMainLooper());
 
                 //intent stuff
-                Intent intent = getIntent();
-                String[] message = intent.getStringExtra(EXTRA_MESSAGE).split("\t");
-                selector = message[0];
-                server = message[1];
-                port = Integer.parseInt(message[2]);
+                Intent i= getIntent();
+                selector = i.getStringExtra("selector");
+                server = i.getStringExtra("server");
+                port = i.getIntExtra("port", 70);
 
                 ///Network stuff
                 List<String>  lines;
@@ -112,14 +109,13 @@ public class TextFileActivity extends AppCompatActivity{
                 //setup the intent
                 final Intent intent = new Intent(getApplicationContext(), EditBookmarkActivity.class);
                 //send the message with the values for the bookmark
-                intent.putExtra(EXTRA_MESSAGE,
-                        ""+"\t"+ //name (empty)
-                                "0"+"\t"+ //type
-                                selector+"\t"+ //selector
-                                server+"\t"+ //server
-                                port.toString()+"\t"+ //port
-                                Integer.toString(0) + "\t" //id (default)
-                );
+                intent.putExtra("name", "");
+                intent.putExtra("type", '0');
+                intent.putExtra("selector", selector);
+                intent.putExtra("server", server);
+                intent.putExtra("port", port);
+                intent.putExtra("id", 0);
+
                 //start the intent
                 startActivity(intent);
 

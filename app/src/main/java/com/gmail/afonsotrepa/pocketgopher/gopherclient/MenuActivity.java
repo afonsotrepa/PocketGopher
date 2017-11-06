@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -19,7 +20,6 @@ import com.gmail.afonsotrepa.pocketgopher.R;
 import java.io.IOException;
 import java.util.List;
 
-import static com.gmail.afonsotrepa.pocketgopher.MainActivity.EXTRA_MESSAGE;
 
 /**
  *
@@ -49,15 +49,11 @@ public class MenuActivity extends AppCompatActivity {
                 final Handler handler = new Handler(Looper.getMainLooper());
 
                 //get info
-                String[] message = getIntent().getStringExtra(EXTRA_MESSAGE).split
-                        ("\t");
-                selector = message[0];
-                server = message[1];
-                port = Integer.parseInt(message[2]);
-                if (message.length >= 4)
-                    query = message[3];
-                else
-                    query = "";
+                Intent i = getIntent();
+                selector =i.getStringExtra("selector");
+                server = i.getStringExtra("server");
+                port = i.getIntExtra("port",  70);
+                query = i.getStringExtra("query");
 
                 //set the title of the window
                 setTitle(server + selector);
@@ -120,14 +116,13 @@ public class MenuActivity extends AppCompatActivity {
                 final Intent intent = new Intent(getApplicationContext(), EditBookmarkActivity
                         .class);
                 //send the message with the values for the bookmark
-                intent.putExtra(EXTRA_MESSAGE,
-                        ""+"\t"+ //name (empty)
-                                "1"+"\t"+ //type
-                                selector+query+"\t"+ //selector
-                                server+"\t"+ //server
-                                port.toString()+"\t"+ //port
-                                Integer.toString(0)+"\t" //id (default)
-                );
+                intent.putExtra("name", "");
+                intent.putExtra("type", '1');
+                intent.putExtra("selector", selector+query);
+                intent.putExtra("server", server);
+                intent.putExtra("port", port);
+                intent.putExtra("id", 0);
+
                 //start the intent
                 startActivity(intent);
 

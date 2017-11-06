@@ -1,5 +1,6 @@
 package com.gmail.afonsotrepa.pocketgopher;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -9,8 +10,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import java.util.List;
-
-import static com.gmail.afonsotrepa.pocketgopher.MainActivity.EXTRA_MESSAGE;
 
 /**
  * Used to create or edit a bookmark
@@ -36,17 +35,16 @@ public class EditBookmarkActivity extends AppCompatActivity {
         Integer port;
 
         //load old values if editing (instead of making) a bookmark
-        String m = getIntent().getStringExtra(EXTRA_MESSAGE);
-        if (m != null && !m.equals("")) {
-            String[] message = m.split("\t");
+        Intent i= getIntent();
 
+        if (i.getStringExtra("name") != null) {
             //"old" values
-            name = message[0];
-            type = message[1].charAt(0);
-            selector = message[2];
-            server = message[3];
-            port = Integer.parseInt(message[4]);
-            id = Integer.parseInt(message[5]);
+            name = i.getStringExtra("name");
+            type = i.getCharExtra("type", '1');
+            selector = i.getStringExtra("selector");
+            server = i.getStringExtra("server");
+            port = i.getIntExtra("port", 70);
+            id = i.getIntExtra("id", 0);
         } else {
             //default values
             name = "";
@@ -89,8 +87,6 @@ public class EditBookmarkActivity extends AppCompatActivity {
 
                     //remove the bookmark from bookmarks (if it exists)
                     for (Bookmark bookmark : bookmarks) {
-                        Log.d("EBA", bookmark.id.toString());
-                        Log.d("EBA", id.toString());
                         if (bookmark.id.equals(id)) {
                             bookmarks.remove(bookmark);
                             break;
