@@ -21,8 +21,6 @@ public class TextFileGopherLine extends GopherLine {
     private static final Integer COLOR_TAG = Color.DKGRAY;
     private static final Integer IMAGE_TAG = android.R.drawable.ic_menu_sort_by_size;
 
-    private static final String EXTRA_MESSAGE = "com.gmail.afonsotrepa.pocketgopher.MESSAGE";
-
     TextFileGopherLine(String text, String selector, String server, Integer port) {
         this.text = text;
         this.selector = selector;

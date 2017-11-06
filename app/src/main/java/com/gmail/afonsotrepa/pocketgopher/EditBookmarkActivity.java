@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Used to create or edit a bookmark
@@ -21,7 +22,7 @@ public class EditBookmarkActivity extends AppCompatActivity {
     EditText editSelector;
     EditText editServer;
     EditText editPort;
-    Integer id;
+    Integer id; //can't be "method private"
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +37,6 @@ public class EditBookmarkActivity extends AppCompatActivity {
 
         //load old values if editing (instead of making) a bookmark
         Intent i= getIntent();
-
         if (i.getStringExtra("name") != null) {
             //"old" values
             name = i.getStringExtra("name");
@@ -66,7 +66,7 @@ public class EditBookmarkActivity extends AppCompatActivity {
         editServer = findViewById(R.id.editServer);
         editServer.setText(server);
         editPort = findViewById(R.id.editPort);
-        editPort.setText(port.toString());
+        editPort.setText(String.format(Locale.getDefault(), "%d", port));
     }
 
 
@@ -80,7 +80,7 @@ public class EditBookmarkActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            //on click of button: remove the entry from the bookmarks if it exists
+            //on button click: remove the entry from the bookmarks if it exists
             case R.id.removeButton:
                 try {
                     List<Bookmark> bookmarks = Bookmark.read(getApplicationContext());
@@ -105,9 +105,10 @@ public class EditBookmarkActivity extends AppCompatActivity {
 
                 return true;
 
-            //on click of button: make/edit bookmark and save it to the file
+            //on button click: make/edit bookmark and save it to the file
             case R.id.saveButton:
                 try {
+                    //list of current bookmarks
                     List<Bookmark> bookmarks = Bookmark.read(getApplicationContext());
 
                     //if editing a bookmark that already exists

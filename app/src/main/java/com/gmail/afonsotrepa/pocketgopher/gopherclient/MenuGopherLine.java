@@ -26,8 +26,6 @@ class MenuGopherLine extends GopherLine {
     private static final Integer COLOR_TAG = Color.BLUE;
     private static final Integer IMAGE_TAG = android.R.drawable.ic_menu_view;
 
-    private static final String EXTRA_MESSAGE = "com.gmail.afonsotrepa.pocketgopher.MESSAGE";
-
     MenuGopherLine(String text, String selector, String server, Integer port) {
         this.text = text;
         this.selector = selector;

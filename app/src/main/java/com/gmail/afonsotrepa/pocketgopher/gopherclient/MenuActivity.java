@@ -54,6 +54,9 @@ public class MenuActivity extends AppCompatActivity {
                 server = i.getStringExtra("server");
                 port = i.getIntExtra("port",  70);
                 query = i.getStringExtra("query");
+                if (query == null) {
+                    query = "";
+                }
 
                 //set the title of the window
                 setTitle(server + selector);
@@ -118,7 +121,7 @@ public class MenuActivity extends AppCompatActivity {
                 //send the message with the values for the bookmark
                 intent.putExtra("name", "");
                 intent.putExtra("type", '1');
-                intent.putExtra("selector", selector+query);
+                intent.putExtra("selector", selector+"\t"+query);
                 intent.putExtra("server", server);
                 intent.putExtra("port", port);
                 intent.putExtra("id", 0);

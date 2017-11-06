@@ -22,8 +22,6 @@ public class SearchGopherLine  extends GopherLine{
     private static final Integer COLOR_TAG = Color.RED;
     private static final Integer IMAGE_TAG = android.R.drawable.ic_menu_search;
 
-    private static final String EXTRA_MESSAGE = "com.gmail.afonsotrepa.pocketgopher.MESSAGE";
-
     SearchGopherLine(String text, String selector, String server, Integer port) {
         this.text = text;
         this.server = server;

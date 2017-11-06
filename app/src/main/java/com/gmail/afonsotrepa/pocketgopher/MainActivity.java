@@ -1,15 +1,16 @@
-////TODO: fix the message passing to intents so each field is passed in its own message (important for implementing query/search)
 package com.gmail.afonsotrepa.pocketgopher;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
