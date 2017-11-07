@@ -11,6 +11,9 @@ import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +33,8 @@ public class MenuActivity extends AppCompatActivity {
     String server;
     Integer port;
     String query;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstaceState) {
@@ -69,6 +74,17 @@ public class MenuActivity extends AppCompatActivity {
 
                     //get the desired directory/menu
                     lines = conn.getMenu(selector + "\t" + query);
+
+
+                    //make the progress bar invisible
+                    final ProgressBar progressBar = findViewById(R.id.progressBar);
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            progressBar.setVisibility(View.GONE);
+                        }
+                    });
+
                 } catch (final IOException e) {
                     e.printStackTrace();
                     //inform the user of the error

@@ -21,6 +21,7 @@
         <activity android:name=".gopherclient.SearchActivity"></activity>
         <activity android:name=".EditBookmarkActivity"></activity>
         <activity android:name=".gopherclient.ImageActivity"></activity>
+        <activity android:name=".gopherclient.HtmlActivity"></activity>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

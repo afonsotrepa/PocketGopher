@@ -10,7 +10,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.method.LinkMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.gmail.afonsotrepa.pocketgopher.EditBookmarkActivity;
@@ -58,8 +60,18 @@ public class ImageActivity extends AppCompatActivity{
                     //start new connection
                     Connection conn = new Connection(server, port);
 
-                    //get the desired directory/menu
+                    //get the desired image
                     image = conn.getImage(selector);
+
+
+                    //make the progress bar invisible
+                    final ProgressBar progressBar = findViewById(R.id.progressBar);
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            progressBar.setVisibility(View.GONE);
+                        }
+                    });
 
                 } catch (final IOException e) {
                     e.printStackTrace();

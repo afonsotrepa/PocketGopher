@@ -5,12 +5,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
-import android.text.method.LinkMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gmail.afonsotrepa.pocketgopher.EditBookmarkActivity;
@@ -18,12 +17,11 @@ import com.gmail.afonsotrepa.pocketgopher.R;
 
 import java.io.IOException;
 
-
 /**
  *
  */
 
-public class TextFileActivity extends AppCompatActivity {
+public class HtmlActivity extends AppCompatActivity{
     String selector;
     String server;
     Integer port;
@@ -31,10 +29,10 @@ public class TextFileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_menu); //same layout as MenuAcitivity
+        setContentView(R.layout.activity_html);
 
         //widget to write to
-        final TextView textView = (TextView) findViewById(R.id.textView);
+        final WebView webView = findViewById(R.id.constraintLayout).findViewById(R.id.webView);
 
         //start a new thread to do network stuff
         new Thread(new Runnable() {
@@ -43,20 +41,23 @@ public class TextFileActivity extends AppCompatActivity {
                 //handler to the main thread
                 final Handler handler = new Handler(Looper.getMainLooper());
 
-                //intent stuff
+                //get info
                 Intent i = getIntent();
-                selector = i.getStringExtra("selector");
+                selector =i.getStringExtra("selector");
                 server = i.getStringExtra("server");
-                port = i.getIntExtra("port", 70);
+                port = i.getIntExtra("port",  70);
 
-                ///Network stuff
-                final String lines;
+                //set the title of the window
+                setTitle(server + selector);
+
+                ///Network stuff to get the html text
+                final String html;
                 try {
                     //start new connection
                     Connection conn = new Connection(server, port);
 
-                    //get the desired text file
-                    lines = conn.getText(selector);
+                    //get the desired html text
+                    html = conn.getText(selector);
 
 
                     //make the progress bar invisible
@@ -84,26 +85,18 @@ public class TextFileActivity extends AppCompatActivity {
                     return;
                 }
 
-                //render the lines on the screen
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        textView.append(lines);
-                    }
-                });
 
-                //some settings for textView
+                //render the html on webView
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        textView.setLineSpacing(18, 1);
-                        textView.setMovementMethod(LinkMovementMethod.getInstance());
+                        webView.loadData(html, "text/html", null);
                     }
                 });
             }
         }).start();
-
     }
+
 
     //setup the menu/title bar
     @Override
@@ -117,11 +110,10 @@ public class TextFileActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.addBookmarkButton:
                 //setup the intent
-                final Intent intent = new Intent(getApplicationContext(), EditBookmarkActivity
-                        .class);
+                final Intent intent = new Intent(getApplicationContext(), EditBookmarkActivity.class);
                 //send the message with the values for the bookmark
                 intent.putExtra("name", "");
-                intent.putExtra("type", '0');
+                intent.putExtra("type", 'h');
                 intent.putExtra("selector", selector);
                 intent.putExtra("server", server);
                 intent.putExtra("port", port);

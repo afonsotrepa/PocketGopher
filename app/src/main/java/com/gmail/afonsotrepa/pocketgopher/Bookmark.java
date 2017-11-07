@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.gmail.afonsotrepa.pocketgopher.gopherclient.HtmlActivity;
 import com.gmail.afonsotrepa.pocketgopher.gopherclient.ImageActivity;
 import com.gmail.afonsotrepa.pocketgopher.gopherclient.MenuActivity;
 import com.gmail.afonsotrepa.pocketgopher.gopherclient.SearchActivity;
@@ -56,6 +57,10 @@ public class Bookmark {
                 this.activity = ImageActivity.class;
                 break;
 
+            case 'h': //html
+                this.activity = HtmlActivity.class;
+                break;
+
             default:
                 throw new Exception("Invalid type");
         }
@@ -97,6 +102,10 @@ public class Bookmark {
             case 'g': //gif
             case 'I':
                 this.activity = ImageActivity.class;
+                break;
+
+            case 'h': //html
+                this.activity = HtmlActivity.class;
                 break;
 
             default:

@@ -120,6 +120,15 @@ class Connection {
 									Integer.parseInt(linesplit[3])));
 					break;
 
+				case 'h': //html
+					response.add(
+							new HtmlGopherLine(
+									linesplit[0].substring(1), //remove the type tag
+									linesplit[1],
+									linesplit[2],
+									Integer.parseInt(linesplit[3])));
+					break;
+
 				default:
 					//using substring(1) will crash sometimes (no idea why)
 					response.add(new UnknownGopherLine(linesplit[0].substring(0), line.charAt(0)));
@@ -130,13 +139,13 @@ class Connection {
 	}
 
     /**
-     * Sends the selector to the server and returns the response (expects a text file)
+     * Sends the selector to the server and returns the response (expects text)
      * @param selector selector (see RFC 1436)
      * @return the response from the server (as strings)
      */
-    List<String> getTextFile(String selector) {
+    String getText(String selector) {
         this.write(selector); //send the selector
-        return Arrays.asList(this.read().split("\n")); //read the response by the server
+        return this.read();
     }
 
     Drawable getImage(String selector) throws IOException {
