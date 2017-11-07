@@ -49,6 +49,9 @@ public class TextFileActivity extends AppCompatActivity {
                 server = i.getStringExtra("server");
                 port = i.getIntExtra("port", 70);
 
+                //set the title of the window
+                setTitle(server + selector);
+
                 ///Network stuff
                 final String lines;
                 try {
