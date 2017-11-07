@@ -51,6 +51,7 @@ public class Bookmark {
                 this.activity = SearchActivity.class;
                 break;
 
+            case 'g': //gif
             case 'I':
                 this.activity = ImageActivity.class;
                 break;
@@ -93,6 +94,7 @@ public class Bookmark {
                 this.activity = SearchActivity.class;
                 break;
 
+            case 'g': //gif
             case 'I':
                 this.activity = ImageActivity.class;
                 break;
@@ -147,11 +149,8 @@ public class Bookmark {
         String[] csvbookmarks = sharedPref.getString("bookmarks", "").split("\u0000");
 
         for (String b : csvbookmarks) {
-            Log.d("B", b);
             String[] bsplit = b.split("\n");
             if (bsplit.length > 1) {
-                Log.d("B", bsplit[0]);
-                Log.d("B", bsplit[1]);
                 //parse the bookmark
                 Bookmark bookmark = new Bookmark(
                         bsplit[0], //name

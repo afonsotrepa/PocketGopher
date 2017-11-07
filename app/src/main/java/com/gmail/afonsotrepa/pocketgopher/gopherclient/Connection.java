@@ -110,9 +110,10 @@ class Connection {
                     response.add(new TextGopherLine(linesplit[0].substring(1), linesplit[2]));
                     break;
 
+				case 'g': //gif (temporary)
 				case 'I': //Image
 					response.add(
-							new MenuGopherLine(
+							new ImageGopherLine(
 									linesplit[0].substring(1), //remove the type tag
 									linesplit[1],
 									linesplit[2],
@@ -129,7 +130,7 @@ class Connection {
 	}
 
     /**
-     * Sends the selector to the server and returns the response (excpects a text file)
+     * Sends the selector to the server and returns the response (expects a text file)
      * @param selector selector (see RFC 1436)
      * @return the response from the server (as strings)
      */
