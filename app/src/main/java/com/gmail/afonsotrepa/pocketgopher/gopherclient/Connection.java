@@ -1,7 +1,7 @@
 package com.gmail.afonsotrepa.pocketgopher.gopherclient;
 
 
-import android.util.Log;
+import android.graphics.drawable.Drawable;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 
 class Connection {
+    private Socket socket;
 	private PrintWriter os; //output stream
 	private BufferedReader is; //input stream
 
@@ -25,7 +26,7 @@ class Connection {
 	 * @param port port the server and the client listen to
 	 */
 	Connection(String server, Integer port) throws IOException{
-	    Socket socket =  new Socket(server, port);
+	    socket =  new Socket(server, port);
 
 	    os = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())));
 	    is = new BufferedReader((new InputStreamReader((socket.getInputStream()))));
@@ -109,6 +110,15 @@ class Connection {
                     response.add(new TextGopherLine(linesplit[0].substring(1), linesplit[2]));
                     break;
 
+				case 'I': //Image
+					response.add(
+							new MenuGopherLine(
+									linesplit[0].substring(1), //remove the type tag
+									linesplit[1],
+									linesplit[2],
+									Integer.parseInt(linesplit[3])));
+					break;
+
 				default:
 					//using substring(1) will crash sometimes (no idea why)
 					response.add(new UnknownGopherLine(linesplit[0].substring(0), line.charAt(0)));
@@ -127,5 +137,11 @@ class Connection {
         this.write(selector); //send the selector
         return Arrays.asList(this.read().split("\n")); //read the response by the server
     }
+
+    Drawable getImage(String selector) throws IOException {
+		this.write(selector); //send the selector
+        return Drawable.createFromStream(socket.getInputStream(), "src");
+
+	}
 
 }

@@ -20,6 +20,7 @@
         <activity android:name=".gopherclient.TextFileActivity"></activity>
         <activity android:name=".gopherclient.SearchActivity"></activity>
         <activity android:name=".EditBookmarkActivity"></activity>
+        <activity android:name=".gopherclient.ImageActivity"></activity>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />
