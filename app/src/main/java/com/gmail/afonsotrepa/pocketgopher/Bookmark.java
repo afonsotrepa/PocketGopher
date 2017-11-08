@@ -10,6 +10,7 @@ import com.gmail.afonsotrepa.pocketgopher.gopherclient.MenuActivity;
 import com.gmail.afonsotrepa.pocketgopher.gopherclient.SearchActivity;
 import com.gmail.afonsotrepa.pocketgopher.gopherclient.TextFileActivity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +18,7 @@ import java.util.List;
  *
  */
 
-public class Bookmark {
+public class Bookmark implements Serializable {
     public String name;
     public Character type;
     public String selector;
@@ -66,7 +67,7 @@ public class Bookmark {
         }
     }
 
-    Bookmark(Context context, String name, Character type, String selector, String server,
+    public Bookmark(Context context, String name, Character type, String selector, String server,
              Integer port) throws Exception {
         //generate a new unique id
         String file = context.getResources().getString(BOOKMARKS_FILE_KEY);

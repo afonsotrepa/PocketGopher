@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.gmail.afonsotrepa.pocketgopher.Bookmark;
 import com.gmail.afonsotrepa.pocketgopher.EditBookmarkActivity;
 import com.gmail.afonsotrepa.pocketgopher.R;
 
@@ -76,12 +77,15 @@ public class SearchActivity extends AppCompatActivity {
                 final Intent intent = new Intent(getApplicationContext(), EditBookmarkActivity
                         .class);
                 //send the message with the values for the bookmark
-                intent.putExtra("name", ""); //name (empty)
-                intent.putExtra("type", '7'); //type
-                intent.putExtra("selector", selector); //selector
-                intent.putExtra("server", server); //server
-                intent.putExtra("port", port); //port
-                intent.putExtra("id", 0); //id (defaults to 0)
+                Bookmark bookmark;
+                try {
+                    bookmark = new Bookmark(getApplicationContext(), "", '7', selector, server,
+                            port);
+                } catch (Exception e) {
+                    throw new RuntimeException(e.getMessage());
+                }
+
+                intent.putExtra("bookmark", bookmark);
 
                 //start the intent
                 startActivity(intent);

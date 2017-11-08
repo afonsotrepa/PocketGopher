@@ -3,7 +3,6 @@ package com.gmail.afonsotrepa.pocketgopher;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -36,24 +35,14 @@ public class EditBookmarkActivity extends AppCompatActivity {
         Integer port;
 
         //load old values if editing (instead of making) a bookmark
-        Intent i= getIntent();
-        if (i.getStringExtra("name") != null) {
-            //"old" values
-            name = i.getStringExtra("name");
-            type = i.getCharExtra("type", '1');
-            selector = i.getStringExtra("selector");
-            server = i.getStringExtra("server");
-            port = i.getIntExtra("port", 70);
-            id = i.getIntExtra("id", 0);
-        } else {
-            //default values
-            name = "";
-            type = '1';
-            selector = "";
-            server = "";
-            port = 70;
-            id = 0;
-        }
+        Intent i = getIntent();
+        Bookmark b = (Bookmark) i.getSerializableExtra("bookmark");
+        name = b.name;
+        type = b.type;
+        selector = b.selector;
+        server = b.server;
+        port = b.port;
+        id = b.id;
 
 
         //setup the text boxes to be used
@@ -99,7 +88,8 @@ public class EditBookmarkActivity extends AppCompatActivity {
                     finish();
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG) .show();
+                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG)
+                            .show();
                     finish();
                 }
 
@@ -112,7 +102,7 @@ public class EditBookmarkActivity extends AppCompatActivity {
                     List<Bookmark> bookmarks = Bookmark.read(getApplicationContext());
 
                     //if editing a bookmark that already exists
-                    if (id !=0) {
+                    if (id != 0) {
                         //remove the old bookmark
                         for (Bookmark b : bookmarks) {
                             if (b.id.equals(id)) {

@@ -17,6 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gmail.afonsotrepa.pocketgopher.Bookmark;
 import com.gmail.afonsotrepa.pocketgopher.EditBookmarkActivity;
 import com.gmail.afonsotrepa.pocketgopher.R;
 
@@ -130,12 +131,15 @@ public class MenuActivity extends AppCompatActivity {
                 final Intent intent = new Intent(getApplicationContext(), EditBookmarkActivity
                         .class);
                 //send the message with the values for the bookmark
-                intent.putExtra("name", "");
-                intent.putExtra("type", '1');
-                intent.putExtra("selector", selector);
-                intent.putExtra("server", server);
-                intent.putExtra("port", port);
-                intent.putExtra("id", 0);
+                Bookmark bookmark;
+                try {
+                    bookmark = new Bookmark(getApplicationContext(), "", '1', selector, server,
+                            port);
+                } catch (Exception e) {
+                    throw new RuntimeException(e.getMessage());
+                }
+
+                intent.putExtra("bookmark",bookmark);
 
                 //start the intent
                 startActivity(intent);
