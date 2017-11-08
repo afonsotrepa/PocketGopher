@@ -133,7 +133,7 @@ public class TextFileActivity extends AppCompatActivity {
                     bookmark = new Bookmark(getApplicationContext(), "", '0', selector, server,
                             port);
                 } catch (Exception e) {
-                    throw new RuntimeException(e.getMessage());
+                    throw new RuntimeException(e);
                 }
 
                 intent.putExtra("bookmark", bookmark);

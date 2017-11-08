@@ -126,12 +126,7 @@ public class MainActivity extends AppCompatActivity {
 
                 //setup the intent and then call it
                 final Intent intent = new Intent(getApplication(), EditBookmarkActivity.class);
-                intent.putExtra("name", bookmark.name);
-                intent.putExtra("type", bookmark.type);
-                intent.putExtra("selector", bookmark.selector);
-                intent.putExtra("server", bookmark.server);
-                intent.putExtra("port", bookmark.port);
-                intent.putExtra("id", bookmark.id);
+                intent.putExtra("bookmark", bookmark);
 
                 getApplication().startActivity(intent);
 
