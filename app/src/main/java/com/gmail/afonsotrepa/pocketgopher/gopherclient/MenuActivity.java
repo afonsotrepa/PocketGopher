@@ -32,8 +32,6 @@ public class MenuActivity extends AppCompatActivity {
     String selector;
     String server;
     Integer port;
-    String query;
-
 
 
     @Override
@@ -55,13 +53,10 @@ public class MenuActivity extends AppCompatActivity {
 
                 //get info
                 Intent i = getIntent();
-                selector =i.getStringExtra("selector");
-                server = i.getStringExtra("server");
-                port = i.getIntExtra("port",  70);
-                query = i.getStringExtra("query");
-                if (query == null) {
-                    query = "";
-                }
+                MenuGopherLine l = (MenuGopherLine) i.getSerializableExtra("line") ;
+                selector = l.selector;
+                server = l.server;
+                port = l.port;
 
                 //set the title of the window
                 setTitle(server + selector);
@@ -73,7 +68,7 @@ public class MenuActivity extends AppCompatActivity {
                     Connection conn = new Connection(server, port);
 
                     //get the desired directory/menu
-                    lines = conn.getMenu(selector + "\t" + query);
+                    lines = conn.getMenu(selector);
 
 
                     //make the progress bar invisible
@@ -137,7 +132,7 @@ public class MenuActivity extends AppCompatActivity {
                 //send the message with the values for the bookmark
                 intent.putExtra("name", "");
                 intent.putExtra("type", '1');
-                intent.putExtra("selector", selector+"\t"+query);
+                intent.putExtra("selector", selector);
                 intent.putExtra("server", server);
                 intent.putExtra("port", port);
                 intent.putExtra("id", 0);

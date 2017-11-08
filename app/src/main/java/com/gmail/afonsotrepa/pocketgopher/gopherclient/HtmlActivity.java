@@ -43,9 +43,10 @@ public class HtmlActivity extends AppCompatActivity{
 
                 //get info
                 Intent i = getIntent();
-                selector =i.getStringExtra("selector");
-                server = i.getStringExtra("server");
-                port = i.getIntExtra("port",  70);
+                HtmlGopherLine l = (HtmlGopherLine) i.getSerializableExtra("line");
+                selector = l.selector;
+                server = l.server;
+                port = l.port;
 
                 //set the title of the window
                 setTitle(server + selector);

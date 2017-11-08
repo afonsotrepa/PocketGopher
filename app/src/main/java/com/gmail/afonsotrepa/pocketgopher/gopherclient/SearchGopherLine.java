@@ -15,14 +15,14 @@ import android.widget.TextView;
 
 
 /**
- *
+ * Index-Search server ('7')
  */
 
 public class SearchGopherLine  extends GopherLine{
     private static final Integer COLOR_TAG = Color.RED;
     private static final Integer IMAGE_TAG = android.R.drawable.ic_menu_search;
 
-    SearchGopherLine(String text, String selector, String server, Integer port) {
+    public SearchGopherLine(String text, String selector, String server, Integer port) {
         this.text = text;
         this.server = server;
         this.selector = selector;
@@ -35,9 +35,7 @@ public class SearchGopherLine  extends GopherLine{
 
         //make and setup the new intent
         final Intent intent = new Intent(context, SearchActivity.class);
-        intent.putExtra("selector", selector);
-        intent.putExtra("server", server);
-        intent.putExtra("port", port);
+        intent.putExtra("line", this);
 
         //create the span (and the function to be run when it's clicked)
         final ClickableSpan cs = new ClickableSpan() {

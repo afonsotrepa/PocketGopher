@@ -18,7 +18,7 @@ import com.gmail.afonsotrepa.pocketgopher.R;
  *
  */
 
-public class SearchActivity extends AppCompatActivity{
+public class SearchActivity extends AppCompatActivity {
     String selector;
     String server;
     Integer port;
@@ -30,10 +30,11 @@ public class SearchActivity extends AppCompatActivity{
         setContentView(R.layout.activity_search);
 
         //get info
-        Intent i= getIntent();
-        selector = i.getStringExtra("selector");
-        server = i.getStringExtra("server");
-        port = i.getIntExtra("port", 70);
+        Intent i = getIntent();
+        SearchGopherLine l = (SearchGopherLine) i.getSerializableExtra("line");
+        selector = l.selector;
+        server = l.server;
+        port = l.port;
 
 
         //setup the widgets
@@ -47,12 +48,14 @@ public class SearchActivity extends AppCompatActivity{
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String query = editText.getText().toString();
-                intent.putExtra("selector", selector);
-                intent.putExtra("server", server);
-                intent.putExtra("port", port);
-                intent.putExtra("query", query);
+                //get the query from the editText box
+                String query = editText.getText().toString();
 
+                //make the line
+                MenuGopherLine line = new MenuGopherLine(query, selector + "\t" + query, server,
+                        port);
+
+                intent.putExtra("line", line);
                 context.startActivity(intent);
             }
         });
@@ -70,7 +73,8 @@ public class SearchActivity extends AppCompatActivity{
         switch (item.getItemId()) {
             case R.id.addBookmarkButton:
                 //setup the intent
-                final Intent intent = new Intent(getApplicationContext(), EditBookmarkActivity.class);
+                final Intent intent = new Intent(getApplicationContext(), EditBookmarkActivity
+                        .class);
                 //send the message with the values for the bookmark
                 intent.putExtra("name", ""); //name (empty)
                 intent.putExtra("type", '7'); //type

@@ -24,6 +24,7 @@ import java.io.IOException;
  */
 
 public class TextFileActivity extends AppCompatActivity {
+    String text;
     String selector;
     String server;
     Integer port;
@@ -45,9 +46,12 @@ public class TextFileActivity extends AppCompatActivity {
 
                 //intent stuff
                 Intent i = getIntent();
-                selector = i.getStringExtra("selector");
-                server = i.getStringExtra("server");
-                port = i.getIntExtra("port", 70);
+                TextFileGopherLine line = (TextFileGopherLine) i.getSerializableExtra("line");
+                text = line.text;
+                selector = line.selector;
+                server = line.server;
+                port = line.port;
+
 
                 //set the title of the window
                 setTitle(server + selector);
@@ -134,6 +138,7 @@ public class TextFileActivity extends AppCompatActivity {
                 startActivity(intent);
 
                 return true;
+
 
             default:
                 return super.onOptionsItemSelected(item);

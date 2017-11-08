@@ -129,6 +129,16 @@ class Connection {
 									Integer.parseInt(linesplit[3])));
 					break;
 
+				case '5': //binary archive
+				case '9': //binary file
+					response.add(
+							new BinGopherLine(
+									linesplit[0].substring(1), //remove the type tag
+									linesplit[1],
+									linesplit[2],
+									Integer.parseInt(linesplit[3])));
+					break;
+
 				default:
 					//using substring(1) will crash sometimes (no idea why)
 					response.add(new UnknownGopherLine(linesplit[0].substring(0), line.charAt(0)));

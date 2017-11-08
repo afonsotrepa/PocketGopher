@@ -21,7 +21,7 @@ public class TextFileGopherLine extends GopherLine {
     private static final Integer COLOR_TAG = Color.DKGRAY;
     private static final Integer IMAGE_TAG = android.R.drawable.ic_menu_sort_by_size;
 
-    TextFileGopherLine(String text, String selector, String server, Integer port) {
+    public TextFileGopherLine(String text, String selector, String server, Integer port) {
         this.text = text;
         this.selector = selector;
         this.server = server;
@@ -35,9 +35,11 @@ public class TextFileGopherLine extends GopherLine {
 
         //make and setup the new intent
         final Intent intent = new Intent(context, TextFileActivity.class);
+        /*intent.putExtra("text", this.text);
         intent.putExtra("selector", selector);
         intent.putExtra("server", server);
-        intent.putExtra("port", port);
+        intent.putExtra("port", port);*/
+        intent.putExtra("line", this);
 
         //create the span (and the function to be run when it's clicked)
         final ClickableSpan cs = new ClickableSpan() {

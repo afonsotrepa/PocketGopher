@@ -4,13 +4,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
+import com.gmail.afonsotrepa.pocketgopher.gopherclient.GopherLine;
+import com.gmail.afonsotrepa.pocketgopher.gopherclient.HtmlGopherLine;
+import com.gmail.afonsotrepa.pocketgopher.gopherclient.ImageGopherLine;
+import com.gmail.afonsotrepa.pocketgopher.gopherclient.SearchGopherLine;
+import com.gmail.afonsotrepa.pocketgopher.gopherclient.TextFileGopherLine;
+import com.gmail.afonsotrepa.pocketgopher.gopherclient.MenuGopherLine;
+
 import java.util.List;
 
 
@@ -63,9 +68,49 @@ public class MainActivity extends AppCompatActivity {
 
                 //open the bookmarked page
                 final Intent intent = new Intent(MainActivity.this, bookmark.activity);
-                intent.putExtra("selector", bookmark.selector);
-                intent.putExtra("server", bookmark.server);
-                intent.putExtra("port", bookmark.port);
+                GopherLine line;
+                switch (bookmark.type) {
+                    case '0':
+                        line = new TextFileGopherLine(
+                                bookmark.name,
+                                bookmark.selector,
+                                bookmark.server,
+                                bookmark.port );
+                        break;
+                    case '1':
+                        line = new MenuGopherLine(
+                                bookmark.name,
+                                bookmark.selector,
+                                bookmark.server,
+                                bookmark.port);
+                        break;
+                    case 'h':
+                        line = new HtmlGopherLine(
+                                bookmark.name,
+                                bookmark.selector,
+                                bookmark.server,
+                                bookmark.port);
+                        break;
+                    case 'I':
+                        line = new ImageGopherLine(
+                                bookmark.name,
+                                bookmark.selector,
+                                bookmark.server,
+                                bookmark.port);
+                        break;
+                    case '7':
+                        line = new SearchGopherLine(
+                                bookmark.name,
+                                bookmark.selector,
+                                bookmark.server,
+                                bookmark.port);
+                        break;
+
+                    default:
+                        throw new RuntimeException("Unknown type");
+                }
+
+                intent.putExtra("line", line);
 
                 startActivity(intent);
             }

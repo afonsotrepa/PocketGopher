@@ -21,7 +21,7 @@ public class ImageGopherLine extends GopherLine {
     private static final Integer COLOR_TAG = Color.BLUE;
     private static final Integer IMAGE_TAG = android.R.drawable.ic_menu_gallery;
 
-    ImageGopherLine(String text, String selector, String server, Integer port) {
+    public ImageGopherLine(String text, String selector, String server, Integer port) {
         this.text = text;
         this.selector = selector;
         this.server = server;
@@ -35,9 +35,7 @@ public class ImageGopherLine extends GopherLine {
 
         //make and setup the new intent
         final Intent intent = new Intent(context, ImageActivity.class);
-        intent.putExtra("selector", selector);
-        intent.putExtra("server", server);
-        intent.putExtra("port", port);
+        intent.putExtra("line", this);
 
         //create the span (and the function to be run when it's clicked)
         final ClickableSpan cs = new ClickableSpan() {

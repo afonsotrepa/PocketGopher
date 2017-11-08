@@ -22,11 +22,11 @@ import com.gmail.afonsotrepa.pocketgopher.R;
  * Directory/Menu ('1')
  */
 
-class MenuGopherLine extends GopherLine {
+public class MenuGopherLine extends GopherLine {
     private static final Integer COLOR_TAG = Color.BLUE;
     private static final Integer IMAGE_TAG = android.R.drawable.ic_menu_view;
 
-    MenuGopherLine(String text, String selector, String server, Integer port) {
+    public MenuGopherLine(String text, String selector, String server, Integer port) {
         this.text = text;
         this.selector = selector;
         this.server = server;
@@ -40,9 +40,7 @@ class MenuGopherLine extends GopherLine {
 
         //make and setup the new intent
         final Intent intent = new Intent(context, MenuActivity.class);
-        intent.putExtra("selector", selector);
-        intent.putExtra("server", server);
-        intent.putExtra("port", port);
+        intent.putExtra("line", this);
 
         //create the span (and the function to be run when it's clicked)
         final ClickableSpan cs = new ClickableSpan() {
