@@ -155,6 +155,15 @@ class Connection {
                                     Integer.parseInt(linesplit[3])));
                     break;
 
+                case ';': //video file
+                    response.add(
+                            new VideoGopherLine(
+                                    linesplit[0].substring(1), //remove the type tag
+                                    linesplit[1],
+                                    linesplit[2],
+                                    Integer.parseInt(linesplit[3])));
+                    break;
+
                 default:
                     //using substring(1) will crash sometimes (no idea why)
                     response.add(new UnknownGopherLine(linesplit[0].substring(1), line.charAt(0)));

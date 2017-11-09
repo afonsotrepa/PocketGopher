@@ -24,6 +24,7 @@
         <activity android:name=".EditBookmarkActivity"></activity>
         <activity android:name=".gopherclient.ImageActivity"></activity>
         <activity android:name=".gopherclient.HtmlActivity"></activity>
+        <activity android:name=".gopherclient.VideoActivity"></activity>
     </application>
 
 </manifest>

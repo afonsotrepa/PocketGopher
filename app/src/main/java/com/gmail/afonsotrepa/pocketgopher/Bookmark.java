@@ -9,6 +9,7 @@ import com.gmail.afonsotrepa.pocketgopher.gopherclient.ImageActivity;
 import com.gmail.afonsotrepa.pocketgopher.gopherclient.MenuActivity;
 import com.gmail.afonsotrepa.pocketgopher.gopherclient.SearchActivity;
 import com.gmail.afonsotrepa.pocketgopher.gopherclient.TextFileActivity;
+import com.gmail.afonsotrepa.pocketgopher.gopherclient.VideoActivity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -62,6 +63,10 @@ public class Bookmark implements Serializable {
                 this.activity = HtmlActivity.class;
                 break;
 
+            case ';': //video
+                this.activity = VideoActivity.class;
+                break;
+
             default:
                 throw new Exception("Invalid type");
         }
@@ -107,6 +112,10 @@ public class Bookmark implements Serializable {
 
             case 'h': //html
                 this.activity = HtmlActivity.class;
+                break;
+
+            case ';': //video
+                this.activity = VideoActivity.class;
                 break;
 
             default:
