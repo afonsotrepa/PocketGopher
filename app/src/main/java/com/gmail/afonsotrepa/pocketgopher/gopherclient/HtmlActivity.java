@@ -1,14 +1,17 @@
 package com.gmail.afonsotrepa.pocketgopher.gopherclient;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -34,6 +37,21 @@ public class HtmlActivity extends AppCompatActivity{
 
         //widget to write to
         final WebView webView = findViewById(R.id.constraintLayout).findViewById(R.id.webView);
+
+        //handle redirects
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView wView, String url) {
+                if (url != null && (url.startsWith("http://") || url.startsWith("https://"))) {
+                    wView.getContext().startActivity(
+                            new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        });
 
         //start a new thread to do network stuff
         new Thread(new Runnable() {
