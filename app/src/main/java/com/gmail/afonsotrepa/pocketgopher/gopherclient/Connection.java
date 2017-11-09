@@ -2,6 +2,7 @@ package com.gmail.afonsotrepa.pocketgopher.gopherclient;
 
 
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -113,7 +114,12 @@ class Connection {
                     break;
 
                 case 'i': //Informational text (not in the protocol but common)
-                    response.add(new TextGopherLine(linesplit[0].substring(1), linesplit[2]));
+                    if (linesplit.length < 2) {
+                        response.add(new TextGopherLine(linesplit[0].substring(1)));
+                    }
+                    else {
+                        response.add(new TextGopherLine(linesplit[0].substring(1), linesplit[2]));
+                    }
                     break;
 
                 case 'g': //gif (temporary)
@@ -127,6 +133,7 @@ class Connection {
                     break;
 
                 case 'h': //html
+                    Log.d("C", line);
                     response.add(
                             new HtmlGopherLine(
                                     linesplit[0].substring(1), //remove the type tag
@@ -150,7 +157,7 @@ class Connection {
 
                 default:
                     //using substring(1) will crash sometimes (no idea why)
-                    response.add(new UnknownGopherLine(linesplit[0].substring(0), line.charAt(0)));
+                    response.add(new UnknownGopherLine(linesplit[0].substring(1), line.charAt(0)));
             }
         }
 

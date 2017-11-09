@@ -16,11 +16,15 @@ class TextGopherLine extends GopherLine {
     private final static Float MAIN_TITLE_SIZE = 2f;
     private final static Float SUB_TITLE_SIZE = 1.5f;
 
+    //selector is needed to check for titles
     TextGopherLine(String text, String selector) {
         this.text = text;
         this.selector = selector;
         this.server = "null.host";
         this.port = 1;
+    }
+    TextGopherLine(String text) {
+        this(text, "");
     }
 
     public void render(final TextView textView, Context context) {
