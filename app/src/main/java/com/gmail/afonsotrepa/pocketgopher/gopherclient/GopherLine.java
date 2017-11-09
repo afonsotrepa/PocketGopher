@@ -90,9 +90,6 @@ public abstract class GopherLine implements Serializable {
                                                 .show();
                                         dialog.cancel();
                                     } else {
-                                        ///TODO: redo this so it only reads and writes small
-                                        /// chunks at a time (doing it in getBinary rn)
-
                                         //read and write the file
                                         Connection conn = new Connection(server, port);
                                         conn.getBinary(selector, file);
@@ -100,6 +97,8 @@ public abstract class GopherLine implements Serializable {
 
                                         ///TODO: need to add some code so the files get detected
                                         /// by DownloadManager or something
+                                        //(not possible??)
+                                        //
                                         //https://developer.android
                                         // .com/reference/android/app/DownloadManager
                                         // .html#addCompletedDownload%28java.lang.String,%20java

@@ -20,7 +20,7 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * TODO: need to save the download the video to the file and then play it back
+ *
  */
 
 public class VideoActivity extends AppCompatActivity {
