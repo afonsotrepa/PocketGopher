@@ -135,8 +135,11 @@ class Connection {
                                     Integer.parseInt(linesplit[3])));
                     break;
 
+                case '4': //macintosh binhex file
                 case '5': //binary archive
+                case '6': //uuencoded file
                 case '9': //binary file
+                case 'd': //word-processing document
                     response.add(
                             new BinGopherLine(
                                     linesplit[0].substring(1), //remove the type tag
@@ -167,7 +170,7 @@ class Connection {
 
     Drawable getDrawable(String selector) throws IOException {
         this.write(selector); //send the selector
-        return Drawable.createFromStream(socket.getInputStream(), "src");
+        return Drawable.createFromStream(socket.getInputStream(), null);
 
     }
 

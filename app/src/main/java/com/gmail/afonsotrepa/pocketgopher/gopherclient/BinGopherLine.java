@@ -1,7 +1,6 @@
 package com.gmail.afonsotrepa.pocketgopher.gopherclient;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
@@ -14,10 +13,11 @@ import android.view.View;
 import android.widget.TextView;
 
 /**
- *
+ * Macintosh BinHex file, Binary Archive, UUEncoded file, Binary file, Word-processing  document
+ * ('4', '5', '6', '9', 'd')
  */
 
-public class BinGopherLine extends GopherLine{
+public class BinGopherLine extends GopherLine {
     private static final Integer COLOR_TAG = Color.BLUE;
     private static final Integer IMAGE_TAG = android.R.drawable.stat_sys_download;
 
@@ -31,7 +31,7 @@ public class BinGopherLine extends GopherLine{
     public void render(final TextView textView, final Context context) {
         //handler to the main thread
         final Handler handler = new Handler(Looper.getMainLooper());
-        final SpannableStringBuilder text = new SpannableStringBuilder(" "+this.text+"\n");
+        final SpannableStringBuilder text = new SpannableStringBuilder(" " + this.text + "\n");
 
 
         final BinGopherLine line = this;
@@ -49,11 +49,12 @@ public class BinGopherLine extends GopherLine{
             @Override
             public void run() {
                 //make it clickable
-                text.setSpan(cs, 0, text.length()-1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                text.setSpan(cs, 0, text.length() - 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 //set the image tag behind (left of) the text
                 text.setSpan(new ImageSpan(context, IMAGE_TAG), 0, 1, 0);
                 //set the color tag
-                text.setSpan(new ForegroundColorSpan(COLOR_TAG), 0, text.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                text.setSpan(new ForegroundColorSpan(COLOR_TAG), 0, text.length(), Spanned
+                        .SPAN_EXCLUSIVE_EXCLUSIVE);
                 //add it to the end of textView
                 textView.append(text);
             }
