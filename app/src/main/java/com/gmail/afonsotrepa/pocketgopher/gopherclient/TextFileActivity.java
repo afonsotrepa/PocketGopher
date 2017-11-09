@@ -25,6 +25,7 @@ import java.io.IOException;
  */
 
 public class TextFileActivity extends AppCompatActivity {
+    TextFileGopherLine l;
     String text;
     String selector;
     String server;
@@ -47,11 +48,11 @@ public class TextFileActivity extends AppCompatActivity {
 
                 //intent stuff
                 Intent i = getIntent();
-                TextFileGopherLine line = (TextFileGopherLine) i.getSerializableExtra("line");
-                text = line.text;
-                selector = line.selector;
-                server = line.server;
-                port = line.port;
+                l= (TextFileGopherLine) i.getSerializableExtra("line");
+                text = l.text;
+                selector = l.selector;
+                server = l.server;
+                port = l.port;
 
 
                 //set the title of the window
@@ -116,7 +117,7 @@ public class TextFileActivity extends AppCompatActivity {
     //setup the menu/title bar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.client_menu, menu);
+        getMenuInflater().inflate(R.menu.client_downloadable, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -140,6 +141,11 @@ public class TextFileActivity extends AppCompatActivity {
 
                 //start the intent
                 startActivity(intent);
+
+                return true;
+
+            case R.id.downloadButton:
+                l.download(this);
 
                 return true;
 

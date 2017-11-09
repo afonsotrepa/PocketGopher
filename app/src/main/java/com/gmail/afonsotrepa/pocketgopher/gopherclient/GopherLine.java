@@ -10,7 +10,6 @@ import android.content.pm.PackageManager;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -26,7 +25,7 @@ import java.io.Serializable;
  *
  */
 
-public abstract class GopherLine implements Serializable{
+public abstract class GopherLine implements Serializable {
     String text;
     String selector;
     String server;
@@ -66,7 +65,7 @@ public abstract class GopherLine implements Serializable{
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT);
         input.setLayoutParams(layoutParams);
-        input.setText(text); //default file name
+        input.setText(selector.substring(selector.lastIndexOf("/") + 1)); //default file name
         alertDialog.setView(input);
 
 
@@ -91,20 +90,23 @@ public abstract class GopherLine implements Serializable{
                                                 .show();
                                         dialog.cancel();
                                     } else {
-                                        //read the file
+                                        ///TODO: redo this so it only reads and writes small
+                                        /// chunks at a time (doing it in getBinary rn)
+
+                                        //read and write the file
                                         Connection conn = new Connection(server, port);
-                                        String in = conn.getText(selector);
+                                        conn.getBinary(selector, file);
 
 
-                                        //write the file
-                                        DataOutputStream os = new DataOutputStream(new
-                                                FileOutputStream(file));
-                                        os.writeBytes(in);
-                                        os.flush();
-                                        os.close();
+                                        ///TODO: need to add some code so the files get detected
+                                        /// by DownloadManager or something
+                                        //https://developer.android
+                                        // .com/reference/android/app/DownloadManager
+                                        // .html#addCompletedDownload%28java.lang.String,%20java
+                                        // .lang.String,%20boolean,%20java.lang.String,%20java
+                                        // .lang.String,%20long,%20boolean%29
 
-                                        //TODO: need to add some code so the files get detected
-                                        // by DownloadManager or something
+                                        //context.getSystemService(DownloadManager.class);
                                     }
 
                                 } catch (IOException e) {

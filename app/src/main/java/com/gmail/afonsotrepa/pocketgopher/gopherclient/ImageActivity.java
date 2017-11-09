@@ -27,6 +27,7 @@ import java.util.List;
  */
 
 public class ImageActivity extends AppCompatActivity{
+    ImageGopherLine l;
     String selector;
     String server;
     Integer port;
@@ -48,7 +49,7 @@ public class ImageActivity extends AppCompatActivity{
 
                 //get info
                 Intent i = getIntent();
-                ImageGopherLine l = (ImageGopherLine) i.getSerializableExtra("line");
+                l = (ImageGopherLine) i.getSerializableExtra("line");
                 selector = l.selector;
                 server = l.server;
                 port = l.port;
@@ -63,7 +64,7 @@ public class ImageActivity extends AppCompatActivity{
                     Connection conn = new Connection(server, port);
 
                     //get the desired image
-                    image = conn.getImage(selector);
+                    image = conn.getDrawable(selector);
 
 
                     //make the progress bar invisible
@@ -107,7 +108,7 @@ public class ImageActivity extends AppCompatActivity{
     //setup the menu/title bar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.client_menu, menu);
+        getMenuInflater().inflate(R.menu.client_downloadable, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -132,6 +133,13 @@ public class ImageActivity extends AppCompatActivity{
                 startActivity(intent);
 
                 return true;
+
+
+            case R.id.downloadButton:
+                l.download(this);
+
+                return true;
+
 
             default:
                 return super.onOptionsItemSelected(item);

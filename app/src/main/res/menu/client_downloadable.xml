@@ -13,4 +13,14 @@
         android:visible="true"
         app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/downloadButton"
+        android:background="@android:color/background_dark"
+        android:checkable="true"
+        android:enabled="true"
+        android:icon="@android:drawable/stat_sys_download"
+        android:tint="@android:color/white"
+        android:title=""
+        android:visible="true"
+        app:showAsAction="ifRoom" />
 </menu>
