@@ -141,6 +141,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final Intent intent = new Intent(getApplication(), EditBookmarkActivity.class);
+                try {
+                    Bookmark bookmark = new Bookmark(getApplication(), "", '1', "", "", 70);
+                    intent.putExtra("bookmark", bookmark);
+                }
+                catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
                 getApplication().startActivity(intent);
             }
         });
