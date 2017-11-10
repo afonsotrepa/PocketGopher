@@ -25,8 +25,8 @@ public class UnknownGopherLine extends GopherLine {
 
     public void render(final TextView textView, final Context context) {
         final Handler handler = new Handler(Looper.getMainLooper());
-        final SpannableStringBuilder text = new SpannableStringBuilder(" "+this.text+
-                " <"+this.type_tag+">\n");
+        final SpannableStringBuilder text = new SpannableStringBuilder("  " + this.text +
+                " <" + this.type_tag + ">\n");
 
         handler.post(new Runnable() {
             @Override
