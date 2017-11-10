@@ -39,6 +39,14 @@ public class HtmlActivity extends AppCompatActivity{
         //widget to write to
         webView = findViewById(R.id.constraintLayout).findViewById(R.id.webView);
 
+        //handle redirects
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView wView, String url) {
+                return false;
+            }
+        });
+
         //start a new thread to do network stuff
         new Thread(new Runnable() {
             @Override
@@ -117,7 +125,7 @@ public class HtmlActivity extends AppCompatActivity{
     //setup the menu/title bar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.client_menu, menu);
+        getMenuInflater().inflate(R.menu.client_html, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -144,8 +152,7 @@ public class HtmlActivity extends AppCompatActivity{
                 return true;
 
             case R.id.openInBrowser:
-                //make a new intent pointing to the browser and call it
-                webView.getContext().startActivity( new Intent(Intent.ACTION_VIEW, Uri.parse(webView.getOriginalUrl())));
+                webView.getContext().startActivity( new Intent(Intent.ACTION_VIEW, Uri.parse(webView.getUrl())));
 
                 return true;
 
