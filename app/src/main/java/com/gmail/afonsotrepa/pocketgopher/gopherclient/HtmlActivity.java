@@ -29,6 +29,7 @@ public class HtmlActivity extends AppCompatActivity{
     String selector;
     String server;
     Integer port;
+    WebView webView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,20 +37,21 @@ public class HtmlActivity extends AppCompatActivity{
         setContentView(R.layout.activity_html);
 
         //widget to write to
-        final WebView webView = findViewById(R.id.constraintLayout).findViewById(R.id.webView);
+        webView = findViewById(R.id.constraintLayout).findViewById(R.id.webView);
 
         //handle redirects
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView wView, String url) {
-                if (url != null && (url.startsWith("http://") || url.startsWith("https://"))) {
+                /*if (url != null && (url.startsWith("http://") || url.startsWith("https://"))) {
                     wView.getContext().startActivity(
                             new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
                     return true;
                 }
                 else {
                     return false;
-                }
+                }*/
+                return false;
             }
         });
 
@@ -115,6 +117,16 @@ public class HtmlActivity extends AppCompatActivity{
                 });
             }
         }).start();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (webView.canGoBack()) {
+            webView.goBack();
+            return;
+        }
+
+        super.onBackPressed();
     }
 
 
