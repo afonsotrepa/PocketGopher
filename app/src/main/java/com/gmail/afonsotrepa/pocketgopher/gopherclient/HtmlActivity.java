@@ -39,22 +39,6 @@ public class HtmlActivity extends AppCompatActivity{
         //widget to write to
         webView = findViewById(R.id.constraintLayout).findViewById(R.id.webView);
 
-        //handle redirects
-        webView.setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView wView, String url) {
-                /*if (url != null && (url.startsWith("http://") || url.startsWith("https://"))) {
-                    wView.getContext().startActivity(
-                            new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
-                    return true;
-                }
-                else {
-                    return false;
-                }*/
-                return false;
-            }
-        });
-
         //start a new thread to do network stuff
         new Thread(new Runnable() {
             @Override
@@ -158,6 +142,13 @@ public class HtmlActivity extends AppCompatActivity{
                 startActivity(intent);
 
                 return true;
+
+            case R.id.openInBrowser:
+                //make a new intent pointing to the browser and call it
+                webView.getContext().startActivity( new Intent(Intent.ACTION_VIEW, Uri.parse(webView.getOriginalUrl())));
+
+                return true;
+
 
             default:
                 return super.onOptionsItemSelected(item);

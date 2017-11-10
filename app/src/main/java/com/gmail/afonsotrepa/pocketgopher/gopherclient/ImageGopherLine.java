@@ -13,13 +13,14 @@ import android.text.style.ImageSpan;
 import android.view.View;
 import android.widget.TextView;
 
+import com.gmail.afonsotrepa.pocketgopher.R;
+
 /**
  * Image ('I')
  */
 
 public class ImageGopherLine extends GopherLine {
-    private static final Integer COLOR_TAG = Color.BLUE;
-    private static final Integer IMAGE_TAG = android.R.drawable.ic_menu_gallery;
+    private static final Integer IMAGE_TAG = R.drawable.ic_image_white;
 
     public ImageGopherLine(String text, String selector, String server, Integer port) {
         this.text = text;
@@ -54,8 +55,6 @@ public class ImageGopherLine extends GopherLine {
                 text.setSpan(cs, 0, text.length()-1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 //set the image tag behind (left of) the text
                 text.setSpan(new ImageSpan(context, IMAGE_TAG), 0, 1, 0);
-                //set the color tag
-                text.setSpan(new ForegroundColorSpan(COLOR_TAG), 0, text.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 //add it to the end of textView
                 textView.append(text);
             }

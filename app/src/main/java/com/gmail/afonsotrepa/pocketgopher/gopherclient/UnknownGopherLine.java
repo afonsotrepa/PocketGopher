@@ -7,12 +7,14 @@ import android.text.SpannableStringBuilder;
 import android.text.style.ImageSpan;
 import android.widget.TextView;
 
+import com.gmail.afonsotrepa.pocketgopher.R;
+
 /**
  *
  */
 
 public class UnknownGopherLine extends GopherLine {
-    private static final Integer IMAGE_TAG = android.R.drawable.ic_dialog_alert;
+    private static final Integer IMAGE_TAG = R.drawable.ic_error_white;
 
     private Character type_tag;
 

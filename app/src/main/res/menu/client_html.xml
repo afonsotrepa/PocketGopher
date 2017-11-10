@@ -14,11 +14,11 @@
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/downloadButton"
+        android:id="@+id/openInBrowser"
         android:background="@android:color/background_dark"
         android:checkable="true"
         android:enabled="true"
-        android:icon="@drawable/ic_file_download_white"
+        android:icon="@drawable/ic_open_in_browser_white"
         android:tint="@android:color/white"
         android:title=""
         android:visible="true"

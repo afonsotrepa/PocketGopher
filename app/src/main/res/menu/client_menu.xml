@@ -7,7 +7,7 @@
         android:background="@android:color/background_dark"
         android:checkable="true"
         android:enabled="true"
-        android:icon="@android:drawable/ic_input_add"
+        android:icon="@drawable/ic_bookmark_border_white"
         android:tint="@android:color/white"
         android:title=""
         android:visible="true"
