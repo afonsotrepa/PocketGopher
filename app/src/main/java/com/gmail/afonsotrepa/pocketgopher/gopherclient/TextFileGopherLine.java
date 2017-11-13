@@ -34,10 +34,6 @@ public class TextFileGopherLine extends GopherLine {
 
         //make and setup the new intent
         final Intent intent = new Intent(context, TextFileActivity.class);
-        /*intent.putExtra("text", this.text);
-        intent.putExtra("selector", selector);
-        intent.putExtra("server", server);
-        intent.putExtra("port", port);*/
         intent.putExtra("line", this);
 
         //create the span (and the function to be run when it's clicked)
