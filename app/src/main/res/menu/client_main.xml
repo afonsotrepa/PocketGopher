@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/monospace_font"
+        android:background="@android:color/background_dark"
+        android:checkable="true"
+        android:enabled="true"
+        android:title="Monospace font"
+        android:visible="true"
+        app:showAsAction="never" />
+
+</menu>

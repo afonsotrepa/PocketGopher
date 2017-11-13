@@ -5,4 +5,14 @@
         <!-- Customize your theme here. -->
     </style>
 
+
+    <!-- Fonts -->
+    <style name="serif">
+        <item name="android:fontFamily">serif</item>
+    </style>
+
+    <style name="monospace">
+        <item name="android:fontFamily">monospace</item>
+    </style>
+
 </resources>

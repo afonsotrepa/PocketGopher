@@ -29,7 +29,7 @@ public class Bookmark implements Serializable {
     public Class activity; //the activity to call when opening the bookmarked page
     public Integer id; //a unique id that identifies the bookmark
 
-    private static final Integer  BOOKMARKS_FILE_KEY = R.string.booksmarks_file_key;
+    private static final Integer  BOOKMARKS_FILE_KEY = R.string.booksmarks_file;
 
     private Bookmark(String name, Character type, String selector, String server,
                      Integer port, Integer id) throws Exception {

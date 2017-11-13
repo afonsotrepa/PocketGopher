@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.gmail.afonsotrepa.pocketgopher.Bookmark;
 import com.gmail.afonsotrepa.pocketgopher.EditBookmarkActivity;
+import com.gmail.afonsotrepa.pocketgopher.MainActivity;
 import com.gmail.afonsotrepa.pocketgopher.R;
 
 import java.io.IOException;
@@ -38,6 +39,8 @@ public class TextFileActivity extends AppCompatActivity {
 
         //widget to write to
         final TextView textView = (TextView) findViewById(R.id.textView);
+        //set the font
+        textView.setTextAppearance(this, MainActivity.font);
 
         //start a new thread to do network stuff
         new Thread(new Runnable() {

@@ -1,9 +1,16 @@
 package com.gmail.afonsotrepa.pocketgopher;
 
+import android.app.Activity;
+import android.app.Notification;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.provider.FontsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -20,11 +27,27 @@ import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
+    private Menu menu;
+    public static int font = R.style.monospace;
+
+    private static final Integer SETTINGS_FILE = R.string.settings_file;
+    private static final String MONOSPACE_FONT_SETTING = "monospace_font";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        String file = this.getResources().getString(SETTINGS_FILE);
+        //open/create the file in private mode
+        SharedPreferences sharedPref = this.getSharedPreferences(file, Context.MODE_PRIVATE);
+        if (sharedPref.getInt(MONOSPACE_FONT_SETTING, 1) == 1) {
+            font = R.style.monospace;
+        }
+        else {
+            font = R.style.serif;
+        }
     }
 
     @Override
@@ -151,5 +174,61 @@ public class MainActivity extends AppCompatActivity {
                 getApplication().startActivity(intent);
             }
         });
+    }
+
+
+    //setup the menu/title bar
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.client_main, menu);
+
+        this.menu = menu;
+        menu.findItem(R.id.monospace_font).setChecked(true);
+
+        String file = this.getResources().getString(SETTINGS_FILE);
+        //open/create the file in private mode
+        SharedPreferences sharedPref = this.getSharedPreferences(file, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+
+        if (sharedPref.getInt(MONOSPACE_FONT_SETTING, 1) == 1) {
+            menu.findItem(R.id.monospace_font).setChecked(true);
+        }
+        else {
+            menu.findItem(R.id.monospace_font).setChecked(false);
+        }
+        editor.apply();
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.monospace_font:
+                String file = this.getResources().getString(SETTINGS_FILE);
+                //open/create the file in private mode
+                SharedPreferences sharedPref = this.getSharedPreferences(file, Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+
+                if (font == R.style.serif) {
+                    font = R.style.monospace;
+                    menu.findItem(R.id.monospace_font).setChecked(true);
+                    editor.putInt(MONOSPACE_FONT_SETTING, 1);
+                }
+                else {
+                    font = R.style.serif;
+                    menu.findItem(R.id.monospace_font).setChecked(false);
+                    editor.putInt(MONOSPACE_FONT_SETTING, 0);
+                }
+                editor.apply();
+
+                //restart the activity
+                this.recreate();
+
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

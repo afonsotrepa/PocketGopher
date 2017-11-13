@@ -35,6 +35,8 @@ public class BookmarkAdapter extends ArrayAdapter<Bookmark>{
         Bookmark bookmark = getItem(position);
         //the TextView box to use
         TextView textView = convertView.findViewById(R.id.label);
+        //set the font
+        textView.setTextAppearance(getContext(), MainActivity.font);
 
         //display the name of the bookmark
         textView.setText(bookmark.name);

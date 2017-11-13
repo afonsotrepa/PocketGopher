@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.gmail.afonsotrepa.pocketgopher.Bookmark;
 import com.gmail.afonsotrepa.pocketgopher.EditBookmarkActivity;
+import com.gmail.afonsotrepa.pocketgopher.MainActivity;
 import com.gmail.afonsotrepa.pocketgopher.R;
 
 
@@ -40,6 +41,8 @@ public class SearchActivity extends AppCompatActivity {
 
         //setup the widgets
         final TextView editText = findViewById(R.id.editText);
+        //set the font
+        editText.setTextAppearance(this, MainActivity.font);
         Button sendButton = findViewById(R.id.sendButton);
 
         //make and setup the new intent
