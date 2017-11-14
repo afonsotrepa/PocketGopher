@@ -165,8 +165,15 @@ class Connection {
                     break;
 
                 default:
-                    //using substring(1) will crash sometimes (no idea why)
-                    response.add(new UnknownGopherLine(linesplit[0].substring(1), line.charAt(0)));
+                    if (linesplit.length >= 3) {
+                        new VideoGopherLine(
+                                linesplit[0].substring(1), //remove the type tag
+                                linesplit[1],
+                                linesplit[2],
+                                Integer.parseInt(linesplit[3]));
+                    } else {
+                        response.add(new UnknownGopherLine(line));
+                    }
             }
         }
 

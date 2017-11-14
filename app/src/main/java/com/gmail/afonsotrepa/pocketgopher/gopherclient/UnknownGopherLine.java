@@ -18,15 +18,13 @@ public class UnknownGopherLine extends GopherLine {
 
     private Character type_tag;
 
-    UnknownGopherLine(String text, Character type_tag) {
+    UnknownGopherLine(String text) {
         this.text = text;
-        this.type_tag = type_tag;
     }
 
     public void render(final TextView textView, final Context context) {
         final Handler handler = new Handler(Looper.getMainLooper());
-        final SpannableStringBuilder text = new SpannableStringBuilder("  " + this.text +
-                " <" + this.type_tag + ">\n");
+        final SpannableStringBuilder text = new SpannableStringBuilder("  " + this.text + "\n");
 
         handler.post(new Runnable() {
             @Override
