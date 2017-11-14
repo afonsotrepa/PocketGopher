@@ -22,6 +22,7 @@ import com.gmail.afonsotrepa.pocketgopher.gopherclient.ImageGopherLine;
 import com.gmail.afonsotrepa.pocketgopher.gopherclient.SearchGopherLine;
 import com.gmail.afonsotrepa.pocketgopher.gopherclient.TextFileGopherLine;
 import com.gmail.afonsotrepa.pocketgopher.gopherclient.MenuGopherLine;
+import com.gmail.afonsotrepa.pocketgopher.gopherclient.VideoGopherLine;
 
 import java.util.List;
 
@@ -129,13 +130,26 @@ public class MainActivity extends AppCompatActivity {
                                 bookmark.port);
                         break;
 
+                    case ';':
+                        line = new VideoGopherLine(
+                                bookmark.name,
+                                bookmark.selector,
+                                bookmark.server,
+                                bookmark.port);
+                        break;
+
                     default:
                         throw new RuntimeException("Unknown type");
                 }
 
                 intent.putExtra("line", line);
 
-                startActivity(intent);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        startActivity(intent);
+                    }
+                }).start();
             }
         });
 

@@ -16,8 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
-            android:scaleType="fitCenter"
-            app:srcCompat="@android:drawable/stat_sys_download" />
+            android:scaleType="fitCenter" />
 
         <ProgressBar
             android:id="@+id/progressBar"

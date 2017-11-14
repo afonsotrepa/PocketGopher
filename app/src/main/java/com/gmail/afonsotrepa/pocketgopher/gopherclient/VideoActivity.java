@@ -1,10 +1,13 @@
 package com.gmail.afonsotrepa.pocketgopher.gopherclient;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,11 +31,12 @@ public class VideoActivity extends AppCompatActivity {
     String selector;
     String server;
     Integer port;
+    File file;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_image);
+        setContentView(R.layout.activity_video);
 
         //start a new thread to do network stuff
         new Thread(new Runnable() {
@@ -52,8 +56,11 @@ public class VideoActivity extends AppCompatActivity {
                 setTitle(server + selector);
 
                 ///Network stuff to save the video to cache
-                final File file = new File(getCacheDir() + "/" + selector);
+                file = new File(getExternalCacheDir() + "/" + selector.replace('/', '-'));
                 try {
+                    //create the file
+                    file.createNewFile();
+
                     //start new connection
                     Connection conn = new Connection(server, port);
 
@@ -78,24 +85,33 @@ public class VideoActivity extends AppCompatActivity {
                 }
 
 
-                final VideoView videoView = findViewById(R.id.videoView);
                 final ProgressBar progressBar = findViewById(R.id.progressBar);
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
                         //make the progress bar invisible
                         progressBar.setVisibility(View.GONE);
-
-                        //render the video
-                        videoView.setVideoPath(file.getPath());
                     }
                 });
 
-                //delete the cached file to save space
-                file.delete();
+                //make and start an intent to call the media player
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                intent.setDataAndType(Uri.fromFile(file), "video/*");
+                startActivityForResult(intent, 1);
             }
         }).start();
     }
+
+     @Override
+     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+         //delete the cached file to save space
+         file.delete();
+
+         //exit the activity
+         finish();
+     }
 
 
     //setup the menu/title bar
