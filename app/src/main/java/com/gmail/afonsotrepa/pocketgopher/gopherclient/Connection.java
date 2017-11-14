@@ -133,7 +133,6 @@ class Connection {
                     break;
 
                 case 'h': //html
-                    Log.d("C", line);
                     response.add(
                             new HtmlGopherLine(
                                     linesplit[0].substring(1), //remove the type tag
@@ -164,6 +163,7 @@ class Connection {
                                     Integer.parseInt(linesplit[3])));
                     break;
 
+                case '3':
                 default:
                     if (linesplit.length >= 3) {
                         new VideoGopherLine(

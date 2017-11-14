@@ -3,6 +3,7 @@ package com.gmail.afonsotrepa.pocketgopher;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -17,10 +18,7 @@ import java.util.Locale;
 
 public class EditBookmarkActivity extends AppCompatActivity {
     EditText editName;
-    EditText editType;
-    EditText editSelector;
-    EditText editServer;
-    EditText editPort;
+    EditText editURL;
     Integer id; //can't be "method private"
 
     @Override
@@ -28,34 +26,19 @@ public class EditBookmarkActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editbookmark);
 
-        String name;
-        Character type;
-        String selector;
-        String server;
-        Integer port;
-
         //load old values if editing (instead of making) a bookmark
         Intent i = getIntent();
         Bookmark b = (Bookmark) i.getSerializableExtra("bookmark");
-        name = b.name;
-        type = b.type;
-        selector = b.selector;
-        server = b.server;
-        port = b.port;
+        String name = b.name;
+        String url = b.url;
         id = b.id;
 
 
         //setup the text boxes to be used
         editName = findViewById(R.id.editName);
         editName.setText(name);
-        editType = findViewById(R.id.editType);
-        editType.setText(type.toString());
-        editSelector = findViewById(R.id.editSelector);
-        editSelector.setText(selector);
-        editServer = findViewById(R.id.editServer);
-        editServer.setText(server);
-        editPort = findViewById(R.id.editPort);
-        editPort.setText(String.format(Locale.getDefault(), "%d", port));
+        editURL = findViewById(R.id.editURL);
+        editURL.setText(url);
     }
 
 
@@ -114,10 +97,7 @@ public class EditBookmarkActivity extends AppCompatActivity {
                     Bookmark b = new Bookmark(
                             getApplicationContext(),
                             editName.getText().toString(),
-                            editType.getText().charAt(0),
-                            editSelector.getText().toString(),
-                            editServer.getText().toString(),
-                            Integer.parseInt(editPort.getText().toString())
+                            editURL.getText().toString()
                     );
 
                     //add it to the list

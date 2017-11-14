@@ -21,10 +21,7 @@ public class TextFileGopherLine extends GopherLine {
     private static final Integer IMAGE_TAG = R.drawable.ic_menu_white;
 
     public TextFileGopherLine(String text, String selector, String server, Integer port) {
-        this.text = text;
-        this.selector = selector;
-        this.server = server;
-        this.port = port;
+        super(text, server, port, '0', selector);
     }
 
     public void render(final TextView textView, final Context context) {

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.gmail.afonsotrepa.pocketgopher.gopherclient.GopherPage;
 import com.gmail.afonsotrepa.pocketgopher.gopherclient.HtmlActivity;
 import com.gmail.afonsotrepa.pocketgopher.gopherclient.ImageActivity;
 import com.gmail.afonsotrepa.pocketgopher.gopherclient.MenuActivity;
@@ -19,61 +20,30 @@ import java.util.List;
  *
  */
 
-public class Bookmark implements Serializable {
+public class Bookmark extends GopherPage {
     public String name;
-    public Character type;
-    public String selector;
-    public String server;
-    public Integer port;
+    public String url;
 
     public Class activity; //the activity to call when opening the bookmarked page
     public Integer id; //a unique id that identifies the bookmark
 
     private static final Integer  BOOKMARKS_FILE_KEY = R.string.booksmarks_file;
 
-    private Bookmark(String name, Character type, String selector, String server,
-                     Integer port, Integer id) throws Exception {
+    private Bookmark(String name, String url, Integer id) {
+        super(url);
+        this.url = url;
         this.name = name;
-        this.type = type;
-        this.selector = selector;
-        this.server = server;
-        this.port = port;
         this.id = id;
 
         //determine which activity to call
-        switch (type) {
-            case '0':
-                this.activity = TextFileActivity.class;
-                break;
-
-            case '1':
-                this.activity = MenuActivity.class;
-                break;
-
-            case '7':
-                this.activity = SearchActivity.class;
-                break;
-
-            case 'g': //gif
-            case 'I':
-                this.activity = ImageActivity.class;
-                break;
-
-            case 'h': //html
-                this.activity = HtmlActivity.class;
-                break;
-
-            case ';': //video
-                this.activity = VideoActivity.class;
-                break;
-
-            default:
-                throw new Exception("Invalid type");
-        }
+        this.activity = GopherPage.activityToCall(type);
     }
 
-    public Bookmark(Context context, String name, Character type, String selector, String server,
-             Integer port) throws Exception {
+    public Bookmark(Context context, String name, String url) {
+        super(url);
+        this.url = url;
+        this.name = name;
+
         //generate a new unique id
         String file = context.getResources().getString(BOOKMARKS_FILE_KEY);
         SharedPreferences sharedPref = context.getSharedPreferences(file, Context.MODE_PRIVATE);
@@ -84,43 +54,17 @@ public class Bookmark implements Serializable {
         editor.putInt("id", id+1);
         editor.apply();
 
-        //create the bookmark itself (can't use "this(...)" because it's not the 1st statement)
-        this.name = name;
-        this.type = type;
-        this.selector = selector;
-        this.server = server;
-        this.port = port;
-
         //determine which activity to call
-        switch (type) {
-            case '0':
-                this.activity = TextFileActivity.class;
-                break;
+        this.activity = GopherPage.activityToCall(type);
+    }
 
-            case '1':
-                this.activity = MenuActivity.class;
-                break;
-
-            case '7':
-                this.activity = SearchActivity.class;
-                break;
-
-            case 'g': //gif
-            case 'I':
-                this.activity = ImageActivity.class;
-                break;
-
-            case 'h': //html
-                this.activity = HtmlActivity.class;
-                break;
-
-            case ';': //video
-                this.activity = VideoActivity.class;
-                break;
-
-            default:
-                throw new Exception("Invalid type");
-        }
+    /**
+     * A simple wrapper for backwards comparability. Avoid!!
+     * @deprecated
+     */
+    public Bookmark(Context context, String name, Character type, String selector, String server, Integer port)
+        throws Exception {
+        this(context, name, server+":"+String.valueOf(port)+"/"+type.toString()+selector);
     }
 
 
@@ -137,10 +81,7 @@ public class Bookmark implements Serializable {
         StringBuilder csvbookmarks = new StringBuilder();
         for (Bookmark b : bookmarks) {
             csvbookmarks.append(b.name).append("\n");
-            csvbookmarks.append(b.type).append("\n");
-            csvbookmarks.append(b.selector).append("\n");
-            csvbookmarks.append(b.server).append("\n");
-            csvbookmarks.append(b.port.toString()).append("\n");
+            csvbookmarks.append(b.url).append("\n");
             csvbookmarks.append(b.id.toString()).append("\n");
             csvbookmarks.append("\u0000");
         }
@@ -173,11 +114,8 @@ public class Bookmark implements Serializable {
                 //parse the bookmark
                 Bookmark bookmark = new Bookmark(
                         bsplit[0], //name
-                        bsplit[1].charAt(0), //type
-                        bsplit[2], //selector
-                        bsplit[3], //server
-                        Integer.parseInt(bsplit[4]), //port
-                        Integer.parseInt(bsplit[5])); //id
+                        bsplit[1], //url
+                        Integer.parseInt(bsplit[2])); //id
 
                 //add it to the list of bookmarks
                 bookmarks.add(bookmark);

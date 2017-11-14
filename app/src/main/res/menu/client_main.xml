@@ -11,4 +11,13 @@
         android:visible="true"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/link"
+        android:background="@android:color/background_dark"
+        android:checkable="true"
+        android:enabled="true"
+        android:icon="@drawable/ic_link_white"
+        android:title="link"
+        android:visible="true"
+        app:showAsAction="ifRoom" />
 </menu>

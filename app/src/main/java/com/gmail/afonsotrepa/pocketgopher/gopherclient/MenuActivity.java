@@ -8,11 +8,9 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -57,13 +55,13 @@ public class MenuActivity extends AppCompatActivity {
 
                 //get info
                 Intent i = getIntent();
-                MenuGopherLine l = (MenuGopherLine) i.getSerializableExtra("line") ;
+                MenuGopherLine l = (MenuGopherLine) i.getSerializableExtra("line");
                 selector = l.selector;
                 server = l.server;
                 port = l.port;
 
                 //set the title of the window
-                setTitle(server + selector);
+                setTitle(l.url);
 
                 ///Network stuff
                 List<GopherLine> lines;
@@ -142,7 +140,7 @@ public class MenuActivity extends AppCompatActivity {
                     throw new RuntimeException(e);
                 }
 
-                intent.putExtra("bookmark",bookmark);
+                intent.putExtra("bookmark", bookmark);
 
                 //start the intent
                 startActivity(intent);

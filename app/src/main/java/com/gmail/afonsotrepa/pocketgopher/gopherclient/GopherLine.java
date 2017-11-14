@@ -25,11 +25,14 @@ import java.io.Serializable;
  *
  */
 
-public abstract class GopherLine implements Serializable {
-    String text;
-    String selector;
-    String server;
-    Integer port;
+public abstract class GopherLine extends GopherPage implements Serializable {
+    public String text;
+
+    GopherLine(String text, String server, Integer port, Character type, String selector) {
+        super(server, port, type, selector);
+        this.text = text;
+    }
+
 
     /**
      * Used to render the line onto the screen

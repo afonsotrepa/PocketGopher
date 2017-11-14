@@ -18,10 +18,7 @@ class TextGopherLine extends GopherLine {
 
     //selector is needed to check for titles
     TextGopherLine(String text, String selector) {
-        this.text = text;
-        this.selector = selector;
-        this.server = "null.host";
-        this.port = 1;
+        super(text, null, 0, 'i', selector);
     }
     TextGopherLine(String text) {
         this(text, "");

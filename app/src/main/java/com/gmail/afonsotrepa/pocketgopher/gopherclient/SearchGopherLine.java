@@ -24,10 +24,7 @@ public class SearchGopherLine  extends GopherLine{
     private static final Integer IMAGE_TAG = R.drawable.ic_search_white;
 
     public SearchGopherLine(String text, String selector, String server, Integer port) {
-        this.text = text;
-        this.server = server;
-        this.selector = selector;
-        this.port = port;
+        super(text, server, port, '7', selector);
     }
 
     public void render(final TextView textView, final Context context) {

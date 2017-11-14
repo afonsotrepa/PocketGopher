@@ -55,7 +55,7 @@ public class ImageActivity extends AppCompatActivity{
                 port = l.port;
 
                 //set the title of the window
-                setTitle(server + selector);
+                setTitle(l.url);
 
                 ///Network stuff to get the image
                 final Drawable image;

@@ -1,22 +1,29 @@
+////TODO: fix all the repeated code
 package com.gmail.afonsotrepa.pocketgopher;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Notification;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.FontsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.gmail.afonsotrepa.pocketgopher.gopherclient.GopherLine;
+import com.gmail.afonsotrepa.pocketgopher.gopherclient.GopherPage;
 import com.gmail.afonsotrepa.pocketgopher.gopherclient.HtmlGopherLine;
 import com.gmail.afonsotrepa.pocketgopher.gopherclient.ImageGopherLine;
 import com.gmail.afonsotrepa.pocketgopher.gopherclient.SearchGopherLine;
@@ -24,6 +31,7 @@ import com.gmail.afonsotrepa.pocketgopher.gopherclient.TextFileGopherLine;
 import com.gmail.afonsotrepa.pocketgopher.gopherclient.MenuGopherLine;
 import com.gmail.afonsotrepa.pocketgopher.gopherclient.VideoGopherLine;
 
+import java.io.File;
 import java.util.List;
 
 
@@ -179,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 final Intent intent = new Intent(getApplication(), EditBookmarkActivity.class);
                 try {
-                    Bookmark bookmark = new Bookmark(getApplication(), "", '1', "", "", 70);
+                    Bookmark bookmark = new Bookmark(getApplication(), "", "");
                     intent.putExtra("bookmark", bookmark);
                 }
                 catch (Exception e) {
@@ -240,6 +248,97 @@ public class MainActivity extends AppCompatActivity {
                 this.recreate();
 
                 return true;
+
+            case R.id.link:
+                //AlertDialog to be shown when the button gets clicked
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+                alertDialog.setMessage("URL:");
+                //the EditText where the user will input the name of the file
+                final EditText input = new EditText(this);
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT);
+                input.setLayoutParams(layoutParams);
+                alertDialog.setView(input);
+
+                final Context context = this;
+
+                alertDialog.setPositiveButton("Save",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(final DialogInterface dialog, int which) {
+                                GopherPage page = new GopherPage(input.getText().toString());
+                                final Intent intent = new Intent(MainActivity.this, page.activity);
+                                GopherLine line;
+                                switch (page.type) {
+                                    case '0':
+                                        line = new TextFileGopherLine(
+                                                "",
+                                                page.selector,
+                                                page.server,
+                                                page.port );
+                                        break;
+                                    case '1':
+                                        line = new MenuGopherLine(
+                                                "",
+                                                page.selector,
+                                                page.server,
+                                                page.port);
+                                        break;
+                                    case 'h':
+                                        line = new HtmlGopherLine(
+                                                "",
+                                                page.selector,
+                                                page.server,
+                                                page.port);
+                                        break;
+                                    case 'I':
+                                        line = new ImageGopherLine(
+                                                "",
+                                                page.selector,
+                                                page.server,
+                                                page.port);
+                                        break;
+                                    case '7':
+                                        line = new SearchGopherLine(
+                                                "",
+                                                page.selector,
+                                                page.server,
+                                                page.port);
+                                        break;
+
+                                    case ';':
+                                        line = new VideoGopherLine(
+                                                "",
+                                                page.selector,
+                                                page.server,
+                                                page.port);
+                                        break;
+
+                                    default:
+                                        throw new RuntimeException("Unknown type");
+                                }
+
+                                intent.putExtra("line", line);
+
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        startActivity(intent);
+                                    }
+                                }).start();
+                        }});
+
+
+                alertDialog.setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+
+                alertDialog.show();
 
             default:
                 return super.onOptionsItemSelected(item);

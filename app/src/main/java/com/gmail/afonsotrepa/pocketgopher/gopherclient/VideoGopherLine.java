@@ -24,10 +24,7 @@ public class VideoGopherLine extends GopherLine {
 
 
     public VideoGopherLine(String text, String selector, String server, Integer port) {
-        this.text = text;
-        this.selector = selector;
-        this.server = server;
-        this.port = port;
+        super(text, server, port, ';', selector);
     }
 
     public void render(final TextView textView, final Context context) {

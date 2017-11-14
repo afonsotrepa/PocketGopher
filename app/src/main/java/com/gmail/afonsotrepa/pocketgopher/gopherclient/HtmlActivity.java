@@ -62,7 +62,7 @@ public class HtmlActivity extends AppCompatActivity{
                 port = l.port;
 
                 //set the title of the window
-                setTitle(server + selector);
+                setTitle(l.url);
 
                 ///Network stuff to get the html text
                 final String html;

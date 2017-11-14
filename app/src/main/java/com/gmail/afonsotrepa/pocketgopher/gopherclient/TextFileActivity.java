@@ -59,7 +59,7 @@ public class TextFileActivity extends AppCompatActivity {
 
 
                 //set the title of the window
-                setTitle(server + selector);
+                setTitle(l.url);
 
                 ///Network stuff
                 final String lines;
