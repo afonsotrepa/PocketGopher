@@ -3,6 +3,12 @@ Gopher browser for android written in java
 
 Requires Android 4.0.3 or above.
 
+# Installation
+Pocket Gopher is currently only available as an apk here:
+https://github.com/afonsotrepa/PocketGopher/releases
+
+I do plan on releasing it on f-droid (and maybe even the google play store) in a few days though.
+
 # Unlicense
 This is free and unencumbered software released into the public domain.
 
