@@ -83,13 +83,15 @@ public abstract class GopherLine implements Serializable {
                             @Override
                             public void run() {
                                 try {
-                                    if (!file.createNewFile()) {
+                                    if (file.exists()) {
                                         //quit if file already exists
                                         Toast.makeText(context, "File already exists", Toast
                                                 .LENGTH_LONG)
                                                 .show();
                                         dialog.cancel();
                                     } else {
+                                        //create the file
+                                        file.createNewFile();
                                         //read and write the file
                                         Connection conn = new Connection(server, port);
                                         conn.getBinary(selector, file);
