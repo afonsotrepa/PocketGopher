@@ -1,7 +1,7 @@
 # PocketGopher
-Gopher browser for android written in java
+Pocket Gopher - the small but powerful gopher client that fits in your pocket
 
-Requires Android 4.0.3 or above.
+Requires Android 4.1 or above. (for API level 16)
 
 # Installation
 Pocket Gopher is currently only available as an apk here:
