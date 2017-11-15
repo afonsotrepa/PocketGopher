@@ -101,8 +101,7 @@ public abstract class GopherLine extends GopherPage implements Serializable {
 
 
                                         ///TODO: need to add some code so the files get detected
-                                        /// by DownloadManager or something
-                                        //(not possible??)
+                                        /// by DownloadManager or something (not possible??)
                                         //
                                         //https://developer.android
                                         // .com/reference/android/app/DownloadManager
