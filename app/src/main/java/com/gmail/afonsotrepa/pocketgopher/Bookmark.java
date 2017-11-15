@@ -4,15 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.gmail.afonsotrepa.pocketgopher.gopherclient.GopherLine;
 import com.gmail.afonsotrepa.pocketgopher.gopherclient.GopherPage;
-import com.gmail.afonsotrepa.pocketgopher.gopherclient.HtmlActivity;
-import com.gmail.afonsotrepa.pocketgopher.gopherclient.ImageActivity;
-import com.gmail.afonsotrepa.pocketgopher.gopherclient.MenuActivity;
-import com.gmail.afonsotrepa.pocketgopher.gopherclient.SearchActivity;
-import com.gmail.afonsotrepa.pocketgopher.gopherclient.TextFileActivity;
-import com.gmail.afonsotrepa.pocketgopher.gopherclient.VideoActivity;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +30,7 @@ public class Bookmark extends GopherPage {
         this.id = id;
 
         //determine which activity to call
-        this.activity = GopherPage.activityToCall(type);
+        this.activity = GopherLine.getCLass(type);
     }
 
     public Bookmark(Context context, String name, String url) {
@@ -55,7 +49,7 @@ public class Bookmark extends GopherPage {
         editor.apply();
 
         //determine which activity to call
-        this.activity = GopherPage.activityToCall(type);
+        this.activity = GopherLine.getCLass(type);
     }
 
     /**

@@ -2,12 +2,9 @@ package com.gmail.afonsotrepa.pocketgopher.gopherclient;
 
 
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -81,99 +78,29 @@ class Connection {
         List<GopherLine> response = new ArrayList<>();
 
         for (String line : lines) {
-            //skip line if empty
+            //skip empty line
             if (line.equals(""))
                 continue;
 
             String[] linesplit = line.split("\t");
-            switch (line.charAt(0)) {
-                case '0': //text file
-                    response.add(new TextFileGopherLine(
-                            linesplit[0].substring(1), //remove the type tag
-                            linesplit[1],
-                            linesplit[2],
-                            Integer.parseInt(linesplit[3])));
-                    break;
+            if (linesplit.length < 2) {
+                response.add(GopherLine.makeGopherLine(
+                        line.charAt(0), //type
+                        linesplit[0].substring(1), //remove the type tag
+                        "",
+                        "",
+                        0));
 
-                case '1': //menu/directory
-                    response.add(
-                            new MenuGopherLine(
-                                    linesplit[0].substring(1), //remove the type tag
-                                    linesplit[1],
-                                    linesplit[2],
-                                    Integer.parseInt(linesplit[3])));
-                    break;
+            } else if (linesplit.length < 4) {
+                response.add(new UnknownGopherLine(line));
 
-                case '7': //Search engine or CGI script
-                    response.add(
-                            new SearchGopherLine(
-                                    linesplit[0].substring(1), //remove the type tag
-                                    linesplit[1],
-                                    linesplit[2],
-                                    Integer.parseInt(linesplit[3])));
-                    break;
-
-                case 'i': //Informational text (not in the protocol but common)
-                    if (linesplit.length < 2) {
-                        response.add(new TextGopherLine(linesplit[0].substring(1)));
-                    }
-                    else {
-                        response.add(new TextGopherLine(linesplit[0].substring(1), linesplit[2]));
-                    }
-                    break;
-
-                case 'g': //gif (temporary)
-                case 'I': //Image
-                    response.add(
-                            new ImageGopherLine(
-                                    linesplit[0].substring(1), //remove the type tag
-                                    linesplit[1],
-                                    linesplit[2],
-                                    Integer.parseInt(linesplit[3])));
-                    break;
-
-                case 'h': //html
-                    response.add(
-                            new HtmlGopherLine(
-                                    linesplit[0].substring(1), //remove the type tag
-                                    linesplit[1],
-                                    linesplit[2],
-                                    Integer.parseInt(linesplit[3])));
-                    break;
-
-                case '4': //macintosh binhex file
-                case '5': //binary archive
-                case '6': //uuencoded file
-                case '9': //binary file
-                case 'd': //word-processing document
-                    response.add(
-                            new BinGopherLine(
-                                    linesplit[0].substring(1), //remove the type tag
-                                    linesplit[1],
-                                    linesplit[2],
-                                    Integer.parseInt(linesplit[3])));
-                    break;
-
-                case ';': //video file
-                    response.add(
-                            new VideoGopherLine(
-                                    linesplit[0].substring(1), //remove the type tag
-                                    linesplit[1],
-                                    linesplit[2],
-                                    Integer.parseInt(linesplit[3])));
-                    break;
-
-                case '3':
-                default:
-                    if (linesplit.length >= 3) {
-                        new VideoGopherLine(
-                                linesplit[0].substring(1), //remove the type tag
-                                linesplit[1],
-                                linesplit[2],
-                                Integer.parseInt(linesplit[3]));
-                    } else {
-                        response.add(new UnknownGopherLine(line));
-                    }
+            } else {
+                response.add(GopherLine.makeGopherLine(
+                        line.charAt(0), //type
+                        linesplit[0].substring(1), //remove the type tag
+                        linesplit[1],
+                        linesplit[2],
+                        Integer.parseInt(linesplit[3])));
             }
         }
 
@@ -199,8 +126,9 @@ class Connection {
 
     /**
      * Sends the selector to the server and writes its response to the file
+     *
      * @param selector selector (see RFC 1436)
-     * @param file file to store the response from the server
+     * @param file     file to store the response from the server
      */
     void getBinary(String selector, File file) {
         this.write(selector); //send the selector
@@ -218,9 +146,7 @@ class Connection {
 
         } catch (IOException e) {
             throw new RuntimeException(e);
-        }
-
-        finally {
+        } finally {
             os.flush(); //flush the buffer
             os.close(); //close the stream
         }

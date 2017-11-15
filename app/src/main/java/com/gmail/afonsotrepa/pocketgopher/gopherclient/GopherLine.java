@@ -15,9 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 
@@ -134,5 +132,103 @@ public abstract class GopherLine extends GopherPage implements Serializable {
                 });
 
         alertDialog.show();
+    }
+
+    public static GopherLine makeGopherLine(Character type, String text, String selector, String
+            server, Integer port) {
+        switch (type) {
+            case '0': //text file
+                return new TextFileGopherLine(
+                        text, //remove the type tag
+                        selector,
+                        server,
+                        port);
+
+            case '1': //menu/directory
+                return new MenuGopherLine(
+                        text, //remove the type tag
+                        selector,
+                        server,
+                        port);
+
+            case '7': //Search engine or CGI script
+                return new SearchGopherLine(
+                        text, //remove the type tag
+                        selector,
+                        server,
+                        port);
+
+            case 'i': //Informational text (not in the protocol but common)
+                return new TextGopherLine(text, selector);
+
+            case 'g': //gif (temporary)
+            case 'I': //Image
+                return new ImageGopherLine(
+                        text, //remove the type tag
+                        selector,
+                        server,
+                        port);
+
+            case 'h': //html
+                return new HtmlGopherLine(
+                        text, //remove the type tag
+                        selector,
+                        server,
+                        port);
+
+            case '4': //macintosh binhex file
+            case '5': //binary archive
+            case '6': //uuencoded file
+            case '9': //binary file
+            case 'd': //word-processing document
+                return new BinGopherLine(
+                        text, //remove the type tag
+                        selector,
+                        server,
+                        port);
+
+            case ';': //video file
+                return
+                        new VideoGopherLine(
+                                text, //remove the type tag
+                                selector,
+                                server,
+                                port);
+
+            default:
+                return new BinGopherLine(
+                        text, //remove the type tag
+                        selector,
+                        server,
+                        port);
+        }
+    }
+
+
+    public static Class getCLass(Character type) {
+        //determine which activity to call
+        switch (type) {
+            case '0':
+                return TextFileActivity.class;
+
+            case '1':
+                return MenuActivity.class;
+
+            case '7':
+                return SearchActivity.class;
+
+            case 'g': //gif
+            case 'I':
+                return ImageActivity.class;
+
+            case 'h': //html
+                return HtmlActivity.class;
+
+            case ';': //video
+                return VideoActivity.class;
+
+            default:
+                throw new RuntimeException("Invalid type");
+        }
     }
 }

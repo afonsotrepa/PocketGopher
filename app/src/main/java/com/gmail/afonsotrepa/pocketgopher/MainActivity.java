@@ -1,18 +1,14 @@
 ////TODO: fix all the repeated code
 package com.gmail.afonsotrepa.pocketgopher;
 
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Notification;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.provider.FontsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,14 +20,7 @@ import android.widget.Toast;
 
 import com.gmail.afonsotrepa.pocketgopher.gopherclient.GopherLine;
 import com.gmail.afonsotrepa.pocketgopher.gopherclient.GopherPage;
-import com.gmail.afonsotrepa.pocketgopher.gopherclient.HtmlGopherLine;
-import com.gmail.afonsotrepa.pocketgopher.gopherclient.ImageGopherLine;
-import com.gmail.afonsotrepa.pocketgopher.gopherclient.SearchGopherLine;
-import com.gmail.afonsotrepa.pocketgopher.gopherclient.TextFileGopherLine;
-import com.gmail.afonsotrepa.pocketgopher.gopherclient.MenuGopherLine;
-import com.gmail.afonsotrepa.pocketgopher.gopherclient.VideoGopherLine;
 
-import java.io.File;
 import java.util.List;
 
 
@@ -53,8 +42,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sharedPref = this.getSharedPreferences(file, Context.MODE_PRIVATE);
         if (sharedPref.getInt(MONOSPACE_FONT_SETTING, 1) == 1) {
             font = R.style.monospace;
-        }
-        else {
+        } else {
             font = R.style.serif;
         }
     }
@@ -65,10 +53,9 @@ public class MainActivity extends AppCompatActivity {
 
         List<Bookmark> bookmarks;
 
-        try  {
+        try {
             bookmarks = Bookmark.read(this);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             //display the error and return
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
@@ -100,55 +87,8 @@ public class MainActivity extends AppCompatActivity {
 
                 //open the bookmarked page
                 final Intent intent = new Intent(MainActivity.this, bookmark.activity);
-                GopherLine line;
-                switch (bookmark.type) {
-                    case '0':
-                        line = new TextFileGopherLine(
-                                bookmark.name,
-                                bookmark.selector,
-                                bookmark.server,
-                                bookmark.port );
-                        break;
-                    case '1':
-                        line = new MenuGopherLine(
-                                bookmark.name,
-                                bookmark.selector,
-                                bookmark.server,
-                                bookmark.port);
-                        break;
-                    case 'h':
-                        line = new HtmlGopherLine(
-                                bookmark.name,
-                                bookmark.selector,
-                                bookmark.server,
-                                bookmark.port);
-                        break;
-                    case 'I':
-                        line = new ImageGopherLine(
-                                bookmark.name,
-                                bookmark.selector,
-                                bookmark.server,
-                                bookmark.port);
-                        break;
-                    case '7':
-                        line = new SearchGopherLine(
-                                bookmark.name,
-                                bookmark.selector,
-                                bookmark.server,
-                                bookmark.port);
-                        break;
-
-                    case ';':
-                        line = new VideoGopherLine(
-                                bookmark.name,
-                                bookmark.selector,
-                                bookmark.server,
-                                bookmark.port);
-                        break;
-
-                    default:
-                        throw new RuntimeException("Unknown type");
-                }
+                GopherLine line = GopherLine.makeGopherLine(bookmark.type, bookmark.name,
+                        bookmark.selector, bookmark.server, bookmark.port);
 
                 intent.putExtra("line", line);
 
@@ -181,7 +121,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         //configure the add bookmark button
-        FloatingActionButton addBookmarkFloatingButton = findViewById(R.id.addBookmarkFloatingButton);
+        FloatingActionButton addBookmarkFloatingButton = findViewById(R.id
+                .addBookmarkFloatingButton);
         addBookmarkFloatingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -189,8 +130,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     Bookmark bookmark = new Bookmark(getApplication(), "", "");
                     intent.putExtra("bookmark", bookmark);
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
                 getApplication().startActivity(intent);
@@ -214,8 +154,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (sharedPref.getInt(MONOSPACE_FONT_SETTING, 1) == 1) {
             menu.findItem(R.id.monospace_font).setChecked(true);
-        }
-        else {
+        } else {
             menu.findItem(R.id.monospace_font).setChecked(false);
         }
         editor.apply();
@@ -229,15 +168,15 @@ public class MainActivity extends AppCompatActivity {
             case R.id.monospace_font:
                 String file = this.getResources().getString(SETTINGS_FILE);
                 //open/create the file in private mode
-                SharedPreferences sharedPref = this.getSharedPreferences(file, Context.MODE_PRIVATE);
+                SharedPreferences sharedPref = this.getSharedPreferences(file, Context
+                        .MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit();
 
                 if (font == R.style.serif) {
                     font = R.style.monospace;
                     menu.findItem(R.id.monospace_font).setChecked(true);
                     editor.putInt(MONOSPACE_FONT_SETTING, 1);
-                }
-                else {
+                } else {
                     font = R.style.serif;
                     menu.findItem(R.id.monospace_font).setChecked(false);
                     editor.putInt(MONOSPACE_FONT_SETTING, 0);
@@ -261,7 +200,6 @@ public class MainActivity extends AppCompatActivity {
                 input.setLayoutParams(layoutParams);
                 alertDialog.setView(input);
 
-                final Context context = this;
 
                 alertDialog.setPositiveButton("Save",
                         new DialogInterface.OnClickListener() {
@@ -269,55 +207,8 @@ public class MainActivity extends AppCompatActivity {
                             public void onClick(final DialogInterface dialog, int which) {
                                 GopherPage page = new GopherPage(input.getText().toString());
                                 final Intent intent = new Intent(MainActivity.this, page.activity);
-                                GopherLine line;
-                                switch (page.type) {
-                                    case '0':
-                                        line = new TextFileGopherLine(
-                                                "",
-                                                page.selector,
-                                                page.server,
-                                                page.port );
-                                        break;
-                                    case '1':
-                                        line = new MenuGopherLine(
-                                                "",
-                                                page.selector,
-                                                page.server,
-                                                page.port);
-                                        break;
-                                    case 'h':
-                                        line = new HtmlGopherLine(
-                                                "",
-                                                page.selector,
-                                                page.server,
-                                                page.port);
-                                        break;
-                                    case 'I':
-                                        line = new ImageGopherLine(
-                                                "",
-                                                page.selector,
-                                                page.server,
-                                                page.port);
-                                        break;
-                                    case '7':
-                                        line = new SearchGopherLine(
-                                                "",
-                                                page.selector,
-                                                page.server,
-                                                page.port);
-                                        break;
-
-                                    case ';':
-                                        line = new VideoGopherLine(
-                                                "",
-                                                page.selector,
-                                                page.server,
-                                                page.port);
-                                        break;
-
-                                    default:
-                                        throw new RuntimeException("Unknown type");
-                                }
+                                GopherLine line = GopherLine.makeGopherLine(page.type, "", page
+                                        .selector, page.server, page.port);
 
                                 intent.putExtra("line", line);
 
@@ -327,7 +218,8 @@ public class MainActivity extends AppCompatActivity {
                                         startActivity(intent);
                                     }
                                 }).start();
-                        }});
+                            }
+                        });
 
 
                 alertDialog.setNegativeButton("Cancel",
@@ -344,4 +236,5 @@ public class MainActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
 }

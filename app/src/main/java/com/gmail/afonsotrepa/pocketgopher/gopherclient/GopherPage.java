@@ -62,36 +62,6 @@ public class GopherPage implements Serializable {
             this.selector = "";
         }
 
-
-        this.activity = activityToCall(this.type);
+        this.activity = GopherLine.getCLass(this.type);
     }
-
-
-    public static Class activityToCall(Character type){
-        //determine which activity to call
-        switch (type) {
-            case '0':
-                return TextFileActivity.class;
-
-            case '1':
-                return MenuActivity.class;
-
-            case '7':
-                return SearchActivity.class;
-
-            case 'g': //gif
-            case 'I':
-                return ImageActivity.class;
-
-            case 'h': //html
-                return HtmlActivity.class;
-
-            case ';': //video
-                return VideoActivity.class;
-
-            default:
-                throw new RuntimeException("Invalid type");
-        }
-    }
-
 }
