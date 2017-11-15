@@ -9,7 +9,7 @@ import java.io.Serializable;
  *
  */
 
-public class GopherPage implements Serializable {
+public class Page implements Serializable {
     public String server;
     public Integer port;
     public Character type;
@@ -18,7 +18,7 @@ public class GopherPage implements Serializable {
 
     public Class activity;
 
-    public GopherPage(String server, Integer port, Character type, String selector) {
+    public Page(String server, Integer port, Character type, String selector) {
         this.server = server;
         this.port = port;
         this.type = type;
@@ -27,7 +27,7 @@ public class GopherPage implements Serializable {
         this.url = server+":"+String.valueOf(port)+"/"+type.toString()+selector;
     }
 
-    public GopherPage(String url) {
+    public Page(String url) {
         //remove "gopher://" from the beginning of the url if it's present there
         if (url.indexOf("gopher://") == 0) {
             url = url.replaceFirst("gopher://", "");
@@ -62,6 +62,6 @@ public class GopherPage implements Serializable {
             this.selector = "";
         }
 
-        this.activity = GopherLine.getCLass(this.type);
+        this.activity = Line.getCLass(this.type);
     }
 }

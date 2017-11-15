@@ -1,12 +1,9 @@
 package com.gmail.afonsotrepa.pocketgopher.gopherclient;
 
-
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
-import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ClickableSpan;
@@ -17,38 +14,36 @@ import android.widget.TextView;
 
 import com.gmail.afonsotrepa.pocketgopher.R;
 
-
 /**
- * Directory/Menu ('1')
+ * Macintosh BinHex file, Binary Archive, UUEncoded file, Binary file, Word-processing  document
+ * ('4', '5', '6', '9', 'd')
  */
 
-public class MenuGopherLine extends GopherLine {
-    private static final Integer IMAGE_TAG = R.drawable.ic_folder_open_white;
+public class BinLine extends Line {
+    private static final Integer IMAGE_TAG = R.drawable.ic_file_download_white;
 
-    public MenuGopherLine(String text, String selector, String server, Integer port) {
-        super(text, server, port, '1', selector);
+    BinLine(String text, String selector, String server, Integer port) {
+        super(text, server, port, '9', selector);
     }
 
-    public void render(final TextView textView, final Context context){
+    public void render(final TextView textView, final Context context) {
         //handler to the main thread
         final Handler handler = new Handler(Looper.getMainLooper());
         final SpannableStringBuilder text = new SpannableStringBuilder("  " + this.text + "\n");
 
-        //make and setup the new intent
-        final Intent intent = new Intent(context, MenuActivity.class);
-        intent.putExtra("line", this);
 
+        final BinLine line = this;
         //create the span (and the function to be run when it's clicked)
         final ClickableSpan cs1 = new ClickableSpan() {
             @Override
             public void onClick(View widget) {
-                context.startActivity(intent);
+                line.download(context);
             }
         };
         final ClickableSpan cs2 = new ClickableSpan() {
             @Override
             public void onClick(View widget) {
-                context.startActivity(intent);
+                line.download(context);
             }
         };
 
@@ -67,4 +62,5 @@ public class MenuGopherLine extends GopherLine {
             }
         });
     }
+
 }

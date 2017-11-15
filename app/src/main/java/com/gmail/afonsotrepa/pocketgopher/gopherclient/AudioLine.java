@@ -25,11 +25,11 @@ import java.io.IOException;
  * Audio ('s')
  */
 
-public class AudioGopherLine extends GopherLine {
+public class AudioLine extends Line {
     private static final Integer IMAGE_TAG = R.drawable.ic_video_label_white;
 
 
-    public AudioGopherLine(String text, String selector, String server, Integer port) {
+    public AudioLine(String text, String selector, String server, Integer port) {
         super(text, server, port, 's', selector);
     }
 
@@ -38,7 +38,7 @@ public class AudioGopherLine extends GopherLine {
         final Handler handler = new Handler(Looper.getMainLooper());
         final SpannableStringBuilder text = new SpannableStringBuilder("  " + this.text + "\n");
 
-        final GopherLine line = this;
+        final Line line = this;
 
         //TODO: download on long click (instead of using the type icon for that)
         //create the span (and the function to be run when it's clicked)

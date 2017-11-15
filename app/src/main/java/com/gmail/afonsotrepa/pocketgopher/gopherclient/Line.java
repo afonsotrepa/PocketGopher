@@ -25,10 +25,10 @@ import java.io.Serializable;
  *
  */
 
-public abstract class GopherLine extends GopherPage implements Serializable {
+public abstract class Line extends Page implements Serializable {
     public String text;
 
-    GopherLine(String text, String server, Integer port, Character type, String selector) {
+    Line(String text, String server, Integer port, Character type, String selector) {
         super(server, port, type, selector);
         this.text = text;
     }
@@ -136,43 +136,43 @@ public abstract class GopherLine extends GopherPage implements Serializable {
         alertDialog.show();
     }
 
-    public static GopherLine makeGopherLine(Character type, String text, String selector, String
+    public static Line makeLine(Character type, String text, String selector, String
             server, Integer port) {
         switch (type) {
             case '0': //text file
-                return new TextFileGopherLine(
+                return new TextFileLine(
                         text, //remove the type tag
                         selector,
                         server,
                         port);
 
             case '1': //menu/directory
-                return new MenuGopherLine(
+                return new MenuLine(
                         text, //remove the type tag
                         selector,
                         server,
                         port);
 
             case '7': //Search engine or CGI script
-                return new SearchGopherLine(
+                return new SearchLine(
                         text, //remove the type tag
                         selector,
                         server,
                         port);
 
             case 'i': //Informational text (not in the protocol but common)
-                return new TextGopherLine(text, selector);
+                return new TextLine(text, selector);
 
             case 'g': //gif (temporary)
             case 'I': //Image
-                return new ImageGopherLine(
+                return new ImageLine(
                         text, //remove the type tag
                         selector,
                         server,
                         port);
 
             case 'h': //html
-                return new HtmlGopherLine(
+                return new HtmlLine(
                         text, //remove the type tag
                         selector,
                         server,
@@ -183,28 +183,28 @@ public abstract class GopherLine extends GopherPage implements Serializable {
             case '6': //uuencoded file
             case '9': //binary file
             case 'd': //word-processing document
-                return new BinGopherLine(
+                return new BinLine(
                         text, //remove the type tag
                         selector,
                         server,
                         port);
 
             case ';': //video file
-                return new VideoGopherLine(
+                return new VideoLine(
                                 text, //remove the type tag
                                 selector,
                                 server,
                                 port);
 
             case 's': //audio file
-                return new AudioGopherLine(
+                return new AudioLine(
                         text, //remove the type tag
                         selector,
                         server,
                         port);
 
             default:
-                return new BinGopherLine(
+                return new BinLine(
                         text, //remove the type tag
                         selector,
                         server,

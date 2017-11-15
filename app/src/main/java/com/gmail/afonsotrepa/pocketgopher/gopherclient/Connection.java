@@ -69,13 +69,13 @@ public class Connection {
      * Sends the selector to the server and returns the response (excpects a directory/menu)
      *
      * @param selector selector (see RFC 1436)
-     * @return the response from the server (as GopherLine objects)
+     * @return the response from the server (as Line objects)
      */
-    List<GopherLine> getMenu(String selector) {
+    List<Line> getMenu(String selector) {
         this.write(selector); //send the selector
         String lines[] = this.read().split("\n"); //read the response by the server
 
-        List<GopherLine> response = new ArrayList<>();
+        List<Line> response = new ArrayList<>();
 
         for (String line : lines) {
             //skip empty line
@@ -84,7 +84,7 @@ public class Connection {
 
             String[] linesplit = line.split("\t");
             if (linesplit.length < 2) {
-                response.add(GopherLine.makeGopherLine(
+                response.add(Line.makeLine(
                         line.charAt(0), //type
                         linesplit[0].substring(1), //remove the type tag
                         "",
@@ -92,10 +92,10 @@ public class Connection {
                         0));
 
             } else if (linesplit.length < 4) {
-                response.add(new UnknownGopherLine(line));
+                response.add(new UnknownLine(line));
 
             } else {
-                response.add(GopherLine.makeGopherLine(
+                response.add(Line.makeLine(
                         line.charAt(0), //type
                         linesplit[0].substring(1), //remove the type tag
                         linesplit[1],

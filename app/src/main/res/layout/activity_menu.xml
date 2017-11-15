@@ -25,7 +25,8 @@
                 android:autoSizeTextType="uniform"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:textIsSelectable="true" />
 
         </android.support.constraint.ConstraintLayout>
     </ScrollView>

@@ -1,1 +1,2 @@
+fix a bug that crashes the app when trying to save a file that already exists
 save a history of the pages visited

@@ -10,8 +10,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.gmail.afonsotrepa.pocketgopher.gopherclient.GopherLine;
-import com.gmail.afonsotrepa.pocketgopher.gopherclient.GopherPage;
+import com.gmail.afonsotrepa.pocketgopher.gopherclient.Line;
+import com.gmail.afonsotrepa.pocketgopher.gopherclient.Page;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +20,7 @@ import java.util.List;
  *
  */
 
-public class Bookmark extends GopherPage {
+public class Bookmark extends Page {
     public String name;
     public String url;
 
@@ -36,7 +36,7 @@ public class Bookmark extends GopherPage {
         this.id = id;
 
         //determine which activity to call
-        this.activity = GopherLine.getCLass(type);
+        this.activity = Line.getCLass(type);
     }
 
     public Bookmark(Context context, String name, String url) {
@@ -55,7 +55,7 @@ public class Bookmark extends GopherPage {
         editor.apply();
 
         //determine which activity to call
-        this.activity = GopherLine.getCLass(type);
+        this.activity = Line.getCLass(type);
     }
 
     /**

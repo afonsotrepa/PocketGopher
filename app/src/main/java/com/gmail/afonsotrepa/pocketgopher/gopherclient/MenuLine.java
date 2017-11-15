@@ -1,12 +1,16 @@
 package com.gmail.afonsotrepa.pocketgopher.gopherclient;
 
+
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ClickableSpan;
+import android.text.style.ForegroundColorSpan;
 import android.text.style.ImageSpan;
 import android.view.View;
 import android.widget.TextView;
@@ -15,22 +19,23 @@ import com.gmail.afonsotrepa.pocketgopher.R;
 
 
 /**
- * Text File ('0')
+ * Directory/Menu ('1')
  */
-public class TextFileGopherLine extends GopherLine {
-    private static final Integer IMAGE_TAG = R.drawable.ic_menu_white;
 
-    public TextFileGopherLine(String text, String selector, String server, Integer port) {
-        super(text, server, port, '0', selector);
+public class MenuLine extends Line {
+    private static final Integer IMAGE_TAG = R.drawable.ic_folder_open_white;
+
+    public MenuLine(String text, String selector, String server, Integer port) {
+        super(text, server, port, '1', selector);
     }
 
-    public void render(final TextView textView, final Context context) {
+    public void render(final TextView textView, final Context context){
         //handler to the main thread
         final Handler handler = new Handler(Looper.getMainLooper());
-        final SpannableString text = new SpannableString("  " + this.text + "\n");
+        final SpannableStringBuilder text = new SpannableStringBuilder("  " + this.text + "\n");
 
         //make and setup the new intent
-        final Intent intent = new Intent(context, TextFileActivity.class);
+        final Intent intent = new Intent(context, MenuActivity.class);
         intent.putExtra("line", this);
 
         //create the span (and the function to be run when it's clicked)
@@ -46,6 +51,7 @@ public class TextFileGopherLine extends GopherLine {
                 context.startActivity(intent);
             }
         };
+
 
         //apply the span to text and append text to textView
         handler.post(new Runnable() {

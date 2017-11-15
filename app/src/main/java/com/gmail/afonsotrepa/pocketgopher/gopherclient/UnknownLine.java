@@ -13,12 +13,12 @@ import com.gmail.afonsotrepa.pocketgopher.R;
  *
  */
 
-public class UnknownGopherLine extends GopherLine {
+public class UnknownLine extends Line {
     private static final Integer IMAGE_TAG = R.drawable.ic_error_white;
 
     private Character type_tag;
 
-    UnknownGopherLine(String text) {
+    UnknownLine(String text) {
         super(text, null, 0, '3', "");
     }
 

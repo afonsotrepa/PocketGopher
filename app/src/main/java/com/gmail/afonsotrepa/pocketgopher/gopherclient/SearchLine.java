@@ -23,10 +23,10 @@ import com.gmail.afonsotrepa.pocketgopher.R;
  * Index-Search server ('7')
  */
 
-public class SearchGopherLine extends GopherLine {
+public class SearchLine extends Line {
     private static final Integer IMAGE_TAG = R.drawable.ic_search_white;
 
-    public SearchGopherLine(String text, String selector, String server, Integer port) {
+    public SearchLine(String text, String selector, String server, Integer port) {
         super(text, server, port, '7', selector);
     }
 
@@ -88,7 +88,7 @@ public class SearchGopherLine extends GopherLine {
 
 
                         //make the line
-                        MenuGopherLine line = new MenuGopherLine(query, selector + "\t" + query,
+                        MenuLine line = new MenuLine(query, selector + "\t" + query,
                                 server,
                                 port);
 

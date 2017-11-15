@@ -19,10 +19,10 @@ import com.gmail.afonsotrepa.pocketgopher.R;
  * HTML file ('h')
  */
 
-public class HtmlGopherLine extends GopherLine {
+public class HtmlLine extends Line {
     private static final Integer IMAGE_TAG = R.drawable.ic_web_asset_white;
 
-    public HtmlGopherLine(String text, String selector, String server, Integer port) {
+    public HtmlLine(String text, String selector, String server, Integer port) {
         super(text, server, port, 'h', selector);
     }
 

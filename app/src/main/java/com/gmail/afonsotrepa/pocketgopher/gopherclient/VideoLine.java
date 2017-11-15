@@ -26,11 +26,11 @@ import java.io.IOException;
  * Video (';')
  */
 
-public class VideoGopherLine extends GopherLine {
+public class VideoLine extends Line {
     private static final Integer IMAGE_TAG = R.drawable.ic_video_label_white;
 
 
-    public VideoGopherLine(String text, String selector, String server, Integer port) {
+    public VideoLine(String text, String selector, String server, Integer port) {
         super(text, server, port, ';', selector);
     }
 
@@ -39,7 +39,7 @@ public class VideoGopherLine extends GopherLine {
         final Handler handler = new Handler(Looper.getMainLooper());
         final SpannableStringBuilder text = new SpannableStringBuilder("  " + this.text + "\n");
 
-        final GopherLine line = this;
+        final Line line = this;
 
         //TODO: download on long click (instead of using the type icon for that)
         //create the span (and the function to be run when it's clicked)

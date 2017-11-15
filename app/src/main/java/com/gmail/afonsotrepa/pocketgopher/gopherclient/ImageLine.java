@@ -27,10 +27,10 @@ import java.io.IOException;
  * Image ('I')
  */
 
-public class ImageGopherLine extends GopherLine {
+public class ImageLine extends Line {
     private static final Integer IMAGE_TAG = R.drawable.ic_image_white;
 
-    public ImageGopherLine(String text, String selector, String server, Integer port) {
+    public ImageLine(String text, String selector, String server, Integer port) {
         super(text, server, port, 'I', selector);
     }
 
@@ -39,7 +39,7 @@ public class ImageGopherLine extends GopherLine {
         final Handler handler = new Handler(Looper.getMainLooper());
         final SpannableStringBuilder text = new SpannableStringBuilder("  " + this.text + "\n");
 
-        final GopherLine line = this;
+        final Line line = this;
 
         //TODO: download on long click (instead of using the type icon for that)
         //create the span (and the function to be run when it's clicked)

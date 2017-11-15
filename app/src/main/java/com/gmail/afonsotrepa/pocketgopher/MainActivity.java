@@ -18,8 +18,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.gmail.afonsotrepa.pocketgopher.gopherclient.GopherLine;
-import com.gmail.afonsotrepa.pocketgopher.gopherclient.GopherPage;
+import com.gmail.afonsotrepa.pocketgopher.gopherclient.Line;
+import com.gmail.afonsotrepa.pocketgopher.gopherclient.Page;
 
 import java.util.List;
 
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
                 //TODO: make it so it can also open items without an activity
                 //open the bookmarked page
                 final Intent intent = new Intent(MainActivity.this, bookmark.activity);
-                GopherLine line = GopherLine.makeGopherLine(bookmark.type, bookmark.name,
+                Line line = Line.makeLine(bookmark.type, bookmark.name,
                         bookmark.selector, bookmark.server, bookmark.port);
 
                 intent.putExtra("line", line);
@@ -194,9 +194,9 @@ public class MainActivity extends AppCompatActivity {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(final DialogInterface dialog, int which) {
-                                GopherPage page = new GopherPage(input.getText().toString());
+                                Page page = new Page(input.getText().toString());
                                 final Intent intent = new Intent(MainActivity.this, page.activity);
-                                GopherLine line = GopherLine.makeGopherLine(page.type, "", page
+                                Line line = Line.makeLine(page.type, "", page
                                         .selector, page.server, page.port);
 
                                 intent.putExtra("line", line);

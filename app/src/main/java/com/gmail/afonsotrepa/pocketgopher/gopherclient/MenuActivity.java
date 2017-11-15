@@ -54,7 +54,7 @@ public class MenuActivity extends AppCompatActivity {
 
                 //get info
                 Intent i = getIntent();
-                final MenuGopherLine l = (MenuGopherLine) i.getSerializableExtra("line");
+                final MenuLine l = (MenuLine) i.getSerializableExtra("line");
                 selector = l.selector;
                 server = l.server;
                 port = l.port;
@@ -68,7 +68,7 @@ public class MenuActivity extends AppCompatActivity {
                 });
 
                 ///Network stuff
-                List<GopherLine> lines;
+                List<Line> lines;
                 try {
                     //start new connection
                     Connection conn = new Connection(server, port);
@@ -94,7 +94,7 @@ public class MenuActivity extends AppCompatActivity {
 
 
                 //render the lines on the screen
-                for (GopherLine line : lines) {
+                for (Line line : lines) {
                     line.render(textView, MenuActivity.this);
                 }
 

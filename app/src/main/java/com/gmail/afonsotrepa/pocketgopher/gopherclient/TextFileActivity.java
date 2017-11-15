@@ -25,7 +25,7 @@ import java.io.IOException;
  */
 
 public class TextFileActivity extends AppCompatActivity {
-    TextFileGopherLine l;
+    TextFileLine l;
     String text;
     String selector;
     String server;
@@ -50,7 +50,7 @@ public class TextFileActivity extends AppCompatActivity {
 
                 //intent stuff
                 Intent i = getIntent();
-                l = (TextFileGopherLine) i.getSerializableExtra("line");
+                l = (TextFileLine) i.getSerializableExtra("line");
                 text = l.text;
                 selector = l.selector;
                 server = l.server;

@@ -54,7 +54,7 @@ public class HtmlActivity extends AppCompatActivity {
 
                 //get info
                 Intent i = getIntent();
-                HtmlGopherLine l = (HtmlGopherLine) i.getSerializableExtra("line");
+                HtmlLine l = (HtmlLine) i.getSerializableExtra("line");
                 selector = l.selector;
                 server = l.server;
                 port = l.port;
