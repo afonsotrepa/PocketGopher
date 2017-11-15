@@ -190,12 +190,18 @@ public abstract class GopherLine extends GopherPage implements Serializable {
                         port);
 
             case ';': //video file
-                return
-                        new VideoGopherLine(
+                return new VideoGopherLine(
                                 text, //remove the type tag
                                 selector,
                                 server,
                                 port);
+
+            case 's': //audio file
+                return new AudioGopherLine(
+                        text, //remove the type tag
+                        selector,
+                        server,
+                        port);
 
             default:
                 return new BinGopherLine(

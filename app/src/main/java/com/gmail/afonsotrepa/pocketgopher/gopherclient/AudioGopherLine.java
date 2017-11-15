@@ -3,14 +3,12 @@ package com.gmail.afonsotrepa.pocketgopher.gopherclient;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ClickableSpan;
-import android.text.style.ForegroundColorSpan;
 import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.View;
@@ -24,14 +22,15 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * Image ('I')
+ * Audio ('s')
  */
 
-public class ImageGopherLine extends GopherLine {
-    private static final Integer IMAGE_TAG = R.drawable.ic_image_white;
+public class AudioGopherLine extends GopherLine {
+    private static final Integer IMAGE_TAG = R.drawable.ic_video_label_white;
 
-    public ImageGopherLine(String text, String selector, String server, Integer port) {
-        super(text, server, port, 'I', selector);
+
+    public AudioGopherLine(String text, String selector, String server, Integer port) {
+        super(text, server, port, 's', selector);
     }
 
     public void render(final TextView textView, final Context context) {
@@ -62,7 +61,7 @@ public class ImageGopherLine extends GopherLine {
             @Override
             public void run() {
                 //make it clickable
-                text.setSpan(cs1, 0,1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                text.setSpan(cs1, 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 text.setSpan(cs2, 2, text.length() - 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 //set the image tag behind (left of) the text
                 text.setSpan(new ImageSpan(context, IMAGE_TAG), 0, 1, 0);
@@ -130,7 +129,7 @@ public class ImageGopherLine extends GopherLine {
                 //make and start an intent to call the media player
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                intent.setDataAndType(Uri.fromFile(file), "image/*");
+                intent.setDataAndType(Uri.fromFile(file), "audio/*");
                 ((Activity) context).setResult(Activity.RESULT_OK, intent);
                 context.startActivity(intent);
 
