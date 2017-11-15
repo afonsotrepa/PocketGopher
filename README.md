@@ -1,5 +1,5 @@
 # PocketGopher
-Pocket Gopher - the small but powerful gopher client that fits in your pocket
+Pocket Gopher - the small but powerful ~~rodent~~ gopher client that fits in your pocket!
 
 Requires Android 4.1 or above. (for API level 16)
 
