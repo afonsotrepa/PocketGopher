@@ -14,7 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gmail.afonsotrepa.pocketgopher.Bookmark;
-import com.gmail.afonsotrepa.pocketgopher.EditBookmarkActivity;
 import com.gmail.afonsotrepa.pocketgopher.MainActivity;
 import com.gmail.afonsotrepa.pocketgopher.R;
 
@@ -51,7 +50,7 @@ public class TextFileActivity extends AppCompatActivity {
 
                 //intent stuff
                 Intent i = getIntent();
-                l= (TextFileGopherLine) i.getSerializableExtra("line");
+                l = (TextFileGopherLine) i.getSerializableExtra("line");
                 text = l.text;
                 selector = l.selector;
                 server = l.server;
@@ -128,22 +127,12 @@ public class TextFileActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.addBookmarkButton:
-                //setup the intent
-                final Intent intent = new Intent(getApplicationContext(), EditBookmarkActivity
-                        .class);
-                //send the message with the values for the bookmark
-                Bookmark bookmark;
                 try {
-                    bookmark = new Bookmark(getApplicationContext(), "", '0', selector, server,
-                            port);
+                    new Bookmark(getApplicationContext(), "", '0', selector, server, port)
+                            .editBookmark(TextFileActivity.this);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
-
-                intent.putExtra("bookmark", bookmark);
-
-                //start the intent
-                startActivity(intent);
 
                 return true;
 

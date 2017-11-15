@@ -16,7 +16,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gmail.afonsotrepa.pocketgopher.Bookmark;
-import com.gmail.afonsotrepa.pocketgopher.EditBookmarkActivity;
 import com.gmail.afonsotrepa.pocketgopher.MainActivity;
 import com.gmail.afonsotrepa.pocketgopher.R;
 
@@ -55,13 +54,18 @@ public class MenuActivity extends AppCompatActivity {
 
                 //get info
                 Intent i = getIntent();
-                MenuGopherLine l = (MenuGopherLine) i.getSerializableExtra("line");
+                final MenuGopherLine l = (MenuGopherLine) i.getSerializableExtra("line");
                 selector = l.selector;
                 server = l.server;
                 port = l.port;
 
                 //set the title of the window
-                setTitle(l.url);
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        setTitle(l.url);
+                    }
+                });
 
                 ///Network stuff
                 List<GopherLine> lines;
@@ -71,16 +75,6 @@ public class MenuActivity extends AppCompatActivity {
 
                     //get the desired directory/menu
                     lines = conn.getMenu(selector);
-
-
-                    //make the progress bar invisible
-                    final ProgressBar progressBar = findViewById(R.id.progressBar);
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            progressBar.setVisibility(View.GONE);
-                        }
-                    });
 
                 } catch (final IOException e) {
                     e.printStackTrace();
@@ -101,8 +95,17 @@ public class MenuActivity extends AppCompatActivity {
 
                 //render the lines on the screen
                 for (GopherLine line : lines) {
-                    line.render(textView, context);
+                    line.render(textView, MenuActivity.this);
                 }
+
+                //make the progress bar invisible
+                final ProgressBar progressBar = findViewById(R.id.progressBar);
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressBar.setVisibility(View.GONE);
+                    }
+                });
 
                 //some settings for textView
                 handler.post(new Runnable() {
@@ -128,22 +131,12 @@ public class MenuActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.addBookmarkButton:
-                //setup the intent
-                final Intent intent = new Intent(getApplicationContext(), EditBookmarkActivity
-                        .class);
-                //send the message with the values for the bookmark
-                Bookmark bookmark;
                 try {
-                    bookmark = new Bookmark(getApplicationContext(), "", '1', selector, server,
-                            port);
+                    new Bookmark(getApplicationContext(), "", '1', selector, server, port)
+                            .editBookmark(MenuActivity.this);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
-
-                intent.putExtra("bookmark", bookmark);
-
-                //start the intent
-                startActivity(intent);
 
                 return true;
 

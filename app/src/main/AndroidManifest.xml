@@ -26,19 +26,7 @@
             android:name=".gopherclient.TextFileActivity"
             android:parentActivityName=".MainActivity"/>
         <activity
-            android:name=".gopherclient.SearchActivity"
-            android:parentActivityName=".MainActivity"/>
-        <activity
-            android:name=".EditBookmarkActivity"
-            android:parentActivityName=".MainActivity"/>
-        <activity
-            android:name=".gopherclient.ImageActivity"
-            android:parentActivityName=".MainActivity"/>
-        <activity
             android:name=".gopherclient.HtmlActivity"
-            android:parentActivityName=".MainActivity"/>
-        <activity
-            android:name=".gopherclient.VideoActivity"
             android:parentActivityName=".MainActivity"/>
     </application>
 

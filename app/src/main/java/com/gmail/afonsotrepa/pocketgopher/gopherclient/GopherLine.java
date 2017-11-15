@@ -15,6 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gmail.afonsotrepa.pocketgopher.MainActivity;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
@@ -57,8 +59,7 @@ public abstract class GopherLine extends GopherPage implements Serializable {
 
         //AlertDialog to be shown when method gets called
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
-        alertDialog.setTitle("Download");
-        alertDialog.setMessage("Save as:");
+        alertDialog.setTitle("Save as:");
 
         //the EditText where the user will input the name of the file
         final EditText input = new EditText(context);
@@ -67,6 +68,7 @@ public abstract class GopherLine extends GopherPage implements Serializable {
                 LinearLayout.LayoutParams.MATCH_PARENT);
         input.setLayoutParams(layoutParams);
         input.setText(selector.substring(selector.lastIndexOf("/") + 1)); //default file name
+        input.setTextAppearance(context, MainActivity.font);
         alertDialog.setView(input);
 
 
@@ -214,18 +216,8 @@ public abstract class GopherLine extends GopherPage implements Serializable {
             case '1':
                 return MenuActivity.class;
 
-            case '7':
-                return SearchActivity.class;
-
-            case 'g': //gif
-            case 'I':
-                return ImageActivity.class;
-
             case 'h': //html
                 return HtmlActivity.class;
-
-            case ';': //video
-                return VideoActivity.class;
 
             default:
                 throw new RuntimeException("Invalid type");

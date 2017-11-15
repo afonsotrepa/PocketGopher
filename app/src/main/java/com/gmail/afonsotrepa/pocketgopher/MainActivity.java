@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
                 //the selected bookmark
                 Bookmark bookmark = (Bookmark) parent.getItemAtPosition(position);
 
+                //TODO: make it so it can also open items without an activity
                 //open the bookmarked page
                 final Intent intent = new Intent(MainActivity.this, bookmark.activity);
                 GopherLine line = GopherLine.makeGopherLine(bookmark.type, bookmark.name,
@@ -107,13 +108,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long
                     id) {
-                Bookmark bookmark = (Bookmark) parent.getItemAtPosition(position);
-
-                //setup the intent and then call it
-                final Intent intent = new Intent(getApplication(), EditBookmarkActivity.class);
-                intent.putExtra("bookmark", bookmark);
-
-                getApplication().startActivity(intent);
+                ((Bookmark) parent.getItemAtPosition(position)).editBookmark(MainActivity.this);
 
                 return true;
             }
@@ -126,14 +121,8 @@ public class MainActivity extends AppCompatActivity {
         addBookmarkFloatingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Intent intent = new Intent(getApplication(), EditBookmarkActivity.class);
-                try {
-                    Bookmark bookmark = new Bookmark(getApplication(), "", "");
-                    intent.putExtra("bookmark", bookmark);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-                getApplication().startActivity(intent);
+                //make the new bookmark
+                Bookmark.makeBookmark(MainActivity.this);
             }
         });
     }

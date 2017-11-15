@@ -1,8 +1,14 @@
 package com.gmail.afonsotrepa.pocketgopher;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
-import android.util.Log;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.gmail.afonsotrepa.pocketgopher.gopherclient.GopherLine;
 import com.gmail.afonsotrepa.pocketgopher.gopherclient.GopherPage;
@@ -21,7 +27,7 @@ public class Bookmark extends GopherPage {
     public Class activity; //the activity to call when opening the bookmarked page
     public Integer id; //a unique id that identifies the bookmark
 
-    private static final Integer  BOOKMARKS_FILE_KEY = R.string.booksmarks_file;
+    private static final Integer BOOKMARKS_FILE_KEY = R.string.booksmarks_file;
 
     private Bookmark(String name, String url, Integer id) {
         super(url);
@@ -45,7 +51,7 @@ public class Bookmark extends GopherPage {
 
         //update the (id part in the) file
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putInt("id", id+1);
+        editor.putInt("id", id + 1);
         editor.apply();
 
         //determine which activity to call
@@ -54,11 +60,13 @@ public class Bookmark extends GopherPage {
 
     /**
      * A simple wrapper for backwards comparability. Avoid!!
+     *
      * @deprecated
      */
-    public Bookmark(Context context, String name, Character type, String selector, String server, Integer port)
-        throws Exception {
-        this(context, name, server+":"+String.valueOf(port)+"/"+type.toString()+selector);
+    public Bookmark(Context context, String name, Character type, String selector, String server,
+                    Integer port)
+            throws Exception {
+        this(context, name, server + ":" + String.valueOf(port) + "/" + type.toString() + selector);
     }
 
 
@@ -89,6 +97,7 @@ public class Bookmark extends GopherPage {
 
     /**
      * Read the bookmarks from a  SharedPreferences file
+     *
      * @return a list of all the bookmarks in the bookmarks file
      */
     static List<Bookmark> read(Context context) throws Exception {
@@ -117,5 +126,129 @@ public class Bookmark extends GopherPage {
         }
 
         return bookmarks;
+    }
+
+
+    public void editBookmark(final Context context) {
+        //AlertDialog to be shown when method gets called
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+        dialog.setTitle("Edit Bookmark");
+
+
+        //setup the layout
+        LinearLayout layout = new LinearLayout(context);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        layout.setLayoutParams(layoutParams);
+        layout.setOrientation(LinearLayout.VERTICAL);
+
+        //setup the EditText's and add them to the layout
+        final EditText editName = new EditText(context);
+        final EditText editUrl = new EditText(context);
+        editName.setHint("Name");
+        editUrl.setHint("Url");
+        editName.setText(this.name);
+        editUrl.setText(this.url);
+        editName.setTextAppearance(context, MainActivity.font);
+        editUrl.setTextAppearance(context, MainActivity.font);
+        layout.addView(editName);
+        layout.addView(editUrl);
+
+        //apply the layout
+        dialog.setView(layout);
+
+
+        dialog.setPositiveButton("Save",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(final DialogInterface dialog, int which) {
+                        try {
+                            //list of current bookmarks
+                            List<Bookmark> bookmarks = Bookmark.read(context);
+
+                            //if editing a bookmark that already exists
+                            if (id != 0) {
+                                //remove the old bookmark
+                                for (Bookmark b : bookmarks) {
+                                    if (b.id.equals(id)) {
+                                        bookmarks.remove(b);
+                                    }
+                                }
+                            }
+                            //create the new bookmark
+                            Bookmark b = new Bookmark(
+                                    context,
+                                    editName.getText().toString(),
+                                    editUrl.getText().toString()
+                            );
+
+                            //add it to the list
+                            bookmarks.add(b);
+
+                            //save the changes to the file
+                            Bookmark.save(context, bookmarks);
+
+                            //show "Bookmark saved" and exit this activity
+                            Toast.makeText(context, "Bookmark saved", Toast.LENGTH_SHORT)
+                                    .show();
+                            dialog.cancel();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG)
+                                    .show();
+                            dialog.cancel();
+                        }
+
+                        //refresh MainActivity (when called by it)
+                        if (context.getClass() == MainActivity.class) {
+                            ((Activity) context).recreate();
+                        }
+                    }
+                }
+        );
+
+        dialog.setNegativeButton("Remove",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        try {
+                            List<Bookmark> bookmarks = Bookmark.read(context);
+
+                            //remove the bookmark from bookmarks (if it exists)
+                            for (Bookmark bookmark : bookmarks) {
+                                if (bookmark.id.equals(id)) {
+                                    bookmarks.remove(bookmark);
+                                    break;
+                                }
+                            }
+
+                            //save the edited bookmarks list
+                            Bookmark.save(context, bookmarks);
+
+                            dialog.cancel();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG) .show();
+
+                            dialog.cancel();
+                        }
+
+                        //refresh MainActivity (when called by it)
+                        if (context.getClass() == MainActivity.class) {
+                            ((Activity) context).recreate();
+                        }
+                    }
+                });
+
+
+        dialog.show();
+    }
+
+
+    static public Bookmark makeBookmark(Context context) {
+        Bookmark bookmark = new Bookmark(context, "", "");
+        bookmark.editBookmark(context);
+        return  bookmark;
     }
 }

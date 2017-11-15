@@ -16,7 +16,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-class Connection {
+public class Connection {
     private Socket socket;
     private PrintWriter os; //output stream
     private BufferedReader is; //input stream
@@ -130,7 +130,7 @@ class Connection {
      * @param selector selector (see RFC 1436)
      * @param file     file to store the response from the server
      */
-    void getBinary(String selector, File file) {
+    public void getBinary(String selector, File file) {
         this.write(selector); //send the selector
 
         try {

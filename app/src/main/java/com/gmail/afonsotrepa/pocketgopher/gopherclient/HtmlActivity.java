@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,7 +15,6 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.gmail.afonsotrepa.pocketgopher.Bookmark;
-import com.gmail.afonsotrepa.pocketgopher.EditBookmarkActivity;
 import com.gmail.afonsotrepa.pocketgopher.R;
 
 import java.io.IOException;
@@ -25,7 +23,7 @@ import java.io.IOException;
  *
  */
 
-public class HtmlActivity extends AppCompatActivity{
+public class HtmlActivity extends AppCompatActivity {
     String selector;
     String server;
     Integer port;
@@ -133,26 +131,18 @@ public class HtmlActivity extends AppCompatActivity{
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.addBookmarkButton:
-                //setup the intent
-                final Intent intent = new Intent(getApplicationContext(), EditBookmarkActivity.class);
-                //send the message with the values for the bookmark
-                Bookmark bookmark;
                 try {
-                    bookmark = new Bookmark(getApplicationContext(), "", 'h', selector, server,
-                            port);
+                    new Bookmark(getApplicationContext(), "", 'h', selector, server, port)
+                            .editBookmark(HtmlActivity.this);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
 
-                intent.putExtra("bookmark", bookmark);
-
-                //start the intent
-                startActivity(intent);
-
                 return true;
 
             case R.id.openInBrowser:
-                webView.getContext().startActivity( new Intent(Intent.ACTION_VIEW, Uri.parse(webView.getUrl())));
+                webView.getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse
+                        (webView.getUrl())));
 
                 return true;
 
