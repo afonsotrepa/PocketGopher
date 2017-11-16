@@ -44,7 +44,7 @@ public abstract class Line extends Page implements Serializable {
 
 
     /**
-     * Used to download/save a file
+     * Opens an interface for the user to download the line
      *
      * @param context the context of the current activity
      */
@@ -82,56 +82,51 @@ public abstract class Line extends Page implements Serializable {
                                         .DIRECTORY_DOWNLOADS)
                                         + "/" + input.getText().toString());
 
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    if (file.exists()) {
-                                        //quit if file already exists
-                                        Toast.makeText(context, "File already exists", Toast
-                                                .LENGTH_LONG)
-                                                .show();
-                                        dialog.cancel();
-                                    } else {
-                                        //create the file
-                                        file.createNewFile();
-                                        //read and write the file
-                                        Connection conn = new Connection(server, port);
-                                        conn.getBinary(selector, file);
+                        try {
+                            if (file.exists()) {
+                                Toast.makeText(context, "File already exists", Toast.LENGTH_LONG)
+                                        .show();
+                            } else {
+                                file.createNewFile();
 
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            Connection conn = new Connection(server, port);
+                                            conn.getBinary(selector, file);
 
-                                        ///TODO: need to add some code so the files get detected
-                                        /// by DownloadManager or something (not possible??)
-                                        //
-                                        //https://developer.android
-                                        // .com/reference/android/app/DownloadManager
-                                        // .html#addCompletedDownload%28java.lang.String,%20java
-                                        // .lang.String,%20boolean,%20java.lang.String,%20java
-                                        // .lang.String,%20long,%20boolean%29
-
-                                        //context.getSystemService(DownloadManager.class);
+                                        } catch (final IOException e) {
+                                            Toast.makeText(context, e.getMessage(), Toast
+                                                    .LENGTH_LONG).show();
+                                        }
                                     }
+                                });
 
-                                } catch (IOException e) {
-                                    Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG)
-                                            .show();
-                                    dialog.cancel();
-                                }
+                                Toast.makeText(context, "File saved", Toast.LENGTH_SHORT).show();
+
+                                ///TODO: need to add some code so the files get detected
+                                /// by DownloadManager or something (not possible??)
                             }
-                        }).start();
 
-                        Toast.makeText(context, "File saved", Toast.LENGTH_SHORT).show();
+                        } catch (final IOException e) {
+                            Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
+                        }
                     }
-                });
+                }
+        );
 
 
         alertDialog.setNegativeButton("Cancel",
-                new DialogInterface.OnClickListener() {
+                new DialogInterface.OnClickListener()
+
+                {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
                     }
-                });
+                }
+        );
 
         alertDialog.show();
     }
@@ -191,10 +186,10 @@ public abstract class Line extends Page implements Serializable {
 
             case ';': //video file
                 return new VideoLine(
-                                text, //remove the type tag
-                                selector,
-                                server,
-                                port);
+                        text, //remove the type tag
+                        selector,
+                        server,
+                        port);
 
             case 's': //audio file
                 return new AudioLine(
