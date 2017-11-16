@@ -5,16 +5,24 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.gmail.afonsotrepa.pocketgopher.History;
 import com.gmail.afonsotrepa.pocketgopher.MainActivity;
+import com.gmail.afonsotrepa.pocketgopher.gopherclient.Activity.HtmlActivity;
+import com.gmail.afonsotrepa.pocketgopher.gopherclient.Activity.MenuActivity;
+import com.gmail.afonsotrepa.pocketgopher.gopherclient.Activity.TextFileActivity;
+import com.gmail.afonsotrepa.pocketgopher.gopherclient.Line.AudioLine;
+import com.gmail.afonsotrepa.pocketgopher.gopherclient.Line.ImageLine;
+import com.gmail.afonsotrepa.pocketgopher.gopherclient.Line.SearchLine;
+import com.gmail.afonsotrepa.pocketgopher.gopherclient.Line.VideoLine;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,8 +39,6 @@ public class Page implements Serializable
     public Character type;
     public String selector;
     public String url;
-
-    public Class activity;
 
     public Page(String server, Integer port, Character type, String selector)
     {
@@ -90,8 +96,6 @@ public class Page implements Serializable
             this.selector = "";
         }
 
-        this.activity = this.getActivity();
-
         //simplify the url
         this.url = server +
                 ((port == 70) ? "" : ":" + String.valueOf(port)) +
@@ -100,33 +104,11 @@ public class Page implements Serializable
 
 
     /**
-     * @return the activity to be called
-     */
-    protected Class getActivity()
-    {
-        switch (this.type)
-        {
-            case '0':
-                return TextFileActivity.class;
-
-            case '1':
-                return MenuActivity.class;
-
-            case 'h':
-                return HtmlActivity.class;
-
-            default:
-                throw new RuntimeException("Invalid type");
-        }
-    }
-
-
-    /**
      * Opens an interface for the user to download the page
      *
      * @param context the context of the current activity
      */
-    void download(final Context context)
+    public void download(final Context context)
     {
         //check for permission to save files in 6.0+
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -222,5 +204,57 @@ public class Page implements Serializable
         );
 
         alertDialog.show();
+    }
+
+    public void open(Context context)
+    {
+        Intent intent;
+
+        History.add(context, this.url);
+
+        switch (type)
+        {
+            case '0':
+                intent = new Intent(context, TextFileActivity.class);
+                intent.putExtra("page", this);
+                context.startActivity(intent);
+                break;
+
+            case '1':
+                intent = new Intent(context, MenuActivity.class);
+                intent.putExtra("page", this);
+                context.startActivity(intent);
+                break;
+
+            case 'h':
+                intent = new Intent(context, HtmlActivity.class);
+                intent.putExtra("page", this);
+                context.startActivity(intent);
+                break;
+
+
+            case 's':
+                ((AudioLine) this).onLineClick(context);
+                break;
+
+            case 'I':
+                ((ImageLine) this).onLineClick(context);
+                break;
+
+            case '7':
+                ((SearchLine) this).onLineClick(context);
+                break;
+
+            case ';':
+                ((VideoLine) this).onLineClick(context);
+                break;
+
+
+            case '9':
+            default:
+                this.download(context);
+                break;
+
+        }
     }
 }

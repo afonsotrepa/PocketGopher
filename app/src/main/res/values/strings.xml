@@ -2,5 +2,6 @@
     <string name="app_name">Pocket Gopher</string>
     <string name="search_button">Search</string>
     <string name="booksmarks_file">com.gmail.afonsotrepa.pocketgopher.BOOKMARKS_FILE_KEY</string>
+    <string name="history_file">com.gmail.afonsotrepa.pocketgopher.HISTORY_FILE_KEY</string>
     <string name="settings_file">com.gmail.afonsotrepa.pocketgopher.SETTINGS_FILE</string>
 </resources>

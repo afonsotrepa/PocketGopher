@@ -1,4 +1,4 @@
-package com.gmail.afonsotrepa.pocketgopher.gopherclient;
+package com.gmail.afonsotrepa.pocketgopher.gopherclient.Line;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.gmail.afonsotrepa.pocketgopher.MainActivity;
 import com.gmail.afonsotrepa.pocketgopher.R;
+import com.gmail.afonsotrepa.pocketgopher.gopherclient.Activity.MenuActivity;
 
 
 /**
@@ -43,7 +44,7 @@ public class SearchLine extends Line
             @Override
             public void onClick(View widget)
             {
-                onLineClick(context, widget);
+                onLineClick(context);
             }
         };
         final ClickableSpan cs2 = new ClickableSpan()
@@ -51,7 +52,7 @@ public class SearchLine extends Line
             @Override
             public void onClick(View widget)
             {
-                onLineClick(context, widget);
+                onLineClick(context);
             }
         };
 
@@ -75,7 +76,7 @@ public class SearchLine extends Line
     /**
      * Run when the line is clicked
      */
-    private void onLineClick(final Context context, View widget)
+    public void onLineClick(final Context context)
     {
         //AlertDialog to be shown when method gets called
         AlertDialog.Builder dialog = new AlertDialog.Builder(context);
@@ -106,10 +107,8 @@ public class SearchLine extends Line
                                 port
                         );
 
-                        //start the MenuActivity
-                        Intent intent = new Intent(context, MenuActivity.class);
-                        intent.putExtra("page", line);
-                        context.startActivity(intent);
+                        line.open(context);
+
                     }
                 }
         );

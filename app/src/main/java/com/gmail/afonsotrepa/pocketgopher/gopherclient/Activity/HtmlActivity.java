@@ -1,4 +1,4 @@
-package com.gmail.afonsotrepa.pocketgopher.gopherclient;
+package com.gmail.afonsotrepa.pocketgopher.gopherclient.Activity;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -15,7 +15,11 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.gmail.afonsotrepa.pocketgopher.Bookmark;
+import com.gmail.afonsotrepa.pocketgopher.History;
+import com.gmail.afonsotrepa.pocketgopher.MainActivity;
 import com.gmail.afonsotrepa.pocketgopher.R;
+import com.gmail.afonsotrepa.pocketgopher.gopherclient.Connection;
+import com.gmail.afonsotrepa.pocketgopher.gopherclient.Page;
 
 import java.io.IOException;
 
@@ -64,6 +68,9 @@ public class HtmlActivity extends AppCompatActivity
                 selector = p.selector;
                 server = p.server;
                 port = p.port;
+
+                //save the visited page to history
+                History.add(getApplicationContext(), p.url);
 
                 setTitle(p.url);
 

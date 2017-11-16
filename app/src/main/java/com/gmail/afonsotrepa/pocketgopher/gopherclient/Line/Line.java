@@ -1,9 +1,11 @@
-package com.gmail.afonsotrepa.pocketgopher.gopherclient;
+package com.gmail.afonsotrepa.pocketgopher.gopherclient.Line;
 
 
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.widget.TextView;
+
+import com.gmail.afonsotrepa.pocketgopher.gopherclient.Page;
 
 import java.io.Serializable;
 
@@ -15,7 +17,7 @@ public abstract class Line extends Page implements Serializable
 {
     public String text;
 
-    Line(String text, String server, Integer port, Character type, String selector)
+    public Line(String text, String server, Integer port, Character type, String selector)
     {
         super(server, port, type, selector);
         this.text = text;

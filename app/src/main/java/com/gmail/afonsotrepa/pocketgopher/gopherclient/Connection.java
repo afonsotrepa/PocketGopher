@@ -3,6 +3,9 @@ package com.gmail.afonsotrepa.pocketgopher.gopherclient;
 
 import android.graphics.drawable.Drawable;
 
+import com.gmail.afonsotrepa.pocketgopher.gopherclient.Line.Line;
+import com.gmail.afonsotrepa.pocketgopher.gopherclient.Line.UnknownLine;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -28,7 +31,7 @@ public class Connection
      * @param server ip or DNS address of the server
      * @param port   port the server and the client listen to
      */
-    Connection(String server, Integer port) throws IOException
+    public Connection(String server, Integer port) throws IOException
     {
         socket = new Socket(server, port);
 
@@ -79,7 +82,7 @@ public class Connection
      *
      * @return the response from the server (as Line objects)
      */
-    List<Line> getMenu(String selector)
+    public List<Line> getMenu(String selector)
     {
         this.write(selector); //send the selector
         String lines[] = this.read().split("\n"); //read the response by the server
@@ -131,7 +134,7 @@ public class Connection
      *
      * @return the response from the server (as strings)
      */
-    String getText(String selector)
+    public String getText(String selector)
     {
         this.write(selector); //send the selector
         return this.read();

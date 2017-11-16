@@ -1,4 +1,4 @@
-package com.gmail.afonsotrepa.pocketgopher.gopherclient;
+package com.gmail.afonsotrepa.pocketgopher.gopherclient.Line;
 
 import android.content.Context;
 import android.os.Handler;
@@ -12,7 +12,7 @@ import android.widget.TextView;
  * Simple informational text line ('i')
  */
 
-class TextLine extends Line
+public class TextLine extends Line
 {
     private final static Float MAIN_TITLE_SIZE = 2f;
     private final static Float SUB_TITLE_SIZE = 1.5f;

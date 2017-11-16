@@ -1,4 +1,5 @@
-package com.gmail.afonsotrepa.pocketgopher.gopherclient;
+package com.gmail.afonsotrepa.pocketgopher.gopherclient.Line;
+
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,18 +13,20 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.gmail.afonsotrepa.pocketgopher.R;
+import com.gmail.afonsotrepa.pocketgopher.gopherclient.Activity.MenuActivity;
 
 
 /**
- * Text File ('0')
+ * Directory/Menu ('1')
  */
-public class TextFileLine extends Line
-{
-    private static final Integer IMAGE_TAG = R.drawable.ic_menu_white;
 
-    public TextFileLine(String text, String selector, String server, Integer port)
+public class MenuLine extends Line
+{
+    private static final Integer IMAGE_TAG = R.drawable.ic_folder_open_white;
+
+    public MenuLine(String text, String selector, String server, Integer port)
     {
-        super(text, server, port, '0', selector);
+        super(text, server, port, '1', selector);
     }
 
     public void render(final TextView textView, final Context context)
@@ -32,9 +35,7 @@ public class TextFileLine extends Line
         final Handler handler = new Handler(Looper.getMainLooper());
         final SpannableString text = new SpannableString("  " + this.text + " \n");
 
-        //make and setup the new intent
-        final Intent intent = new Intent(context, TextFileActivity.class);
-        intent.putExtra("page", this);
+        final MenuLine l = this;
 
         //create the span (and the function to be run when it's clicked)
         final ClickableSpan cs1 = new ClickableSpan()
@@ -42,7 +43,7 @@ public class TextFileLine extends Line
             @Override
             public void onClick(View widget)
             {
-                context.startActivity(intent);
+                l.open(context);
             }
         };
         final ClickableSpan cs2 = new ClickableSpan()
@@ -50,9 +51,10 @@ public class TextFileLine extends Line
             @Override
             public void onClick(View widget)
             {
-                context.startActivity(intent);
+                l.open(context);
             }
         };
+
 
         //apply the span to text and append text to textView
         handler.post(new Runnable()

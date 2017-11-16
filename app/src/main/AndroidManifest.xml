@@ -21,13 +21,13 @@
         </activity>
 
         <activity
-            android:name=".gopherclient.MenuActivity"
+            android:name=".gopherclient.Activity.MenuActivity"
             android:parentActivityName=".MainActivity" />
         <activity
-            android:name=".gopherclient.TextFileActivity"
+            android:name=".gopherclient.Activity.TextFileActivity"
             android:parentActivityName=".MainActivity" />
         <activity
-            android:name=".gopherclient.HtmlActivity"
+            android:name=".gopherclient.Activity.HtmlActivity"
             android:parentActivityName=".MainActivity" />
     </application>
 

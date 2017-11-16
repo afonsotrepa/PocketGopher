@@ -26,7 +26,7 @@ public class Bookmark extends Page
     public Class activity; //the activity to call when opening the bookmarked page
     public Integer id; //a unique id that identifies the bookmark
 
-    private static final Integer BOOKMARKS_FILE_KEY = R.string.booksmarks_file;
+    private static final Integer BOOKMARKS_FILE = R.string.booksmarks_file;
 
     private Bookmark(String name, String url, Integer id)
     {
@@ -34,9 +34,6 @@ public class Bookmark extends Page
         this.url = url;
         this.name = name;
         this.id = id;
-
-        //determine which activity to call
-        this.activity = this.getActivity();
     }
 
     public Bookmark(Context context, String name, String url)
@@ -46,7 +43,7 @@ public class Bookmark extends Page
         this.name = name;
 
         //generate a new unique id
-        String file = context.getResources().getString(BOOKMARKS_FILE_KEY);
+        String file = context.getResources().getString(BOOKMARKS_FILE);
         SharedPreferences sharedPref = context.getSharedPreferences(file, Context.MODE_PRIVATE);
         id = sharedPref.getInt("id", 0);
 
@@ -54,9 +51,6 @@ public class Bookmark extends Page
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putInt("id", id + 1);
         editor.apply();
-
-        //determine which activity to call
-        this.activity = this.getActivity();
     }
 
     /**
@@ -78,7 +72,7 @@ public class Bookmark extends Page
      */
     static void save(Context context, List<Bookmark> bookmarks)
     {
-        String file = context.getResources().getString(BOOKMARKS_FILE_KEY);
+        String file = context.getResources().getString(BOOKMARKS_FILE);
         //open/create the file in private mode
         SharedPreferences sharedPref = context.getSharedPreferences(file, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
@@ -107,7 +101,7 @@ public class Bookmark extends Page
      */
     static List<Bookmark> read(Context context) throws Exception
     {
-        String file = context.getResources().getString(BOOKMARKS_FILE_KEY);
+        String file = context.getResources().getString(BOOKMARKS_FILE);
         //open/create the file in private mode
         SharedPreferences sharedPref = context.getSharedPreferences(file, Context.MODE_PRIVATE);
 

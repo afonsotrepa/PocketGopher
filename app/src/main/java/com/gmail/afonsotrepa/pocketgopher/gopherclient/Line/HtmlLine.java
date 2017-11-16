@@ -1,5 +1,4 @@
-package com.gmail.afonsotrepa.pocketgopher.gopherclient;
-
+package com.gmail.afonsotrepa.pocketgopher.gopherclient.Line;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,19 +12,19 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.gmail.afonsotrepa.pocketgopher.R;
-
+import com.gmail.afonsotrepa.pocketgopher.gopherclient.Activity.HtmlActivity;
 
 /**
- * Directory/Menu ('1')
+ * HTML file ('h')
  */
 
-public class MenuLine extends Line
+public class HtmlLine extends Line
 {
-    private static final Integer IMAGE_TAG = R.drawable.ic_folder_open_white;
+    private static final Integer IMAGE_TAG = R.drawable.ic_web_asset_white;
 
-    public MenuLine(String text, String selector, String server, Integer port)
+    public HtmlLine(String text, String selector, String server, Integer port)
     {
-        super(text, server, port, '1', selector);
+        super(text, server, port, 'h', selector);
     }
 
     public void render(final TextView textView, final Context context)
@@ -34,17 +33,14 @@ public class MenuLine extends Line
         final Handler handler = new Handler(Looper.getMainLooper());
         final SpannableString text = new SpannableString("  " + this.text + " \n");
 
-        //make and setup the new intent
-        final Intent intent = new Intent(context, MenuActivity.class);
-        intent.putExtra("page", this);
-
+        final HtmlLine l = this;
         //create the span (and the function to be run when it's clicked)
         final ClickableSpan cs1 = new ClickableSpan()
         {
             @Override
             public void onClick(View widget)
             {
-                context.startActivity(intent);
+                l.open(context);
             }
         };
         final ClickableSpan cs2 = new ClickableSpan()
@@ -52,7 +48,7 @@ public class MenuLine extends Line
             @Override
             public void onClick(View widget)
             {
-                context.startActivity(intent);
+                l.open(context);
             }
         };
 

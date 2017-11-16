@@ -20,7 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.gmail.afonsotrepa.pocketgopher.gopherclient.Line;
+import com.gmail.afonsotrepa.pocketgopher.gopherclient.Line.Line;
 import com.gmail.afonsotrepa.pocketgopher.gopherclient.Page;
 
 import java.util.List;
@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity
 
     private static final Integer SETTINGS_FILE = R.string.settings_file;
     private static final String MONOSPACE_FONT_SETTING = "monospace_font";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -57,6 +56,11 @@ public class MainActivity extends AppCompatActivity
     public void onResume()
     {
         super.onResume();
+
+        for (String url : History.read(getApplicationContext()))
+        {
+            Log.d("MA", url);
+        }
 
         List<Bookmark> bookmarks;
 
@@ -95,23 +99,14 @@ public class MainActivity extends AppCompatActivity
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
                 //the selected bookmark
-                Bookmark bookmark = (Bookmark) parent.getItemAtPosition(position);
-
-                //TODO: make it so it can also open items without an activity
-                //open the bookmarked page
-                final Intent intent = new Intent(MainActivity.this, bookmark.activity);
-                Line line = Line.makeLine(bookmark.type, bookmark.name,
-                        bookmark.selector, bookmark.server, bookmark.port
-                );
-
-                intent.putExtra("page", line);
+                final Bookmark bookmark = (Bookmark) parent.getItemAtPosition(position);
 
                 new Thread(new Runnable()
                 {
                     @Override
                     public void run()
                     {
-                        startActivity(intent);
+                        bookmark.open(getApplicationContext());
                     }
                 }).start();
             }
@@ -229,10 +224,7 @@ public class MainActivity extends AppCompatActivity
                                 //setup the page
                                 Page page = new Page(input.getText().toString());
 
-                                //open the page (presumes it should open an activity rn)
-                                Intent intent = new Intent(MainActivity.this, page.activity);
-                                intent.putExtra("page", page);
-                                startActivity(intent);
+                                page.open(getApplicationContext());
                             }
                         }
                 );
@@ -255,5 +247,4 @@ public class MainActivity extends AppCompatActivity
                 return super.onOptionsItemSelected(item);
         }
     }
-
 }

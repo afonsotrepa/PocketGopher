@@ -1,7 +1,6 @@
-package com.gmail.afonsotrepa.pocketgopher.gopherclient;
+package com.gmail.afonsotrepa.pocketgopher.gopherclient.Line;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.SpannableString;
@@ -14,16 +13,17 @@ import android.widget.TextView;
 import com.gmail.afonsotrepa.pocketgopher.R;
 
 /**
- * HTML file ('h')
+ * Macintosh BinHex file, Binary Archive, UUEncoded file, Binary file, Word-processing  document
+ * ('4', '5', '6', '9', 'd')
  */
 
-public class HtmlLine extends Line
+public class BinLine extends Line
 {
-    private static final Integer IMAGE_TAG = R.drawable.ic_web_asset_white;
+    private static final Integer IMAGE_TAG = R.drawable.ic_file_download_white;
 
-    public HtmlLine(String text, String selector, String server, Integer port)
+    BinLine(String text, String selector, String server, Integer port)
     {
-        super(text, server, port, 'h', selector);
+        super(text, server, port, '9', selector);
     }
 
     public void render(final TextView textView, final Context context)
@@ -32,17 +32,15 @@ public class HtmlLine extends Line
         final Handler handler = new Handler(Looper.getMainLooper());
         final SpannableString text = new SpannableString("  " + this.text + " \n");
 
-        //make and setup the new intent
-        final Intent intent = new Intent(context, HtmlActivity.class);
-        intent.putExtra("page", this);
 
+        final BinLine line = this;
         //create the span (and the function to be run when it's clicked)
         final ClickableSpan cs1 = new ClickableSpan()
         {
             @Override
             public void onClick(View widget)
             {
-                context.startActivity(intent);
+                line.download(context);
             }
         };
         final ClickableSpan cs2 = new ClickableSpan()
@@ -50,7 +48,7 @@ public class HtmlLine extends Line
             @Override
             public void onClick(View widget)
             {
-                context.startActivity(intent);
+                line.download(context);
             }
         };
 
@@ -71,4 +69,5 @@ public class HtmlLine extends Line
             }
         });
     }
+
 }

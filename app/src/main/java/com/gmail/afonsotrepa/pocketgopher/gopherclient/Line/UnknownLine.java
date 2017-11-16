@@ -1,4 +1,4 @@
-package com.gmail.afonsotrepa.pocketgopher.gopherclient;
+package com.gmail.afonsotrepa.pocketgopher.gopherclient.Line;
 
 import android.content.Context;
 import android.os.Handler;
@@ -19,7 +19,7 @@ public class UnknownLine extends Line
 
     private Character type_tag;
 
-    UnknownLine(String text)
+    public UnknownLine(String text)
     {
         super(text, null, 0, '3', "");
     }

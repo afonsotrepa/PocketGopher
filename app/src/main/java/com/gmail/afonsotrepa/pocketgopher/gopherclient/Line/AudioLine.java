@@ -1,4 +1,4 @@
-package com.gmail.afonsotrepa.pocketgopher.gopherclient;
+package com.gmail.afonsotrepa.pocketgopher.gopherclient.Line;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,29 +10,29 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ClickableSpan;
 import android.text.style.ImageSpan;
-import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gmail.afonsotrepa.pocketgopher.R;
+import com.gmail.afonsotrepa.pocketgopher.gopherclient.Connection;
 
 import java.io.File;
 import java.io.IOException;
 
 /**
- * Video (';')
+ * Audio ('s')
  */
 
-public class VideoLine extends Line
+public class AudioLine extends Line
 {
     private static final Integer IMAGE_TAG = R.drawable.ic_video_label_white;
 
 
-    public VideoLine(String text, String selector, String server, Integer port)
+    public AudioLine(String text, String selector, String server, Integer port)
     {
-        super(text, server, port, ';', selector);
+        super(text, server, port, 's', selector);
     }
 
     public void render(final TextView textView, final Context context)
@@ -58,7 +58,7 @@ public class VideoLine extends Line
             @Override
             public void onClick(View widget)
             {
-                onLineClick(context, widget);
+                onLineClick(context);
             }
         };
 
@@ -84,7 +84,7 @@ public class VideoLine extends Line
     /**
      * Run when the line is clicked
      */
-    private void onLineClick(final Context context, View widget)
+    public void onLineClick(final Context context)
     {
         final ProgressBar progressBar = ((Activity) context).findViewById(R.id.progressBar);
         progressBar.setVisibility(View.VISIBLE);
@@ -147,7 +147,7 @@ public class VideoLine extends Line
                 //make and start an intent to call the media player
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                intent.setDataAndType(Uri.fromFile(file), "video/*");
+                intent.setDataAndType(Uri.fromFile(file), "audio/*");
                 ((Activity) context).setResult(Activity.RESULT_OK, intent);
                 context.startActivity(intent);
 

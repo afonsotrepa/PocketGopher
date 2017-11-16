@@ -1,6 +1,7 @@
-package com.gmail.afonsotrepa.pocketgopher.gopherclient;
+package com.gmail.afonsotrepa.pocketgopher.gopherclient.Line;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.SpannableString;
@@ -11,19 +12,19 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.gmail.afonsotrepa.pocketgopher.R;
+import com.gmail.afonsotrepa.pocketgopher.gopherclient.Activity.TextFileActivity;
+
 
 /**
- * Macintosh BinHex file, Binary Archive, UUEncoded file, Binary file, Word-processing  document
- * ('4', '5', '6', '9', 'd')
+ * Text File ('0')
  */
-
-public class BinLine extends Line
+public class TextFileLine extends Line
 {
-    private static final Integer IMAGE_TAG = R.drawable.ic_file_download_white;
+    private static final Integer IMAGE_TAG = R.drawable.ic_menu_white;
 
-    BinLine(String text, String selector, String server, Integer port)
+    public TextFileLine(String text, String selector, String server, Integer port)
     {
-        super(text, server, port, '9', selector);
+        super(text, server, port, '0', selector);
     }
 
     public void render(final TextView textView, final Context context)
@@ -32,15 +33,15 @@ public class BinLine extends Line
         final Handler handler = new Handler(Looper.getMainLooper());
         final SpannableString text = new SpannableString("  " + this.text + " \n");
 
+        final TextFileLine l = this;
 
-        final BinLine line = this;
         //create the span (and the function to be run when it's clicked)
         final ClickableSpan cs1 = new ClickableSpan()
         {
             @Override
             public void onClick(View widget)
             {
-                line.download(context);
+                l.open(context);
             }
         };
         final ClickableSpan cs2 = new ClickableSpan()
@@ -48,10 +49,9 @@ public class BinLine extends Line
             @Override
             public void onClick(View widget)
             {
-                line.download(context);
+                l.open(context);
             }
         };
-
 
         //apply the span to text and append text to textView
         handler.post(new Runnable()
@@ -69,5 +69,4 @@ public class BinLine extends Line
             }
         });
     }
-
 }
