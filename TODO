@@ -1,2 +1,3 @@
-fix a bug that crashes the app when trying to save a file that already exists
+simplify url's
 save a history of the pages visited
+download files as "file(n)" if "file" already exists
