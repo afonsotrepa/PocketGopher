@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -20,7 +21,7 @@ import java.io.IOException;
 import java.io.Serializable;
 
 /**
- *
+ * A gopher page (extended by Line and Bookmark
  */
 
 public class Page implements Serializable
@@ -40,7 +41,9 @@ public class Page implements Serializable
         this.type = type;
         this.selector = selector;
 
-        this.url = server + ":" + String.valueOf(port) + "/" + type.toString() + selector;
+        this.url = server +
+                ((port == 70) ? "" : ":" + String.valueOf(port)) +
+                ((selector.matches("")) ? "" : "/" + type.toString() + selector);
     }
 
     public Page(String url)
@@ -51,13 +54,11 @@ public class Page implements Serializable
             url = url.replaceFirst("gopher://", "");
         }
 
-        this.url = url;
-
         String host;
         String path;
 
-        //get the host and the selector
-        if (url.matches("(.*)/(.*)"))
+        //get the host and the path
+        if (url.matches("(.*)/(.*)") || url.matches("(.*)/1"))
         {
             host = url.substring(0, url.indexOf("/"));
             path = url.substring(url.indexOf("/") + 1);
@@ -90,6 +91,11 @@ public class Page implements Serializable
         }
 
         this.activity = this.getActivity();
+
+        //simplify the url
+        this.url = server +
+                ((port == 70) ? "" : ":" + String.valueOf(port)) +
+                ((path == null) ? "" : "/" + path);
     }
 
 

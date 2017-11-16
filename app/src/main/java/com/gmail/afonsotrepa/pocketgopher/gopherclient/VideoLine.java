@@ -102,7 +102,6 @@ public class VideoLine extends Line
                 ///Network stuff to save the video to cache
                 File file = new File(context.getExternalCacheDir() + "/" +
                         context.getPackageName().replace('/', '-'));
-                Log.d("VGL", file.getAbsolutePath());
                 try
                 {
                     //create the file
