@@ -13,22 +13,27 @@ import com.gmail.afonsotrepa.pocketgopher.R;
  *
  */
 
-public class UnknownLine extends Line {
+public class UnknownLine extends Line
+{
     private static final Integer IMAGE_TAG = R.drawable.ic_error_white;
 
     private Character type_tag;
 
-    UnknownLine(String text) {
+    UnknownLine(String text)
+    {
         super(text, null, 0, '3', "");
     }
 
-    public void render(final TextView textView, final Context context) {
+    public void render(final TextView textView, final Context context)
+    {
         final Handler handler = new Handler(Looper.getMainLooper());
         final SpannableString text = new SpannableString("  " + this.text + "\n");
 
-        handler.post(new Runnable() {
+        handler.post(new Runnable()
+        {
             @Override
-            public void run() {
+            public void run()
+            {
                 //set the image tag behind (left of) the text
                 text.setSpan(new ImageSpan(context, IMAGE_TAG), 0, 1, 0);
                 textView.append(text);

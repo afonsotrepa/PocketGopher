@@ -14,19 +14,25 @@ import android.widget.TextView;
  *
  */
 
-public class BookmarkAdapter extends ArrayAdapter<Bookmark>{
-    public BookmarkAdapter(Context context, int textViewResourceId) {
+public class BookmarkAdapter extends ArrayAdapter<Bookmark>
+{
+    public BookmarkAdapter(Context context, int textViewResourceId)
+    {
         super(context, textViewResourceId);
     }
 
-    public BookmarkAdapter(Context context, int textViewResourceId, Bookmark[] bookmarks) {
+    public BookmarkAdapter(Context context, int textViewResourceId, Bookmark[] bookmarks)
+    {
         super(context, textViewResourceId, bookmarks);
     }
 
     @Override
-    public @NonNull View getView(int position, @Nullable View convertView,@NonNull ViewGroup parent) {
+    public @NonNull
+    View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent)
+    {
         //inflate layout if convertView is null
-        if (convertView == null) {
+        if (convertView == null)
+        {
             LayoutInflater vi = LayoutInflater.from(getContext());
             convertView = vi.inflate(R.layout.activity_listview, null);
         }

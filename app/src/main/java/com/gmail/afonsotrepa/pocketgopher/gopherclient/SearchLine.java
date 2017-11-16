@@ -23,35 +23,44 @@ import com.gmail.afonsotrepa.pocketgopher.R;
  * Index-Search server ('7')
  */
 
-public class SearchLine extends Line {
+public class SearchLine extends Line
+{
     private static final Integer IMAGE_TAG = R.drawable.ic_search_white;
 
-    public SearchLine(String text, String selector, String server, Integer port) {
+    public SearchLine(String text, String selector, String server, Integer port)
+    {
         super(text, server, port, '7', selector);
     }
 
-    public void render(final TextView textView, final Context context) {
+    public void render(final TextView textView, final Context context)
+    {
         final Handler handler = new Handler(Looper.getMainLooper());
         final SpannableString text = new SpannableString("  " + this.text + " \n");
 
         //create the span (and the function to be run when it's clicked)
-        final ClickableSpan cs1 = new ClickableSpan() {
+        final ClickableSpan cs1 = new ClickableSpan()
+        {
             @Override
-            public void onClick(View widget) {
+            public void onClick(View widget)
+            {
                 onLineClick(context, widget);
             }
         };
-        final ClickableSpan cs2 = new ClickableSpan() {
+        final ClickableSpan cs2 = new ClickableSpan()
+        {
             @Override
-            public void onClick(View widget) {
+            public void onClick(View widget)
+            {
                 onLineClick(context, widget);
             }
         };
 
         //apply the span to text and append text to textview
-        handler.post(new Runnable() {
+        handler.post(new Runnable()
+        {
             @Override
-            public void run() {
+            public void run()
+            {
                 //make it clickable
                 text.setSpan(cs1, 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 text.setSpan(cs2, 2, text.length() - 2, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -66,7 +75,8 @@ public class SearchLine extends Line {
     /**
      * Run when the line is clicked
      */
-    private void onLineClick(final Context context, View widget) {
+    private void onLineClick(final Context context, View widget)
+    {
         //AlertDialog to be shown when method gets called
         AlertDialog.Builder dialog = new AlertDialog.Builder(context);
 
@@ -74,15 +84,18 @@ public class SearchLine extends Line {
         final EditText input = new EditText(context);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT);
+                LinearLayout.LayoutParams.MATCH_PARENT
+        );
         input.setLayoutParams(layoutParams);
         input.setTextAppearance(context, MainActivity.font);
         dialog.setView(input);
 
         dialog.setPositiveButton("Send",
-                new DialogInterface.OnClickListener() {
+                new DialogInterface.OnClickListener()
+                {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(DialogInterface dialog, int which)
+                    {
                         //get the query
                         String query = input.getText().toString();
 
@@ -90,20 +103,23 @@ public class SearchLine extends Line {
                         //make the line
                         MenuLine line = new MenuLine(query, selector + "\t" + query,
                                 server,
-                                port);
+                                port
+                        );
 
                         //start the MenuActivity
                         Intent intent = new Intent(context, MenuActivity.class);
-                        intent.putExtra("line", line);
+                        intent.putExtra("page", line);
                         context.startActivity(intent);
                     }
                 }
         );
 
         dialog.setNegativeButton("Cancel",
-                new DialogInterface.OnClickListener() {
+                new DialogInterface.OnClickListener()
+                {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(DialogInterface dialog, int which)
+                    {
                         dialog.cancel();
                     }
                 }

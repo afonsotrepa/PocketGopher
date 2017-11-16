@@ -16,7 +16,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Connection {
+public class Connection
+{
     private Socket socket;
     private PrintWriter os; //output stream
     private BufferedReader is; //input stream
@@ -27,7 +28,8 @@ public class Connection {
      * @param server ip or DNS address of the server
      * @param port   port the server and the client listen to
      */
-    Connection(String server, Integer port) throws IOException {
+    Connection(String server, Integer port) throws IOException
+    {
         socket = new Socket(server, port);
 
         os = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())));
@@ -39,7 +41,8 @@ public class Connection {
      *
      * @param message string to send to the server
      */
-    private void write(String message) {
+    private void write(String message)
+    {
         os.println(message);
         os.flush();
     }
@@ -49,16 +52,20 @@ public class Connection {
      *
      * @return a message sent by the server
      */
-    private String read() {
+    private String read()
+    {
         StringBuilder sb = new StringBuilder();
         String line;
-        try {
+        try
+        {
 
             //read until the end of the message (EOF or ".")
-            while ((line = is.readLine()) != null && !line.equals(".")) {
+            while ((line = is.readLine()) != null && ! line.equals("."))
+            {
                 sb.append(line).append('\n');
             }
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             e.printStackTrace();
         }
         return sb.toString();
@@ -69,38 +76,48 @@ public class Connection {
      * Sends the selector to the server and returns the response (excpects a directory/menu)
      *
      * @param selector selector (see RFC 1436)
+     *
      * @return the response from the server (as Line objects)
      */
-    List<Line> getMenu(String selector) {
+    List<Line> getMenu(String selector)
+    {
         this.write(selector); //send the selector
         String lines[] = this.read().split("\n"); //read the response by the server
 
         List<Line> response = new ArrayList<>();
 
-        for (String line : lines) {
+        for (String line : lines)
+        {
             //skip empty line
             if (line.equals(""))
+            {
                 continue;
+            }
 
             String[] linesplit = line.split("\t");
-            if (linesplit.length < 2) {
+            if (linesplit.length < 2)
+            {
                 response.add(Line.makeLine(
                         line.charAt(0), //type
                         linesplit[0].substring(1), //remove the type tag
                         "",
                         "",
-                        0));
+                        0
+                ));
 
-            } else if (linesplit.length < 4) {
+            } else if (linesplit.length < 4)
+            {
                 response.add(new UnknownLine(line));
 
-            } else {
+            } else
+            {
                 response.add(Line.makeLine(
                         line.charAt(0), //type
                         linesplit[0].substring(1), //remove the type tag
                         linesplit[1],
                         linesplit[2],
-                        Integer.parseInt(linesplit[3])));
+                        Integer.parseInt(linesplit[3])
+                ));
             }
         }
 
@@ -111,14 +128,17 @@ public class Connection {
      * Sends the selector to the server and returns the response (expects text)
      *
      * @param selector selector (see RFC 1436)
+     *
      * @return the response from the server (as strings)
      */
-    String getText(String selector) {
+    String getText(String selector)
+    {
         this.write(selector); //send the selector
         return this.read();
     }
 
-    Drawable getDrawable(String selector) throws IOException {
+    Drawable getDrawable(String selector) throws IOException
+    {
         this.write(selector); //send the selector
         return Drawable.createFromStream(socket.getInputStream(), null);
 
@@ -130,23 +150,28 @@ public class Connection {
      * @param selector selector (see RFC 1436)
      * @param file     file to store the response from the server
      */
-    public void getBinary(String selector, File file) {
+    public void getBinary(String selector, File file)
+    {
         this.write(selector); //send the selector
 
-        try {
+        try
+        {
             InputStream is = this.socket.getInputStream();
             FileOutputStream os = new FileOutputStream(file);
 
-            int read = -1;
+            int read = - 1;
             byte[] buf = new byte[4096]; //pretty small rn
 
-            while ((read = is.read(buf)) != -1) {
+            while ((read = is.read(buf)) != - 1)
+            {
                 os.write(buf, 0, read);
             }
 
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             throw new RuntimeException(e);
-        } finally {
+        } finally
+        {
             os.flush(); //flush the buffer
             os.close(); //close the stream
         }

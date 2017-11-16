@@ -27,14 +27,16 @@ import java.util.List;
  *
  */
 
-public class MenuActivity extends AppCompatActivity {
+public class MenuActivity extends AppCompatActivity
+{
     String selector;
     String server;
     Integer port;
 
 
     @Override
-    protected void onCreate(Bundle savedInstaceState) {
+    protected void onCreate(Bundle savedInstaceState)
+    {
         super.onCreate(savedInstaceState);
         setContentView(R.layout.activity_menu);
 
@@ -46,44 +48,45 @@ public class MenuActivity extends AppCompatActivity {
         final Context context = this;
 
         //start a new thread to do network stuff
-        new Thread(new Runnable() {
+        new Thread(new Runnable()
+        {
             @Override
-            public void run() {
+            public void run()
+            {
                 //handler to the main thread
                 final Handler handler = new Handler(Looper.getMainLooper());
 
                 //get info
                 Intent i = getIntent();
-                final MenuLine l = (MenuLine) i.getSerializableExtra("line");
-                selector = l.selector;
-                server = l.server;
-                port = l.port;
+                final Page p = (Page) i.getSerializableExtra("page");
+                selector = p.selector;
+                server = p.server;
+                port = p.port;
 
-                //set the title of the window
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        setTitle(l.url);
-                    }
-                });
+                setTitle(p.url);
 
                 ///Network stuff
                 List<Line> lines;
-                try {
+                try
+                {
                     //start new connection
                     Connection conn = new Connection(server, port);
 
                     //get the desired directory/menu
                     lines = conn.getMenu(selector);
 
-                } catch (final IOException e) {
+                } catch (final IOException e)
+                {
                     e.printStackTrace();
                     //inform the user of the error
-                    handler.post(new Runnable() {
+                    handler.post(new Runnable()
+                    {
                         @Override
-                        public void run() {
+                        public void run()
+                        {
                             Toast toast = Toast.makeText(getApplicationContext(), e.getMessage(),
-                                    Toast.LENGTH_LONG);
+                                    Toast.LENGTH_LONG
+                            );
                             toast.show();
                         }
                     });
@@ -92,25 +95,30 @@ public class MenuActivity extends AppCompatActivity {
                     return;
                 }
 
-
                 //render the lines on the screen
-                for (Line line : lines) {
+                for (Line line : lines)
+                {
                     line.render(textView, MenuActivity.this);
                 }
 
                 //make the progress bar invisible
                 final ProgressBar progressBar = findViewById(R.id.progressBar);
-                handler.post(new Runnable() {
+                handler.post(new Runnable()
+                {
                     @Override
-                    public void run() {
+                    public void run()
+                    {
                         progressBar.setVisibility(View.GONE);
                     }
                 });
 
+
                 //some settings for textView
-                handler.post(new Runnable() {
+                handler.post(new Runnable()
+                {
                     @Override
-                    public void run() {
+                    public void run()
+                    {
                         textView.setLineSpacing(18, 1);
                         textView.setMovementMethod(LinkMovementMethod.getInstance());
                     }
@@ -122,19 +130,24 @@ public class MenuActivity extends AppCompatActivity {
 
     //setup the menu/title bar
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
         getMenuInflater().inflate(R.menu.client_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
             case R.id.addBookmarkButton:
-                try {
+                try
+                {
                     new Bookmark(getApplicationContext(), "", '1', selector, server, port)
                             .editBookmark(MenuActivity.this);
-                } catch (Exception e) {
+                } catch (Exception e)
+                {
                     throw new RuntimeException(e);
                 }
 

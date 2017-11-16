@@ -23,14 +23,16 @@ import java.io.IOException;
  *
  */
 
-public class HtmlActivity extends AppCompatActivity {
+public class HtmlActivity extends AppCompatActivity
+{
     String selector;
     String server;
     Integer port;
     WebView webView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_html);
 
@@ -38,33 +40,37 @@ public class HtmlActivity extends AppCompatActivity {
         webView = findViewById(R.id.constraintLayout).findViewById(R.id.webView);
 
         //handle redirects
-        webView.setWebViewClient(new WebViewClient() {
+        webView.setWebViewClient(new WebViewClient()
+        {
             @Override
-            public boolean shouldOverrideUrlLoading(WebView wView, String url) {
+            public boolean shouldOverrideUrlLoading(WebView wView, String url)
+            {
                 return false;
             }
         });
 
         //start a new thread to do network stuff
-        new Thread(new Runnable() {
+        new Thread(new Runnable()
+        {
             @Override
-            public void run() {
+            public void run()
+            {
                 //handler to the main thread
                 final Handler handler = new Handler(Looper.getMainLooper());
 
                 //get info
                 Intent i = getIntent();
-                HtmlLine l = (HtmlLine) i.getSerializableExtra("line");
-                selector = l.selector;
-                server = l.server;
-                port = l.port;
+                Page p = (Page) i.getSerializableExtra("page");
+                selector = p.selector;
+                server = p.server;
+                port = p.port;
 
-                //set the title of the window
-                setTitle(l.url);
+                setTitle(p.url);
 
                 ///Network stuff to get the html text
                 final String html;
-                try {
+                try
+                {
                     //start new connection
                     Connection conn = new Connection(server, port);
 
@@ -74,21 +80,27 @@ public class HtmlActivity extends AppCompatActivity {
 
                     //make the progress bar invisible
                     final ProgressBar progressBar = findViewById(R.id.progressBar);
-                    handler.post(new Runnable() {
+                    handler.post(new Runnable()
+                    {
                         @Override
-                        public void run() {
+                        public void run()
+                        {
                             progressBar.setVisibility(View.GONE);
                         }
                     });
 
-                } catch (final IOException e) {
+                } catch (final IOException e)
+                {
                     e.printStackTrace();
                     //inform the user of the error
-                    handler.post(new Runnable() {
+                    handler.post(new Runnable()
+                    {
                         @Override
-                        public void run() {
+                        public void run()
+                        {
                             Toast toast = Toast.makeText(getApplicationContext(), e.getMessage(),
-                                    Toast.LENGTH_LONG);
+                                    Toast.LENGTH_LONG
+                            );
                             toast.show();
                         }
                     });
@@ -99,9 +111,11 @@ public class HtmlActivity extends AppCompatActivity {
 
 
                 //render the html on webView
-                handler.post(new Runnable() {
+                handler.post(new Runnable()
+                {
                     @Override
-                    public void run() {
+                    public void run()
+                    {
                         webView.loadData(html, "text/html", null);
                     }
                 });
@@ -110,8 +124,10 @@ public class HtmlActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {
-        if (webView.canGoBack()) {
+    public void onBackPressed()
+    {
+        if (webView.canGoBack())
+        {
             webView.goBack();
             return;
         }
@@ -122,19 +138,24 @@ public class HtmlActivity extends AppCompatActivity {
 
     //setup the menu/title bar
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
         getMenuInflater().inflate(R.menu.client_html, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
             case R.id.addBookmarkButton:
-                try {
+                try
+                {
                     new Bookmark(getApplicationContext(), "", 'h', selector, server, port)
                             .editBookmark(HtmlActivity.this);
-                } catch (Exception e) {
+                } catch (Exception e)
+                {
                     throw new RuntimeException(e);
                 }
 

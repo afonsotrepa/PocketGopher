@@ -24,15 +24,16 @@ import java.io.IOException;
  *
  */
 
-public class TextFileActivity extends AppCompatActivity {
-    TextFileLine l;
-    String text;
+public class TextFileActivity extends AppCompatActivity
+{
+    Page p;
     String selector;
     String server;
     Integer port;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu); //same layout as MenuAcitivity
 
@@ -42,27 +43,26 @@ public class TextFileActivity extends AppCompatActivity {
         textView.setTextAppearance(this, MainActivity.font);
 
         //start a new thread to do network stuff
-        new Thread(new Runnable() {
+        new Thread(new Runnable()
+        {
             @Override
-            public void run() {
-                //handler to the main thread
+            public void run()
+            {
                 final Handler handler = new Handler(Looper.getMainLooper());
 
                 //intent stuff
                 Intent i = getIntent();
-                l = (TextFileLine) i.getSerializableExtra("line");
-                text = l.text;
-                selector = l.selector;
-                server = l.server;
-                port = l.port;
+                p = (Page) i.getSerializableExtra("page");
+                selector = p.selector;
+                server = p.server;
+                port = p.port;
 
-
-                //set the title of the window
-                setTitle(l.url);
+                setTitle(p.url);
 
                 ///Network stuff
                 final String lines;
-                try {
+                try
+                {
                     //start new connection
                     Connection conn = new Connection(server, port);
 
@@ -72,21 +72,27 @@ public class TextFileActivity extends AppCompatActivity {
 
                     //make the progress bar invisible
                     final ProgressBar progressBar = findViewById(R.id.progressBar);
-                    handler.post(new Runnable() {
+                    handler.post(new Runnable()
+                    {
                         @Override
-                        public void run() {
+                        public void run()
+                        {
                             progressBar.setVisibility(View.GONE);
                         }
                     });
 
-                } catch (final IOException e) {
+                } catch (final IOException e)
+                {
                     e.printStackTrace();
                     //inform the user of the error
-                    handler.post(new Runnable() {
+                    handler.post(new Runnable()
+                    {
                         @Override
-                        public void run() {
+                        public void run()
+                        {
                             Toast toast = Toast.makeText(getApplicationContext(), e.getMessage(),
-                                    Toast.LENGTH_LONG);
+                                    Toast.LENGTH_LONG
+                            );
                             toast.show();
                         }
                     });
@@ -96,17 +102,21 @@ public class TextFileActivity extends AppCompatActivity {
                 }
 
                 //render the lines on the screen
-                handler.post(new Runnable() {
+                handler.post(new Runnable()
+                {
                     @Override
-                    public void run() {
+                    public void run()
+                    {
                         textView.append(lines);
                     }
                 });
 
                 //some settings for textView
-                handler.post(new Runnable() {
+                handler.post(new Runnable()
+                {
                     @Override
-                    public void run() {
+                    public void run()
+                    {
                         textView.setLineSpacing(18, 1);
                         textView.setMovementMethod(LinkMovementMethod.getInstance());
                     }
@@ -118,26 +128,31 @@ public class TextFileActivity extends AppCompatActivity {
 
     //setup the menu/title bar
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
         getMenuInflater().inflate(R.menu.client_downloadable, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
             case R.id.addBookmarkButton:
-                try {
+                try
+                {
                     new Bookmark(getApplicationContext(), "", '0', selector, server, port)
                             .editBookmark(TextFileActivity.this);
-                } catch (Exception e) {
+                } catch (Exception e)
+                {
                     throw new RuntimeException(e);
                 }
 
                 return true;
 
             case R.id.downloadButton:
-                l.download(this);
+                p.download(this);
 
                 return true;
 

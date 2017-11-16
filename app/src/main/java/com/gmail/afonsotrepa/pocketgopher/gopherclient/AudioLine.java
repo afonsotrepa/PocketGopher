@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ClickableSpan;
 import android.text.style.ImageSpan;
@@ -26,15 +25,18 @@ import java.io.IOException;
  * Audio ('s')
  */
 
-public class AudioLine extends Line {
+public class AudioLine extends Line
+{
     private static final Integer IMAGE_TAG = R.drawable.ic_video_label_white;
 
 
-    public AudioLine(String text, String selector, String server, Integer port) {
+    public AudioLine(String text, String selector, String server, Integer port)
+    {
         super(text, server, port, 's', selector);
     }
 
-    public void render(final TextView textView, final Context context) {
+    public void render(final TextView textView, final Context context)
+    {
         //handler to the main thread
         final Handler handler = new Handler(Looper.getMainLooper());
         final SpannableString text = new SpannableString("  " + this.text + " \n");
@@ -43,24 +45,30 @@ public class AudioLine extends Line {
 
         //TODO: download on long click (instead of using the type icon for that)
         //create the span (and the function to be run when it's clicked)
-        final ClickableSpan cs1 = new ClickableSpan() {
+        final ClickableSpan cs1 = new ClickableSpan()
+        {
             @Override
-            public void onClick(View widget) {
+            public void onClick(View widget)
+            {
                 line.download(context);
             }
         };
-        final ClickableSpan cs2 = new ClickableSpan() {
+        final ClickableSpan cs2 = new ClickableSpan()
+        {
             @Override
-            public void onClick(View widget) {
+            public void onClick(View widget)
+            {
                 onLineClick(context, widget);
             }
         };
 
 
         //apply the span to text and append text to textView
-        handler.post(new Runnable() {
+        handler.post(new Runnable()
+        {
             @Override
-            public void run() {
+            public void run()
+            {
                 //make it clickable
                 text.setSpan(cs1, 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 text.setSpan(cs2, 2, text.length() - 2, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -76,15 +84,18 @@ public class AudioLine extends Line {
     /**
      * Run when the line is clicked
      */
-    private void onLineClick(final Context context, View widget) {
+    private void onLineClick(final Context context, View widget)
+    {
         final ProgressBar progressBar = ((Activity) context).findViewById(R.id.progressBar);
         progressBar.setVisibility(View.VISIBLE);
 
 
         //start a new thread to do network stuff
-        new Thread(new Runnable() {
+        new Thread(new Runnable()
+        {
             @Override
-            public void run() {
+            public void run()
+            {
                 //handler to the main thread
                 final Handler handler = new Handler(Looper.getMainLooper());
 
@@ -92,7 +103,8 @@ public class AudioLine extends Line {
                 File file = new File(context.getExternalCacheDir() + "/" +
                         context.getPackageName().replace('/', '-'));
                 Log.d("VGL", file.getAbsolutePath());
-                try {
+                try
+                {
                     //create the file
                     file.createNewFile();
 
@@ -103,15 +115,19 @@ public class AudioLine extends Line {
                     conn.getBinary(selector, file);
 
 
-                } catch (final IOException e) {
+                } catch (final IOException e)
+                {
                     //inform the user of the error and exit
                     e.printStackTrace();
-                    handler.post(new Runnable() {
+                    handler.post(new Runnable()
+                    {
                         @Override
-                        public void run() {
+                        public void run()
+                        {
                             Toast toast = Toast.makeText(context.getApplicationContext(),
                                     e.getMessage(),
-                                    Toast.LENGTH_LONG);
+                                    Toast.LENGTH_LONG
+                            );
                             toast.show();
                         }
                     });
@@ -119,9 +135,11 @@ public class AudioLine extends Line {
                 }
 
 
-                handler.post(new Runnable() {
+                handler.post(new Runnable()
+                {
                     @Override
-                    public void run() {
+                    public void run()
+                    {
                         //make the progress bar invisible
                         progressBar.setVisibility(View.GONE);
                     }
