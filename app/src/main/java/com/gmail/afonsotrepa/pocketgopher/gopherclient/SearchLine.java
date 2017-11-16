@@ -32,7 +32,7 @@ public class SearchLine extends Line {
 
     public void render(final TextView textView, final Context context) {
         final Handler handler = new Handler(Looper.getMainLooper());
-        final SpannableString text = new SpannableString("  " + this.text + "\n");
+        final SpannableString text = new SpannableString("  " + this.text + " \n");
 
         //create the span (and the function to be run when it's clicked)
         final ClickableSpan cs1 = new ClickableSpan() {
@@ -54,7 +54,7 @@ public class SearchLine extends Line {
             public void run() {
                 //make it clickable
                 text.setSpan(cs1, 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                text.setSpan(cs2, 2, text.length() - 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                text.setSpan(cs2, 2, text.length() - 2, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 //set the image tag behind (left of) the text
                 text.setSpan(new ImageSpan(context, IMAGE_TAG), 0, 1, 0);
                 //add it to the end of textView

@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ClickableSpan;
@@ -37,7 +38,7 @@ public class ImageLine extends Line {
     public void render(final TextView textView, final Context context) {
         //handler to the main thread
         final Handler handler = new Handler(Looper.getMainLooper());
-        final SpannableStringBuilder text = new SpannableStringBuilder("  " + this.text + "\n");
+        final SpannableString text = new SpannableString("  " + this.text + " \n");
 
         final Line line = this;
 
@@ -63,7 +64,7 @@ public class ImageLine extends Line {
             public void run() {
                 //make it clickable
                 text.setSpan(cs1, 0,1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                text.setSpan(cs2, 2, text.length() - 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                text.setSpan(cs2, 2, text.length() - 2, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 //set the image tag behind (left of) the text
                 text.setSpan(new ImageSpan(context, IMAGE_TAG), 0, 1, 0);
                 //add it to the end of textView
