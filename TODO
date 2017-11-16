@@ -1,2 +1,3 @@
 setup a page to view (and edit?) the history
 download files as "file(n)" if "file" already exists
+improve the way 'h' pages are handled

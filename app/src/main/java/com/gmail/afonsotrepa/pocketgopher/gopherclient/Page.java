@@ -206,12 +206,13 @@ public class Page implements Serializable
         alertDialog.show();
     }
 
+
     public void open(Context context)
     {
-        Intent intent;
-
         History.add(context, this.url);
 
+        Intent intent;
+        
         switch (type)
         {
             case '0':
