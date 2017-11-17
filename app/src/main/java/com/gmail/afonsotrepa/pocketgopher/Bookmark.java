@@ -204,7 +204,8 @@ public class Bookmark extends Page
                             Toast.makeText(context, "Bookmark saved", Toast.LENGTH_SHORT)
                                     .show();
                             dialog.cancel();
-                        } catch (Exception e)
+                        }
+                        catch (Exception e)
                         {
                             e.printStackTrace();
                             Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG)
@@ -245,7 +246,8 @@ public class Bookmark extends Page
                             Bookmark.save(context, bookmarks);
 
                             dialog.cancel();
-                        } catch (Exception e)
+                        }
+                        catch (Exception e)
                         {
                             e.printStackTrace();
                             Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();

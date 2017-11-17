@@ -67,7 +67,8 @@ public class Connection
             {
                 sb.append(line).append('\n');
             }
-        } catch (IOException e)
+        }
+        catch (IOException e)
         {
             e.printStackTrace();
         }
@@ -170,10 +171,12 @@ public class Connection
                 os.write(buf, 0, read);
             }
 
-        } catch (IOException e)
+        }
+        catch (IOException e)
         {
             throw new RuntimeException(e);
-        } finally
+        }
+        finally
         {
             os.flush(); //flush the buffer
             os.close(); //close the stream

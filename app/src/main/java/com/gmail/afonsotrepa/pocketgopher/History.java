@@ -5,9 +5,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.util.Log;
-
-import com.gmail.afonsotrepa.pocketgopher.gopherclient.Page;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +20,7 @@ public abstract class History
 
     /**
      * save/add a page/url to the history
+     *
      * @param context
      * @param url
      */
@@ -35,7 +33,8 @@ public abstract class History
 
         //append the url to the end of the list of url's in the file
         editor.putString("history",
-                sharedPref.getString("history", "") + url + "\u0000");
+                sharedPref.getString("history", "") + url + "\u0000"
+        );
 
         //apply the changes to the file
         editor.apply();
@@ -43,6 +42,7 @@ public abstract class History
 
     /**
      * reads the history from a file
+     *
      * @return the visited pages/url's in reverse (latest entry is at index 0)
      * TODO: buffer the read for memory consumption reasons?
      */
@@ -67,6 +67,7 @@ public abstract class History
 
     /**
      * Clears all of the history
+     *
      * @param context
      */
     static public void clear(final Context context)
@@ -82,7 +83,8 @@ public abstract class History
                     {
                         //open/create the file in private mode and make the editor
                         String file = context.getResources().getString(HISTORY_FILE);
-                        SharedPreferences sharedPref = context.getSharedPreferences(file, Context.MODE_PRIVATE);
+                        SharedPreferences sharedPref = context.getSharedPreferences(file, Context
+                                .MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPref.edit();
 
                         //clear the entry

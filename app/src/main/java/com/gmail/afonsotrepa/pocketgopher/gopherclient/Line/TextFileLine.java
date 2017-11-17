@@ -1,7 +1,6 @@
 package com.gmail.afonsotrepa.pocketgopher.gopherclient.Line;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.SpannableString;
@@ -12,7 +11,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.gmail.afonsotrepa.pocketgopher.R;
-import com.gmail.afonsotrepa.pocketgopher.gopherclient.Activity.TextFileActivity;
 
 
 /**

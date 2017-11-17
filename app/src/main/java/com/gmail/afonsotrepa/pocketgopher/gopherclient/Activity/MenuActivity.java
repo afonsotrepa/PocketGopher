@@ -16,7 +16,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gmail.afonsotrepa.pocketgopher.Bookmark;
-import com.gmail.afonsotrepa.pocketgopher.History;
 import com.gmail.afonsotrepa.pocketgopher.MainActivity;
 import com.gmail.afonsotrepa.pocketgopher.R;
 import com.gmail.afonsotrepa.pocketgopher.gopherclient.Connection;
@@ -79,7 +78,8 @@ public class MenuActivity extends AppCompatActivity
                     //get the desired directory/menu
                     lines = conn.getMenu(selector);
 
-                } catch (final IOException e)
+                }
+                catch (final IOException e)
                 {
                     e.printStackTrace();
                     //inform the user of the error
@@ -150,7 +150,8 @@ public class MenuActivity extends AppCompatActivity
                 {
                     new Bookmark(getApplicationContext(), "", '1', selector, server, port)
                             .editBookmark(MenuActivity.this);
-                } catch (Exception e)
+                }
+                catch (Exception e)
                 {
                     throw new RuntimeException(e);
                 }

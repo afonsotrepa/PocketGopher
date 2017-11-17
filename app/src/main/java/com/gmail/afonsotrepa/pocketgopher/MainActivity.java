@@ -20,7 +20,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.gmail.afonsotrepa.pocketgopher.gopherclient.Line.Line;
 import com.gmail.afonsotrepa.pocketgopher.gopherclient.Page;
 
 import java.util.List;
@@ -67,7 +66,8 @@ public class MainActivity extends AppCompatActivity
         try
         {
             bookmarks = Bookmark.read(this);
-        } catch (Exception e)
+        }
+        catch (Exception e)
         {
             e.printStackTrace();
             //display the error and return

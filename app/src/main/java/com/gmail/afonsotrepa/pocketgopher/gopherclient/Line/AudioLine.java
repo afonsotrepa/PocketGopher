@@ -114,7 +114,8 @@ public class AudioLine extends Line
                     conn.getBinary(selector, file);
 
 
-                } catch (final IOException e)
+                }
+                catch (final IOException e)
                 {
                     //inform the user of the error and exit
                     e.printStackTrace();

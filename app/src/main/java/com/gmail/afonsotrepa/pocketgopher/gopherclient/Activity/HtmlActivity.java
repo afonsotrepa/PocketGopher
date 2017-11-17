@@ -15,8 +15,6 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.gmail.afonsotrepa.pocketgopher.Bookmark;
-import com.gmail.afonsotrepa.pocketgopher.History;
-import com.gmail.afonsotrepa.pocketgopher.MainActivity;
 import com.gmail.afonsotrepa.pocketgopher.R;
 import com.gmail.afonsotrepa.pocketgopher.gopherclient.Connection;
 import com.gmail.afonsotrepa.pocketgopher.gopherclient.Page;
@@ -93,7 +91,8 @@ public class HtmlActivity extends AppCompatActivity
                         }
                     });
 
-                } catch (final IOException e)
+                }
+                catch (final IOException e)
                 {
                     e.printStackTrace();
                     //inform the user of the error
@@ -158,7 +157,8 @@ public class HtmlActivity extends AppCompatActivity
                 {
                     new Bookmark(getApplicationContext(), "", 'h', selector, server, port)
                             .editBookmark(HtmlActivity.this);
-                } catch (Exception e)
+                }
+                catch (Exception e)
                 {
                     throw new RuntimeException(e);
                 }

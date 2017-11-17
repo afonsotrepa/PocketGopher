@@ -1,6 +1,5 @@
 package com.gmail.afonsotrepa.pocketgopher;
 
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -56,27 +55,27 @@ public class HistoryActivity extends AppCompatActivity
         });
     }
 
-   @Override
+    @Override
     public boolean onCreateOptionsMenu(Menu menu)
-   {
-       getMenuInflater().inflate(R.menu.client_history, menu);
+    {
+        getMenuInflater().inflate(R.menu.client_history, menu);
 
-       return super.onCreateOptionsMenu(menu);
-   }
+        return super.onCreateOptionsMenu(menu);
+    }
 
-   @Override
+    @Override
     public boolean onOptionsItemSelected(MenuItem item)
-   {
-       switch (item.getItemId())
-       {
-           case R.id.clearHistory:
-               History.clear(this);
+    {
+        switch (item.getItemId())
+        {
+            case R.id.clearHistory:
+                History.clear(this);
 
-               return true;
+                return true;
 
 
-           default:
-               return super.onOptionsItemSelected(item);
-       }
-   }
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 }

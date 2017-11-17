@@ -17,7 +17,6 @@ import android.widget.Toast;
 
 import com.gmail.afonsotrepa.pocketgopher.R;
 import com.gmail.afonsotrepa.pocketgopher.gopherclient.Connection;
-import com.gmail.afonsotrepa.pocketgopher.gopherclient.Line.Line;
 
 import java.io.File;
 import java.io.IOException;
@@ -115,7 +114,8 @@ public class VideoLine extends Line
                     conn.getBinary(selector, file);
 
 
-                } catch (final IOException e)
+                }
+                catch (final IOException e)
                 {
                     //inform the user of the error and exit
                     e.printStackTrace();

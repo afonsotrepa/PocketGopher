@@ -8,6 +8,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.widget.EditText;
@@ -134,6 +136,7 @@ public class Page implements Serializable
         input.setText(selector.substring(selector.lastIndexOf("/") + 1)); //default file name
         input.setTextAppearance(context, MainActivity.font);
         alertDialog.setView(input);
+        final String fileName = input.getText().toString();
 
 
         alertDialog.setPositiveButton("Save",
@@ -142,50 +145,108 @@ public class Page implements Serializable
                     @Override
                     public void onClick(final DialogInterface dialog, int which)
                     {
-                        //file is always saved in the download directory atm
-                        final File file = new File(
-                                Environment.getExternalStoragePublicDirectory(Environment
-                                        .DIRECTORY_DOWNLOADS)
-                                        + "/" + input.getText().toString());
-
-                        try
+                        new Thread(new Runnable()
                         {
-                            if (file.exists())
+                            @Override
+                            public void run()
                             {
-                                Toast.makeText(context, "File already exists", Toast.LENGTH_LONG)
-                                        .show();
-                            } else
-                            {
-                                file.createNewFile();
+                                Handler handler = new Handler(Looper.getMainLooper());
 
-                                new Thread(new Runnable()
+                                //file is always saved in the download directory atm
+                                File file = new File(
+                                        Environment.getExternalStoragePublicDirectory(Environment
+                                                .DIRECTORY_DOWNLOADS) +
+                                                "/" + fileName
+                                );
+
+                                try
                                 {
-                                    @Override
-                                    public void run()
+                                    Integer n = 0;
+                                    while (file.exists())
                                     {
-                                        try
-                                        {
-                                            Connection conn = new Connection(server, port);
-                                            conn.getBinary(selector, file);
+                                        n += 1;
 
-                                        } catch (final IOException e)
+                                        if (fileName.matches("(.*).(.*)"))
                                         {
-                                            Toast.makeText(context, e.getMessage(), Toast
-                                                    .LENGTH_LONG).show();
+                                            file = new File(
+                                                    Environment.getExternalStoragePublicDirectory
+                                                            (Environment
+                                                                    .DIRECTORY_DOWNLOADS) +
+                                                            "/" + fileName.substring(0, fileName
+                                                            .indexOf
+                                                                    ('.')) +
+                                                            "(" + String.valueOf(n) + ")" +
+                                                            fileName.substring(fileName.indexOf(
+                                                                    '.'))
+                                            );
+                                        } else
+                                        {
+                                            file = new File(
+                                                    Environment.getExternalStoragePublicDirectory
+                                                            (Environment
+                                                                    .DIRECTORY_DOWNLOADS) +
+                                                            fileName +
+                                                            "(" + String.valueOf(n) + ")"
+                                            );
                                         }
                                     }
-                                });
 
-                                Toast.makeText(context, "File saved", Toast.LENGTH_SHORT).show();
+                                    final File f = file;
+                                    f.createNewFile();
 
-                                ///TODO: need to add some code so the files get detected
-                                /// by DownloadManager or something (not possible??)
+                                    try
+                                    {
+                                        Connection conn = new Connection(server, port);
+                                        conn.getBinary(selector, f);
+                                    }
+                                    catch (final IOException e)
+                                    {
+                                        handler.post(new Runnable()
+                                        {
+                                            @Override
+                                            public void run()
+                                            {
+                                                Toast.makeText(context,
+                                                        e.getMessage(),
+                                                        Toast.LENGTH_LONG
+                                                ).show();
+                                            }
+                                        });
+                                    }
+
+
+                                    handler.post(new Runnable()
+                                    {
+                                        @Override
+                                        public void run()
+                                        {
+                                            Toast.makeText(context,
+                                                    "File saved saved as: " + f.getName(),
+                                                    Toast.LENGTH_SHORT
+                                            ).show();
+                                        }
+                                    });
+
+                                    ///TODO: need to add some code so the files get detected
+                                    /// by DownloadManager or something (not possible??)
+
+                                }
+                                catch (
+                                        final IOException e)
+
+                                {
+                                    handler.post(new Runnable()
+                                    {
+                                        @Override
+                                        public void run()
+                                        {
+                                            Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG)
+                                                    .show();
+                                        }
+                                    });
+                                }
                             }
-
-                        } catch (final IOException e)
-                        {
-                            Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
-                        }
+                        }).start();
                     }
                 }
         );

@@ -3,7 +3,6 @@ package com.gmail.afonsotrepa.pocketgopher.gopherclient.Line;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.SpannableString;
@@ -17,7 +16,6 @@ import android.widget.TextView;
 
 import com.gmail.afonsotrepa.pocketgopher.MainActivity;
 import com.gmail.afonsotrepa.pocketgopher.R;
-import com.gmail.afonsotrepa.pocketgopher.gopherclient.Activity.MenuActivity;
 
 
 /**
