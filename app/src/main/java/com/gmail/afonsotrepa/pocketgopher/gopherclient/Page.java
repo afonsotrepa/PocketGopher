@@ -240,8 +240,8 @@ public class Page implements Serializable
                                         @Override
                                         public void run()
                                         {
-                                            Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG)
-                                                    .show();
+                                            Toast.makeText(context, e.getMessage(), Toast
+                                                    .LENGTH_LONG).show();
                                         }
                                     });
                                 }
@@ -270,16 +270,8 @@ public class Page implements Serializable
 
     public void open(final Context context)
     {
-        //add the page to history (done on another thread to avoid blocking this thread)
-        final String url = this.url;
-        new Thread(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                History.add(context, url);
-            }
-        });
+        //add the page to history
+        History.add(context, url);
 
 
         Intent intent;
