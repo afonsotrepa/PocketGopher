@@ -207,12 +207,22 @@ public class Page implements Serializable
     }
 
 
-    public void open(Context context)
+    public void open(final Context context)
     {
-        History.add(context, this.url);
+        //add the page to history (done on another thread to avoid blocking this thread)
+        final String url = this.url;
+        new Thread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                History.add(context, url);
+            }
+        });
+
 
         Intent intent;
-        
+
         switch (type)
         {
             case '0':

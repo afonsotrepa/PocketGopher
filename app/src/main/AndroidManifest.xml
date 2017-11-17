@@ -29,6 +29,9 @@
         <activity
             android:name=".gopherclient.Activity.HtmlActivity"
             android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".HistoryActivity"
+            android:parentActivityName=".MainActivity" />
     </application>
 
 </manifest>

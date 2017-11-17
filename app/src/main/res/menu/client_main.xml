@@ -14,10 +14,18 @@
     <item
         android:id="@+id/link"
         android:background="@android:color/background_dark"
-        android:checkable="true"
         android:enabled="true"
         android:icon="@drawable/ic_link_white"
-        android:title="link"
+        android:title="Link"
+        android:visible="true"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/history"
+        android:background="@android:color/background_dark"
+        android:enabled="true"
+        android:icon="@drawable/ic_history_white"
+        android:title="History"
         android:visible="true"
         app:showAsAction="ifRoom" />
 </menu>

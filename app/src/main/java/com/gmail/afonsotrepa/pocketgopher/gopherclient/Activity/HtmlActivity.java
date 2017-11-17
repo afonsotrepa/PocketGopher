@@ -69,9 +69,6 @@ public class HtmlActivity extends AppCompatActivity
                 server = p.server;
                 port = p.port;
 
-                //save the visited page to history
-                History.add(getApplicationContext(), p.url);
-
                 setTitle(p.url);
 
                 ///Network stuff to get the html text

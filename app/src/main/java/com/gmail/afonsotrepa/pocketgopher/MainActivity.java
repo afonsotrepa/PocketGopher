@@ -243,6 +243,15 @@ public class MainActivity extends AppCompatActivity
 
                 alertDialog.show();
 
+                return true;
+
+            case R.id.history:
+                Intent intent = new Intent(getApplicationContext(), HistoryActivity.class);
+                startActivity(intent);
+
+                return true;
+
+
             default:
                 return super.onOptionsItemSelected(item);
         }
