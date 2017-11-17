@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -45,7 +44,8 @@ public class MainActivity extends AppCompatActivity
         if (sharedPref.getInt(MONOSPACE_FONT_SETTING, 1) == 1)
         {
             font = R.style.monospace;
-        } else
+        }
+        else
         {
             font = R.style.serif;
         }
@@ -55,11 +55,6 @@ public class MainActivity extends AppCompatActivity
     public void onResume()
     {
         super.onResume();
-
-        for (String url : History.read(getApplicationContext()))
-        {
-            Log.d("MA", url);
-        }
 
         List<Bookmark> bookmarks;
 
@@ -160,7 +155,8 @@ public class MainActivity extends AppCompatActivity
         if (sharedPref.getInt(MONOSPACE_FONT_SETTING, 1) == 1)
         {
             menu.findItem(R.id.monospace_font).setChecked(true);
-        } else
+        }
+        else
         {
             menu.findItem(R.id.monospace_font).setChecked(false);
         }
@@ -186,7 +182,8 @@ public class MainActivity extends AppCompatActivity
                     font = R.style.monospace;
                     menu.findItem(R.id.monospace_font).setChecked(true);
                     editor.putInt(MONOSPACE_FONT_SETTING, 1);
-                } else
+                }
+                else
                 {
                     font = R.style.serif;
                     menu.findItem(R.id.monospace_font).setChecked(false);

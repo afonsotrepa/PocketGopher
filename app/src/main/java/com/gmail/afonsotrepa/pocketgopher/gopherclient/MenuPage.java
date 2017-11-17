@@ -12,6 +12,7 @@ import android.text.style.ImageSpan;
 import android.view.View;
 import android.widget.TextView;
 
+import com.gmail.afonsotrepa.pocketgopher.History;
 import com.gmail.afonsotrepa.pocketgopher.R;
 import com.gmail.afonsotrepa.pocketgopher.gopherclient.Activity.MenuActivity;
 
@@ -82,6 +83,8 @@ public class MenuPage extends Page
 
     public void open(Context context)
     {
+        History.add(context, this.url);
+
         Intent intent = new Intent(context, MenuActivity.class);
         intent.putExtra("page", this);
         context.startActivity(intent);

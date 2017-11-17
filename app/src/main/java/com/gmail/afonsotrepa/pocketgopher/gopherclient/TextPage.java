@@ -8,6 +8,8 @@ import android.text.style.RelativeSizeSpan;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gmail.afonsotrepa.pocketgopher.History;
+
 
 /**
  * Simple informational text line ('i')
@@ -35,7 +37,8 @@ public class TextPage extends Page
             if (textView.getText().toString().matches(""))
             {
                 text.setSpan(new RelativeSizeSpan(MAIN_TITLE_SIZE), 0, text.length(), 0);
-            } else
+            }
+            else
             {
                 text.setSpan(new RelativeSizeSpan(SUB_TITLE_SIZE), 0, text.length(), 0);
             }
@@ -58,6 +61,8 @@ public class TextPage extends Page
 
     public void open(Context context)
     {
+        History.add(context, this.url);
+
         Toast.makeText(context, "Can't open a page of type 'i'!!", Toast.LENGTH_LONG).show();
     }
 }

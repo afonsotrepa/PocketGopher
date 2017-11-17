@@ -74,7 +74,7 @@ public class Connection
 
 
     /**
-     * Sends the selector to the server and returns the response (excpects a directory/menu)
+     * Sends the selector to the server and returns the response (expects a directory/menu)
      *
      * @param selector selector (see RFC 1436)
      *
@@ -106,11 +106,13 @@ public class Connection
                         linesplit[0].substring(1) //remove the type tag
                 ));
 
-            } else if (linesplit.length < 4)
+            }
+            else if (linesplit.length < 4)
             {
                 response.add(new UnknownPage(line));
 
-            } else
+            }
+            else
             {
                 response.add(Page.makePage(
                         line.charAt(0), //type

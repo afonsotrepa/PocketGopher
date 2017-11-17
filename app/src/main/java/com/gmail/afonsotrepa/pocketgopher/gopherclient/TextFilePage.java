@@ -11,8 +11,8 @@ import android.text.style.ImageSpan;
 import android.view.View;
 import android.widget.TextView;
 
+import com.gmail.afonsotrepa.pocketgopher.History;
 import com.gmail.afonsotrepa.pocketgopher.R;
-import com.gmail.afonsotrepa.pocketgopher.gopherclient.Activity.MenuActivity;
 import com.gmail.afonsotrepa.pocketgopher.gopherclient.Activity.TextFileActivity;
 
 
@@ -78,6 +78,8 @@ public class TextFilePage extends Page
 
     public void open(Context context)
     {
+        History.add(context, this.url);
+
         Intent intent = new Intent(context, TextFileActivity.class);
         intent.putExtra("page", this);
         context.startActivity(intent);

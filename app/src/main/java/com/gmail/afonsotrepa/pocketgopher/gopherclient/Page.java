@@ -135,7 +135,8 @@ public abstract class Page implements Serializable
                                                             fileName.substring(fileName.indexOf(
                                                                     '.'))
                                             );
-                                        } else
+                                        }
+                                        else
                                         {
                                             file = new File(
                                                     Environment.getExternalStoragePublicDirectory
@@ -225,7 +226,8 @@ public abstract class Page implements Serializable
 
     @NonNull
     public static Page makePage(Character type, String selector, String server, Integer port,
-                                String line)
+                                String line
+    )
     {
         switch (type)
         {
@@ -339,7 +341,8 @@ public abstract class Page implements Serializable
         {
             host = url.substring(0, url.indexOf("/"));
             path = url.substring(url.indexOf("/") + 1);
-        } else
+        }
+        else
         {
             host = url;
             path = null;
@@ -350,7 +353,8 @@ public abstract class Page implements Serializable
         {
             server = host.substring(0, host.indexOf(":"));
             port = Integer.parseInt(host.substring(host.indexOf(":") + 1));
-        } else
+        }
+        else
         {
             server = host;
             port = 70; //default port
@@ -361,7 +365,8 @@ public abstract class Page implements Serializable
         {
             type = path.charAt(0);
             selector = path.substring(1);
-        } else
+        }
+        else
         {
             type = '1';
             selector = "";

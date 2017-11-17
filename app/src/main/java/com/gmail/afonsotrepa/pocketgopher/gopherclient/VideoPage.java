@@ -15,6 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gmail.afonsotrepa.pocketgopher.History;
 import com.gmail.afonsotrepa.pocketgopher.R;
 
 import java.io.File;
@@ -88,6 +89,8 @@ public class VideoPage extends Page
 
     public void open(final Context context)
     {
+        History.add(context, this.url);
+
         final ProgressBar progressBar = ((Activity) context).findViewById(R.id.progressBar);
         progressBar.setVisibility(View.VISIBLE);
 

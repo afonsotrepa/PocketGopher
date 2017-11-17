@@ -8,6 +8,7 @@ import android.text.style.ImageSpan;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gmail.afonsotrepa.pocketgopher.History;
 import com.gmail.afonsotrepa.pocketgopher.R;
 
 /**
@@ -46,7 +47,10 @@ public class UnknownPage extends Page
 
     public void open(Context context)
     {
+        History.add(context, this.url);
+
         Toast.makeText(context, "Can't open a page of type '" + this.type + "' !!",
-                Toast.LENGTH_LONG).show();
+                Toast.LENGTH_LONG
+        ).show();
     }
 }

@@ -1,5 +1,6 @@
 package com.gmail.afonsotrepa.pocketgopher.gopherclient;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gmail.afonsotrepa.pocketgopher.History;
 import com.gmail.afonsotrepa.pocketgopher.R;
 
 import java.io.File;
@@ -80,47 +82,78 @@ public class HtmlPage extends Page
 
     public void open(final Context context)
     {
-        final Page page = this;
+        History.add(context, this.url);
 
-        final File file = new File(context.getExternalCacheDir() +
-                context.getPackageName().replace('/', '-'));
-
-        //get the file
-        new Thread(new Runnable()
+        try
         {
-            @Override
-            public void run()
+            if (selector.matches("URL:(.*)"))
             {
-                final Handler handler = new Handler(Looper.getMainLooper());
-
-                try {
-                    Connection conn = new Connection(page.server, page.port);
-                    conn.getBinary(page.selector, file);
-
-                }
-                catch (final IOException e)
-                {
-                    e.printStackTrace();
-                    //inform the user of the error
-                    handler.post(new Runnable()
-                    {
-                        @Override
-                        public void run()
-                        {
-                            Toast toast = Toast.makeText(context, e.getMessage(),
-                                    Toast.LENGTH_LONG
-                            );
-                            toast.show();
-                        }
-                    });
-                }
+                //open the url in the browser
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(selector.substring(selector.indexOf(':') + 1)));
+                context.startActivity(intent);
             }
-        }).start();
 
+            else if (selector.matches("GET (.*)"))
+            {
+                //open the url in the browser
+                String url = "http://" + server + selector.substring(selector.indexOf('T') + 2);
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(url));
+                context.startActivity(intent);
 
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.addCategory(Intent.CATEGORY_BROWSABLE);
-        intent.setData(Uri.fromFile(file));
-        context.startActivity(intent);
+            }
+
+            else
+            {
+                ///TODO: needs more testing
+                ///get the file and then open it in the browser
+                final Page page = this;
+                final File file = new File(context.getExternalCacheDir() +
+                        context.getPackageName().replace('/', '-'));
+
+                new Thread(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        try
+                        {
+                            Connection conn = new Connection(page.server, page.port);
+                            conn.getBinary(page.selector, file);
+
+                        }
+                        catch (final IOException e)
+                        {
+                            e.printStackTrace();
+                            //inform the user of the error
+                            Handler handler = new Handler(Looper.getMainLooper());
+                            handler.post(new Runnable()
+                            {
+                                @Override
+                                public void run()
+                                {
+                                    Toast toast = Toast.makeText(context, e.getMessage(),
+                                            Toast.LENGTH_LONG
+                                    );
+                                    toast.show();
+                                }
+                            });
+                        }
+
+                        Intent intent = new Intent(Intent.ACTION_VIEW);
+                        intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                        intent.setData(Uri.fromFile(file));
+                        context.startActivity(intent);
+                    }
+                }).start();
+            }
+        }
+
+        catch (ActivityNotFoundException e)
+        {
+            e.printStackTrace();
+            Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
     }
 }

@@ -10,6 +10,7 @@ import android.text.style.ImageSpan;
 import android.view.View;
 import android.widget.TextView;
 
+import com.gmail.afonsotrepa.pocketgopher.History;
 import com.gmail.afonsotrepa.pocketgopher.R;
 
 /**
@@ -79,6 +80,8 @@ public class BinPage extends Page
 
     public void open(Context context)
     {
+        History.add(context, this.url);
+
         this.download(context);
     }
 }
