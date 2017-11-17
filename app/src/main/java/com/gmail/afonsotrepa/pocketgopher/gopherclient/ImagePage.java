@@ -1,4 +1,4 @@
-package com.gmail.afonsotrepa.pocketgopher.gopherclient.Line;
+package com.gmail.afonsotrepa.pocketgopher.gopherclient;
 
 import android.app.Activity;
 import android.content.Context;
@@ -16,32 +16,38 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gmail.afonsotrepa.pocketgopher.R;
-import com.gmail.afonsotrepa.pocketgopher.gopherclient.Connection;
 
 import java.io.File;
 import java.io.IOException;
 
 /**
- * Audio ('s')
+ * Image ('I')
  */
 
-public class AudioLine extends Line
+public class ImagePage extends Page
 {
-    private static final Integer IMAGE_TAG = R.drawable.ic_video_label_white;
+    private static final Integer IMAGE_TAG = R.drawable.ic_image_white;
 
+    public String line;
 
-    public AudioLine(String text, String selector, String server, Integer port)
+    public ImagePage(String selector, String server, Integer port, String line)
     {
-        super(text, server, port, 's', selector);
+        super(server, port, 'I', selector, line);
     }
 
-    public void render(final TextView textView, final Context context)
+    public ImagePage(String selector, String server, Integer port)
+    {
+        this(selector, server, port, null);
+    }
+
+
+    public void render(final TextView textView, final Context context, String line)
     {
         //handler to the main thread
         final Handler handler = new Handler(Looper.getMainLooper());
-        final SpannableString text = new SpannableString("  " + this.text + " \n");
+        final SpannableString text = new SpannableString("  " + line + " \n");
 
-        final Line line = this;
+        final Page page = this;
 
         //TODO: download on long click (instead of using the type icon for that)
         //create the span (and the function to be run when it's clicked)
@@ -50,7 +56,7 @@ public class AudioLine extends Line
             @Override
             public void onClick(View widget)
             {
-                line.download(context);
+                page.download(context);
             }
         };
         final ClickableSpan cs2 = new ClickableSpan()
@@ -58,7 +64,7 @@ public class AudioLine extends Line
             @Override
             public void onClick(View widget)
             {
-                onLineClick(context);
+                page.open(context);
             }
         };
 
@@ -81,10 +87,7 @@ public class AudioLine extends Line
     }
 
 
-    /**
-     * Run when the line is clicked
-     */
-    public void onLineClick(final Context context)
+    public void open(final Context context)
     {
         final ProgressBar progressBar = ((Activity) context).findViewById(R.id.progressBar);
         progressBar.setVisibility(View.VISIBLE);
@@ -148,7 +151,7 @@ public class AudioLine extends Line
                 //make and start an intent to call the media player
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                intent.setDataAndType(Uri.fromFile(file), "audio/*");
+                intent.setDataAndType(Uri.fromFile(file), "image/*");
                 ((Activity) context).setResult(Activity.RESULT_OK, intent);
                 context.startActivity(intent);
 

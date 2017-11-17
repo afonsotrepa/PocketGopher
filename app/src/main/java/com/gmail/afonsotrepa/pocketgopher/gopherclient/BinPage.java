@@ -1,4 +1,4 @@
-package com.gmail.afonsotrepa.pocketgopher.gopherclient.Line;
+package com.gmail.afonsotrepa.pocketgopher.gopherclient;
 
 import android.content.Context;
 import android.os.Handler;
@@ -12,34 +12,41 @@ import android.widget.TextView;
 
 import com.gmail.afonsotrepa.pocketgopher.R;
 
-
 /**
- * Text File ('0')
+ * Macintosh BinHex file, Binary Archive, UUEncoded file, Binary file, Word-processing  document
+ * ('4', '5', '6', '9', 'd')
  */
-public class TextFileLine extends Line
-{
-    private static final Integer IMAGE_TAG = R.drawable.ic_menu_white;
 
-    public TextFileLine(String text, String selector, String server, Integer port)
+public class BinPage extends Page
+{
+    private static final Integer IMAGE_TAG = R.drawable.ic_file_download_white;
+
+    public BinPage(String selector, String server, Integer port, String line)
     {
-        super(text, server, port, '0', selector);
+        super(server, port, '9', selector, line);
     }
 
-    public void render(final TextView textView, final Context context)
+    public BinPage(String selector, String server, Integer port)
+    {
+        this(selector, server, port, null);
+    }
+
+
+    public void render(final TextView textView, final Context context, String line)
     {
         //handler to the main thread
         final Handler handler = new Handler(Looper.getMainLooper());
-        final SpannableString text = new SpannableString("  " + this.text + " \n");
+        final SpannableString text = new SpannableString("  " + line + " \n");
 
-        final TextFileLine l = this;
 
+        final BinPage page = this;
         //create the span (and the function to be run when it's clicked)
         final ClickableSpan cs1 = new ClickableSpan()
         {
             @Override
             public void onClick(View widget)
             {
-                l.open(context);
+                page.open(context);
             }
         };
         final ClickableSpan cs2 = new ClickableSpan()
@@ -47,9 +54,10 @@ public class TextFileLine extends Line
             @Override
             public void onClick(View widget)
             {
-                l.open(context);
+                page.open(context);
             }
         };
+
 
         //apply the span to text and append text to textView
         handler.post(new Runnable()
@@ -66,5 +74,11 @@ public class TextFileLine extends Line
                 textView.append(text);
             }
         });
+    }
+
+
+    public void open(Context context)
+    {
+        this.download(context);
     }
 }

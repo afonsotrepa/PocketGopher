@@ -1,4 +1,4 @@
-package com.gmail.afonsotrepa.pocketgopher.gopherclient.Line;
+package com.gmail.afonsotrepa.pocketgopher.gopherclient;
 
 import android.content.Context;
 import android.os.Handler;
@@ -6,32 +6,28 @@ import android.os.Looper;
 import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 /**
  * Simple informational text line ('i')
  */
 
-public class TextLine extends Line
+public class TextPage extends Page
 {
     private final static Float MAIN_TITLE_SIZE = 2f;
     private final static Float SUB_TITLE_SIZE = 1.5f;
 
     //selector is needed to check for titles
-    TextLine(String text, String selector)
+    TextPage(String selector, String line)
     {
-        super(text, null, 0, 'i', selector);
+        super(null, 0, 'i', selector, line);
     }
 
-    TextLine(String text)
-    {
-        this(text, "");
-    }
-
-    public void render(final TextView textView, Context context)
+    public void render(final TextView textView, Context context, String line)
     {
 
-        final SpannableString text = new SpannableString(this.text + "\n");
+        final SpannableString text = new SpannableString(line + "\n");
 
         //Change the font size if it's a title (UNTESTED!!!)
         if (this.selector.equals("TITLE"))
@@ -57,5 +53,11 @@ public class TextLine extends Line
                 textView.append(text);
             }
         });
+    }
+
+
+    public void open(Context context)
+    {
+        Toast.makeText(context, "Can't open a page of type 'i'!!", Toast.LENGTH_LONG).show();
     }
 }

@@ -19,7 +19,6 @@ import com.gmail.afonsotrepa.pocketgopher.Bookmark;
 import com.gmail.afonsotrepa.pocketgopher.MainActivity;
 import com.gmail.afonsotrepa.pocketgopher.R;
 import com.gmail.afonsotrepa.pocketgopher.gopherclient.Connection;
-import com.gmail.afonsotrepa.pocketgopher.gopherclient.Line.Line;
 import com.gmail.afonsotrepa.pocketgopher.gopherclient.Page;
 
 import java.io.IOException;
@@ -69,7 +68,7 @@ public class MenuActivity extends AppCompatActivity
                 setTitle(p.url);
 
                 ///Network stuff
-                List<Line> lines;
+                List<Page> lines;
                 try
                 {
                     //start new connection
@@ -100,9 +99,9 @@ public class MenuActivity extends AppCompatActivity
                 }
 
                 //render the lines on the screen
-                for (Line line : lines)
+                for (Page line : lines)
                 {
-                    line.render(textView, MenuActivity.this);
+                    line.render(textView, MenuActivity.this, line.line);
                 }
 
                 //make the progress bar invisible

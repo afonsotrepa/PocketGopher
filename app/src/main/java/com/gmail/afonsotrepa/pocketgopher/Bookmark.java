@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gmail.afonsotrepa.pocketgopher.gopherclient.Page;
@@ -18,19 +19,19 @@ import java.util.List;
  *
  */
 
-public class Bookmark extends Page
+public class Bookmark
 {
+    public Page page;
     public String name;
     public String url;
 
-    public Class activity; //the activity to call when opening the bookmarked page
     public Integer id; //a unique id that identifies the bookmark
 
     private static final Integer BOOKMARKS_FILE = R.string.booksmarks_file;
 
     private Bookmark(String name, String url, Integer id)
     {
-        super(url);
+        this.page = Page.makePage(url);
         this.url = url;
         this.name = name;
         this.id = id;
@@ -38,7 +39,7 @@ public class Bookmark extends Page
 
     public Bookmark(Context context, String name, String url)
     {
-        super(url);
+        this.page = Page.makePage(url);
         this.url = url;
         this.name = name;
 
@@ -274,5 +275,10 @@ public class Bookmark extends Page
         Bookmark bookmark = new Bookmark(context, "", "");
         bookmark.editBookmark(context);
         return bookmark;
+    }
+
+    public void open(Context context)
+    {
+        this.page.open(context);
     }
 }

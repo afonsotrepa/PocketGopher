@@ -1,4 +1,4 @@
-package com.gmail.afonsotrepa.pocketgopher.gopherclient.Line;
+package com.gmail.afonsotrepa.pocketgopher.gopherclient;
 
 import android.content.Context;
 import android.os.Handler;
@@ -6,6 +6,7 @@ import android.os.Looper;
 import android.text.SpannableString;
 import android.text.style.ImageSpan;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.gmail.afonsotrepa.pocketgopher.R;
 
@@ -13,21 +14,23 @@ import com.gmail.afonsotrepa.pocketgopher.R;
  *
  */
 
-public class UnknownLine extends Line
+public class UnknownPage extends Page
 {
     private static final Integer IMAGE_TAG = R.drawable.ic_error_white;
 
-    private Character type_tag;
+    public String line;
+    private Character type;
 
-    public UnknownLine(String text)
+
+    public UnknownPage(String line)
     {
-        super(text, null, 0, '3', "");
+        super(null, 0, '3', "", line);
     }
 
-    public void render(final TextView textView, final Context context)
+    public void render(final TextView textView, final Context context, String line)
     {
         final Handler handler = new Handler(Looper.getMainLooper());
-        final SpannableString text = new SpannableString("  " + this.text + "\n");
+        final SpannableString text = new SpannableString("  " + line + "\n");
 
         handler.post(new Runnable()
         {
@@ -39,5 +42,11 @@ public class UnknownLine extends Line
                 textView.append(text);
             }
         });
+    }
+
+    public void open(Context context)
+    {
+        Toast.makeText(context, "Can't open a page of type '" + this.type + "' !!",
+                Toast.LENGTH_LONG).show();
     }
 }

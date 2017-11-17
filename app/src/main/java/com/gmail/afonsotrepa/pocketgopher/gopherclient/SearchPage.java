@@ -1,4 +1,4 @@
-package com.gmail.afonsotrepa.pocketgopher.gopherclient.Line;
+package com.gmail.afonsotrepa.pocketgopher.gopherclient;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -22,19 +22,27 @@ import com.gmail.afonsotrepa.pocketgopher.R;
  * Index-Search server ('7')
  */
 
-public class SearchLine extends Line
+public class SearchPage extends Page
 {
     private static final Integer IMAGE_TAG = R.drawable.ic_search_white;
 
-    public SearchLine(String text, String selector, String server, Integer port)
+    public SearchPage(String selector, String server, Integer port, String line)
     {
-        super(text, server, port, '7', selector);
+        super(server, port, '7', selector, line);
     }
 
-    public void render(final TextView textView, final Context context)
+    public SearchPage(String selector, String server, Integer port)
+    {
+        this(selector, server, port, null);
+    }
+
+
+    public void render(final TextView textView, final Context context, String line)
     {
         final Handler handler = new Handler(Looper.getMainLooper());
-        final SpannableString text = new SpannableString("  " + this.text + " \n");
+        final SpannableString text = new SpannableString("  " + line + " \n");
+
+        final Page page = this;
 
         //create the span (and the function to be run when it's clicked)
         final ClickableSpan cs1 = new ClickableSpan()
@@ -42,7 +50,7 @@ public class SearchLine extends Line
             @Override
             public void onClick(View widget)
             {
-                onLineClick(context);
+                page.open(context);
             }
         };
         final ClickableSpan cs2 = new ClickableSpan()
@@ -50,7 +58,7 @@ public class SearchLine extends Line
             @Override
             public void onClick(View widget)
             {
-                onLineClick(context);
+                page.open(context);
             }
         };
 
@@ -71,10 +79,8 @@ public class SearchLine extends Line
         });
     }
 
-    /**
-     * Run when the line is clicked
-     */
-    public void onLineClick(final Context context)
+
+    public void open(final Context context)
     {
         //AlertDialog to be shown when method gets called
         AlertDialog.Builder dialog = new AlertDialog.Builder(context);
@@ -100,12 +106,13 @@ public class SearchLine extends Line
 
 
                         //make the line
-                        MenuLine line = new MenuLine(query, selector + "\t" + query,
+                        MenuPage page = new MenuPage(
+                                selector + "\t" + query,
                                 server,
                                 port
                         );
 
-                        line.open(context);
+                        page.open(context);
 
                     }
                 }

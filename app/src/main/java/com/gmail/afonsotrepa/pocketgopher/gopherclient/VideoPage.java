@@ -1,4 +1,4 @@
-package com.gmail.afonsotrepa.pocketgopher.gopherclient.Line;
+package com.gmail.afonsotrepa.pocketgopher.gopherclient;
 
 import android.app.Activity;
 import android.content.Context;
@@ -16,7 +16,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gmail.afonsotrepa.pocketgopher.R;
-import com.gmail.afonsotrepa.pocketgopher.gopherclient.Connection;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,23 +24,29 @@ import java.io.IOException;
  * Video (';')
  */
 
-public class VideoLine extends Line
+public class VideoPage extends Page
 {
     private static final Integer IMAGE_TAG = R.drawable.ic_video_label_white;
 
 
-    public VideoLine(String text, String selector, String server, Integer port)
+    public VideoPage(String selector, String server, Integer port, String line)
     {
-        super(text, server, port, ';', selector);
+        super(server, port, ';', selector, line);
     }
 
-    public void render(final TextView textView, final Context context)
+    public VideoPage(String selector, String server, Integer port)
+    {
+        this(selector, server, port, null);
+    }
+
+
+    public void render(final TextView textView, final Context context, String line)
     {
         //handler to the main thread
         final Handler handler = new Handler(Looper.getMainLooper());
-        final SpannableString text = new SpannableString("  " + this.text + " \n");
+        final SpannableString text = new SpannableString("  " + line + " \n");
 
-        final Line line = this;
+        final Page page = this;
 
         //TODO: download on long click (instead of using the type icon for that)
         //create the span (and the function to be run when it's clicked)
@@ -50,7 +55,7 @@ public class VideoLine extends Line
             @Override
             public void onClick(View widget)
             {
-                line.download(context);
+                page.download(context);
             }
         };
         final ClickableSpan cs2 = new ClickableSpan()
@@ -58,7 +63,7 @@ public class VideoLine extends Line
             @Override
             public void onClick(View widget)
             {
-                onLineClick(context);
+                page.open(context);
             }
         };
 
@@ -81,10 +86,7 @@ public class VideoLine extends Line
     }
 
 
-    /**
-     * Run when the line is clicked
-     */
-    public void onLineClick(final Context context)
+    public void open(final Context context)
     {
         final ProgressBar progressBar = ((Activity) context).findViewById(R.id.progressBar);
         progressBar.setVisibility(View.VISIBLE);

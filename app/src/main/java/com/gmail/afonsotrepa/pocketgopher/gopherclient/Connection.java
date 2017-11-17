@@ -3,9 +3,6 @@ package com.gmail.afonsotrepa.pocketgopher.gopherclient;
 
 import android.graphics.drawable.Drawable;
 
-import com.gmail.afonsotrepa.pocketgopher.gopherclient.Line.Line;
-import com.gmail.afonsotrepa.pocketgopher.gopherclient.Line.UnknownLine;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -81,14 +78,14 @@ public class Connection
      *
      * @param selector selector (see RFC 1436)
      *
-     * @return the response from the server (as Line objects)
+     * @return the response from the server (as Page objects)
      */
-    public List<Line> getMenu(String selector)
+    public List<Page> getMenu(String selector)
     {
         this.write(selector); //send the selector
         String lines[] = this.read().split("\n"); //read the response by the server
 
-        List<Line> response = new ArrayList<>();
+        List<Page> response = new ArrayList<>();
 
         for (String line : lines)
         {
@@ -101,26 +98,26 @@ public class Connection
             String[] linesplit = line.split("\t");
             if (linesplit.length < 2)
             {
-                response.add(Line.makeLine(
+                response.add(Page.makePage(
                         line.charAt(0), //type
-                        linesplit[0].substring(1), //remove the type tag
                         "",
                         "",
-                        0
+                        0,
+                        linesplit[0].substring(1) //remove the type tag
                 ));
 
             } else if (linesplit.length < 4)
             {
-                response.add(new UnknownLine(line));
+                response.add(new UnknownPage(line));
 
             } else
             {
-                response.add(Line.makeLine(
+                response.add(Page.makePage(
                         line.charAt(0), //type
-                        linesplit[0].substring(1), //remove the type tag
                         linesplit[1],
                         linesplit[2],
-                        Integer.parseInt(linesplit[3])
+                        Integer.parseInt(linesplit[3]),
+                        linesplit[0].substring(1) //remove the type tag
                 ));
             }
         }

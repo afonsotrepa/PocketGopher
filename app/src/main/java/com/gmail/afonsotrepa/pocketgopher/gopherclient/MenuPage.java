@@ -1,6 +1,8 @@
-package com.gmail.afonsotrepa.pocketgopher.gopherclient.Line;
+package com.gmail.afonsotrepa.pocketgopher.gopherclient;
+
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.SpannableString;
@@ -11,36 +13,43 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.gmail.afonsotrepa.pocketgopher.R;
+import com.gmail.afonsotrepa.pocketgopher.gopherclient.Activity.MenuActivity;
+
 
 /**
- * Macintosh BinHex file, Binary Archive, UUEncoded file, Binary file, Word-processing  document
- * ('4', '5', '6', '9', 'd')
+ * Directory/Menu ('1')
  */
 
-public class BinLine extends Line
+public class MenuPage extends Page
 {
-    private static final Integer IMAGE_TAG = R.drawable.ic_file_download_white;
+    private static final Integer IMAGE_TAG = R.drawable.ic_folder_open_white;
 
-    BinLine(String text, String selector, String server, Integer port)
+    public MenuPage(String selector, String server, Integer port, String line)
     {
-        super(text, server, port, '9', selector);
+        super(server, port, '1', selector, line);
     }
 
-    public void render(final TextView textView, final Context context)
+    public MenuPage(String selector, String server, Integer port)
+    {
+        this(selector, server, port, null);
+    }
+
+
+    public void render(final TextView textView, final Context context, String line)
     {
         //handler to the main thread
         final Handler handler = new Handler(Looper.getMainLooper());
-        final SpannableString text = new SpannableString("  " + this.text + " \n");
+        final SpannableString text = new SpannableString("  " + line + " \n");
 
+        final Page page = this;
 
-        final BinLine line = this;
         //create the span (and the function to be run when it's clicked)
         final ClickableSpan cs1 = new ClickableSpan()
         {
             @Override
             public void onClick(View widget)
             {
-                line.download(context);
+                page.open(context);
             }
         };
         final ClickableSpan cs2 = new ClickableSpan()
@@ -48,7 +57,7 @@ public class BinLine extends Line
             @Override
             public void onClick(View widget)
             {
-                line.download(context);
+                page.open(context);
             }
         };
 
@@ -70,4 +79,11 @@ public class BinLine extends Line
         });
     }
 
+
+    public void open(Context context)
+    {
+        Intent intent = new Intent(context, MenuActivity.class);
+        intent.putExtra("page", this);
+        context.startActivity(intent);
+    }
 }

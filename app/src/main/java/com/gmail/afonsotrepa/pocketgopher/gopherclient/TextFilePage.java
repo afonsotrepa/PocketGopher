@@ -1,6 +1,7 @@
-package com.gmail.afonsotrepa.pocketgopher.gopherclient.Line;
+package com.gmail.afonsotrepa.pocketgopher.gopherclient;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.SpannableString;
@@ -11,34 +12,42 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.gmail.afonsotrepa.pocketgopher.R;
+import com.gmail.afonsotrepa.pocketgopher.gopherclient.Activity.MenuActivity;
+import com.gmail.afonsotrepa.pocketgopher.gopherclient.Activity.TextFileActivity;
+
 
 /**
- * HTML file ('h')
+ * Text File ('0')
  */
-
-public class HtmlLine extends Line
+public class TextFilePage extends Page
 {
-    private static final Integer IMAGE_TAG = R.drawable.ic_web_asset_white;
+    private static final Integer IMAGE_TAG = R.drawable.ic_menu_white;
 
-    public HtmlLine(String text, String selector, String server, Integer port)
+    public TextFilePage(String selector, String server, Integer port, String line)
     {
-        super(text, server, port, 'h', selector);
+        super(server, port, '0', selector, line);
     }
 
-    public void render(final TextView textView, final Context context)
+    public TextFilePage(String selector, String server, Integer port)
+    {
+        this(selector, server, port, null);
+    }
+
+    public void render(final TextView textView, final Context context, String line)
     {
         //handler to the main thread
         final Handler handler = new Handler(Looper.getMainLooper());
-        final SpannableString text = new SpannableString("  " + this.text + " \n");
+        final SpannableString text = new SpannableString("  " + line + " \n");
 
-        final HtmlLine l = this;
+        final TextFilePage page = this;
+
         //create the span (and the function to be run when it's clicked)
         final ClickableSpan cs1 = new ClickableSpan()
         {
             @Override
             public void onClick(View widget)
             {
-                l.open(context);
+                page.open(context);
             }
         };
         final ClickableSpan cs2 = new ClickableSpan()
@@ -46,10 +55,9 @@ public class HtmlLine extends Line
             @Override
             public void onClick(View widget)
             {
-                l.open(context);
+                page.open(context);
             }
         };
-
 
         //apply the span to text and append text to textView
         handler.post(new Runnable()
@@ -66,5 +74,12 @@ public class HtmlLine extends Line
                 textView.append(text);
             }
         });
+    }
+
+    public void open(Context context)
+    {
+        Intent intent = new Intent(context, TextFileActivity.class);
+        intent.putExtra("page", this);
+        context.startActivity(intent);
     }
 }

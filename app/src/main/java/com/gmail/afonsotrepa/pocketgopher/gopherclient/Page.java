@@ -5,104 +5,60 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.gmail.afonsotrepa.pocketgopher.History;
 import com.gmail.afonsotrepa.pocketgopher.MainActivity;
-import com.gmail.afonsotrepa.pocketgopher.gopherclient.Activity.HtmlActivity;
-import com.gmail.afonsotrepa.pocketgopher.gopherclient.Activity.MenuActivity;
-import com.gmail.afonsotrepa.pocketgopher.gopherclient.Activity.TextFileActivity;
-import com.gmail.afonsotrepa.pocketgopher.gopherclient.Line.AudioLine;
-import com.gmail.afonsotrepa.pocketgopher.gopherclient.Line.ImageLine;
-import com.gmail.afonsotrepa.pocketgopher.gopherclient.Line.SearchLine;
-import com.gmail.afonsotrepa.pocketgopher.gopherclient.Line.VideoLine;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 
 /**
- * A gopher page (extended by Line and Bookmark
+ * A gopher page (extended Bookmark)
  */
 
-public class Page implements Serializable
+public abstract class Page implements Serializable
 {
     public String server;
     public Integer port;
-    public Character type;
     public String selector;
     public String url;
 
-    public Page(String server, Integer port, Character type, String selector)
+    public String line = null; //optional
+
+    public Page(String server, Integer port, Character type, String selector, String line)
     {
         this.server = server;
         this.port = port;
-        this.type = type;
         this.selector = selector;
 
         this.url = server +
                 ((port == 70) ? "" : ":" + String.valueOf(port)) +
                 ((selector.matches("")) ? "" : "/" + type.toString() + selector);
+
+        this.line = line;
     }
 
-    public Page(String url)
+
+    public Page(String server, Integer port, Character type, String selector)
     {
-        //remove "gopher://" from the beginning of the url if it's present there
-        if (url.indexOf("gopher://") == 0)
-        {
-            url = url.replaceFirst("gopher://", "");
-        }
-
-        String host;
-        String path;
-
-        //get the host and the path
-        if (url.matches("(.*)/(.*)") || url.matches("(.*)/1"))
-        {
-            host = url.substring(0, url.indexOf("/"));
-            path = url.substring(url.indexOf("/") + 1);
-        } else
-        {
-            host = url;
-            path = null;
-        }
-
-        //get the server and the port (if it's explicit)
-        if (host.contains(":"))
-        {
-            this.server = host.substring(0, host.indexOf(":"));
-            this.port = Integer.parseInt(host.substring(host.indexOf(":") + 1));
-        } else
-        {
-            this.server = host;
-            this.port = 70; //default port
-        }
-
-        //get the type and selector
-        if (path != null)
-        {
-            this.type = path.charAt(0);
-            this.selector = path.substring(1);
-        } else
-        {
-            this.type = '1';
-            this.selector = "";
-        }
-
-        //simplify the url
-        this.url = server +
-                ((port == 70) ? "" : ":" + String.valueOf(port)) +
-                ((path == null) ? "" : "/" + path);
+        this(server, port, type, selector, null);
     }
+
+
+    public abstract void open(final Context context);
+
+    public abstract void render(final TextView textView, Context context, String line);
 
 
     /**
@@ -251,7 +207,6 @@ public class Page implements Serializable
                 }
         );
 
-
         alertDialog.setNegativeButton("Cancel",
                 new DialogInterface.OnClickListener()
 
@@ -268,57 +223,156 @@ public class Page implements Serializable
     }
 
 
-    public void open(final Context context)
+    @NonNull
+    public static Page makePage(Character type, String selector, String server, Integer port,
+                                String line)
     {
-        //add the page to history
-        History.add(context, url);
-
-
-        Intent intent;
-
         switch (type)
         {
-            case '0':
-                intent = new Intent(context, TextFileActivity.class);
-                intent.putExtra("page", this);
-                context.startActivity(intent);
-                break;
+            case '0': //text file
+                return new TextFilePage(
+                        selector,
+                        server,
+                        port,
+                        line
+                );
 
-            case '1':
-                intent = new Intent(context, MenuActivity.class);
-                intent.putExtra("page", this);
-                context.startActivity(intent);
-                break;
+            case '1': //menu/directory
+                return new MenuPage(
+                        selector,
+                        server,
+                        port,
+                        line
+                );
 
-            case 'h':
-                intent = new Intent(context, HtmlActivity.class);
-                intent.putExtra("page", this);
-                context.startActivity(intent);
-                break;
+            case '7': //Search engine or CGI script
+                return new SearchPage(
+                        selector,
+                        server,
+                        port,
+                        line
+                );
 
+            case 'i': //Informational text (not in the protocol but common)
+                return new TextPage(selector, line);
 
-            case 's':
-                ((AudioLine) this).onLineClick(context);
-                break;
+            case 'g': //gif (temporary)
+            case 'I': //Image
+                return new ImagePage(
+                        selector,
+                        server,
+                        port,
+                        line
+                );
 
-            case 'I':
-                ((ImageLine) this).onLineClick(context);
-                break;
+            case 'h': //html
+                return new HtmlPage(
+                        selector,
+                        server,
+                        port,
+                        line
+                );
 
-            case '7':
-                ((SearchLine) this).onLineClick(context);
-                break;
+            case '4': //macintosh binhex file
+            case '5': //binary archive
+            case '6': //uuencoded file
+            case '9': //binary file
+            case 'd': //word-processing document
+                return new BinPage(
+                        selector,
+                        server,
+                        port,
+                        line
+                );
 
-            case ';':
-                ((VideoLine) this).onLineClick(context);
-                break;
+            case ';': //video file
+                return new VideoPage(
+                        selector,
+                        server,
+                        port,
+                        line
+                );
 
+            case 's': //audio file
+                return new AudioPage(
+                        selector,
+                        server,
+                        port,
+                        line
+                );
 
-            case '9':
             default:
-                this.download(context);
-                break;
-
+                return new BinPage(
+                        selector,
+                        server,
+                        port,
+                        line
+                );
         }
+    }
+
+    @NonNull
+    public static Page makePage(Character type, String selector, String server, Integer port)
+    {
+        return makePage(type, selector, server, port, null);
+    }
+
+
+    public static Page makePage(String url, String line)
+    {
+        //remove "gopher://" from the beginning of the url if it's present there
+        if (url.indexOf("gopher://") == 0)
+        {
+            url = url.replaceFirst("gopher://", "");
+        }
+
+        String host;
+        String path;
+
+        String server;
+        Integer port;
+        String selector;
+        Character type;
+
+        //get the host and the path
+        if (url.matches("(.*)/(.*)") || url.matches("(.*)/1"))
+        {
+            host = url.substring(0, url.indexOf("/"));
+            path = url.substring(url.indexOf("/") + 1);
+        } else
+        {
+            host = url;
+            path = null;
+        }
+
+        //get the server and the port (if it's explicit)
+        if (host.contains(":"))
+        {
+            server = host.substring(0, host.indexOf(":"));
+            port = Integer.parseInt(host.substring(host.indexOf(":") + 1));
+        } else
+        {
+            server = host;
+            port = 70; //default port
+        }
+
+        //get the type and selector
+        if (path != null)
+        {
+            type = path.charAt(0);
+            selector = path.substring(1);
+        } else
+        {
+            type = '1';
+            selector = "";
+        }
+
+        return Page.makePage(type, selector, server, port, line);
+    }
+
+
+    public static Page makePage(String url)
+    {
+        return Page.makePage(url, null);
     }
 }

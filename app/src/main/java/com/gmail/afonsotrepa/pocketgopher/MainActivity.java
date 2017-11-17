@@ -222,7 +222,7 @@ public class MainActivity extends AppCompatActivity
                             public void onClick(final DialogInterface dialog, int which)
                             {
                                 //setup the page
-                                Page page = new Page(input.getText().toString());
+                                Page page = Page.makePage(input.getText().toString());
 
                                 page.open(getApplicationContext());
                             }
