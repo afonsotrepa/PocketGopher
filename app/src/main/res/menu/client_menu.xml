@@ -4,13 +4,17 @@
 
     <item
         android:id="@+id/addBookmarkButton"
-        android:background="@android:color/background_dark"
-        android:checkable="true"
         android:enabled="true"
         android:icon="@drawable/ic_bookmark_border_white"
-        android:tint="@android:color/white"
-        android:title=""
+        android:title="Add Bookmark"
         android:visible="true"
         app:showAsAction="ifRoom" />
-
+    <item
+        android:id="@+id/link"
+        android:background="@android:color/background_dark"
+        android:enabled="true"
+        android:icon="@drawable/ic_link_white"
+        android:title="Link"
+        android:visible="true"
+        app:showAsAction="ifRoom" />
 </menu>
