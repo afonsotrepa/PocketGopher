@@ -37,7 +37,8 @@ public abstract class History
                     Context.MODE_APPEND
             );
 
-            outputStream.write((url + "\n").getBytes());
+            outputStream.write(url.getBytes());
+            outputStream.write("\n".getBytes());
             outputStream.close();
         }
         catch (IOException e)

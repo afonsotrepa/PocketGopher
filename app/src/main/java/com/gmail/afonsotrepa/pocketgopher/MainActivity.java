@@ -1,14 +1,15 @@
 package com.gmail.afonsotrepa.pocketgopher;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,7 +17,6 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.gmail.afonsotrepa.pocketgopher.gopherclient.Page;
 
@@ -28,8 +28,8 @@ public class MainActivity extends AppCompatActivity
     private Menu menu;
     public static int font = R.style.monospace;
 
-    private static final Integer SETTINGS_FILE = R.string.settings_file;
     private static final String MONOSPACE_FONT_SETTING = "monospace_font";
+    private static final String FIRST_RUN = "first_run";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -37,16 +37,26 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        String file = this.getResources().getString(SETTINGS_FILE);
-        //open/create the file in private mode
-        SharedPreferences sharedPref = this.getSharedPreferences(file, Context.MODE_PRIVATE);
-        if (sharedPref.getInt(MONOSPACE_FONT_SETTING, 1) == 1)
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        if (sharedPreferences.getInt(MONOSPACE_FONT_SETTING, 1) == 1)
         {
             font = R.style.monospace;
         }
         else
         {
             font = R.style.serif;
+        }
+
+        if (sharedPreferences.getBoolean(FIRST_RUN, true))
+        {
+            editor.putBoolean(FIRST_RUN, false);
+            editor.apply();
+
+            new Bookmark(this, "Search Veronica-2", "gopher.floodgap.com/1/v2")
+                    .add(this);
+            new Bookmark(this, "SDF", "sdf.org").add(this);
+            new Bookmark(this, "Khzae", "khzae.net").add(this);
         }
     }
 
@@ -55,17 +65,24 @@ public class MainActivity extends AppCompatActivity
     {
         super.onResume();
 
-        List<Bookmark> bookmarks;
+        //configure the add bookmark button
+        FloatingActionButton addBookmarkFloatingButton = findViewById(R.id
+                .addBookmarkFloatingButton);
+        addBookmarkFloatingButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                //make the new bookmark
+                Bookmark.makeBookmark(MainActivity.this);
+            }
+        });
 
-        try
+
+        List<Bookmark> bookmarks = Bookmark.read(MainActivity.this);
+
+        if (bookmarks == null)
         {
-            bookmarks = Bookmark.read(this);
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            //display the error and return
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -120,20 +137,6 @@ public class MainActivity extends AppCompatActivity
                 return true;
             }
         });
-
-
-        //configure the add bookmark button
-        FloatingActionButton addBookmarkFloatingButton = findViewById(R.id
-                .addBookmarkFloatingButton);
-        addBookmarkFloatingButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                //make the new bookmark
-                Bookmark.makeBookmark(MainActivity.this);
-            }
-        });
     }
 
 
@@ -146,12 +149,10 @@ public class MainActivity extends AppCompatActivity
         this.menu = menu;
         menu.findItem(R.id.monospace_font).setChecked(true);
 
-        String file = this.getResources().getString(SETTINGS_FILE);
-        //open/create the file in private mode
-        SharedPreferences sharedPref = this.getSharedPreferences(file, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        if (sharedPref.getInt(MONOSPACE_FONT_SETTING, 1) == 1)
+        if (sharedPreferences.getInt(MONOSPACE_FONT_SETTING, 1) == 1)
         {
             menu.findItem(R.id.monospace_font).setChecked(true);
         }
@@ -170,11 +171,9 @@ public class MainActivity extends AppCompatActivity
         switch (item.getItemId())
         {
             case R.id.monospace_font:
-                String file = this.getResources().getString(SETTINGS_FILE);
-                //open/create the file in private mode
-                SharedPreferences sharedPref = this.getSharedPreferences(file, Context
-                        .MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPref.edit();
+                SharedPreferences sharedPreferences = PreferenceManager
+                        .getDefaultSharedPreferences(this);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
 
                 if (font == R.style.serif)
                 {

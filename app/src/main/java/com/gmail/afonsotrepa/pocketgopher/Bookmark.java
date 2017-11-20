@@ -5,12 +5,20 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.gmail.afonsotrepa.pocketgopher.gopherclient.Page;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +34,7 @@ public class Bookmark
 
     public Integer id; //a unique id that identifies the bookmark
 
-    private static final Integer BOOKMARKS_FILE = R.string.booksmarks_file;
+    private static final String BOOKMARKS_FILE = "bookmarks";
 
     private Bookmark(String name, String url, Integer id)
     {
@@ -43,12 +51,12 @@ public class Bookmark
         this.name = name;
 
         //generate a new unique id
-        String file = context.getResources().getString(BOOKMARKS_FILE);
-        SharedPreferences sharedPref = context.getSharedPreferences(file, Context.MODE_PRIVATE);
-        id = sharedPref.getInt("id", 0);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences
+                (context);
+        id = sharedPreferences.getInt("id", 0);
 
-        //update the (id part in the) file
-        SharedPreferences.Editor editor = sharedPref.edit();
+        //update the file
+        SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt("id", id + 1);
         editor.apply();
     }
@@ -68,67 +76,92 @@ public class Bookmark
 
 
     /**
-     * Save bookmarks to a SharedPreferences file
+     * Add a bookmark to the file
      */
-    static void save(Context context, List<Bookmark> bookmarks)
+    void add(Context context)
     {
-        String file = context.getResources().getString(BOOKMARKS_FILE);
-        //open/create the file in private mode
-        SharedPreferences sharedPref = context.getSharedPreferences(file, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-
-        //transform the list into a StringBuilder
-        StringBuilder csvbookmarks = new StringBuilder();
-        for (Bookmark b : bookmarks)
+        try
         {
-            csvbookmarks.append(b.name).append("\n");
-            csvbookmarks.append(b.url).append("\n");
-            csvbookmarks.append(b.id.toString()).append("\n");
-            csvbookmarks.append("\u0000");
-        }
+            FileOutputStream outputStream = context.openFileOutput(BOOKMARKS_FILE,
+                    Context.MODE_APPEND
+            );
 
-        //write csvbookmarks to the editor
-        editor.putString("bookmarks", csvbookmarks.toString());
-        //apply the changes to the file
-        editor.apply();
+            outputStream.write((
+                    this.name + "\t" +
+                            this.url + "\t" +
+                            this.id.toString() + "\n"
+            ).getBytes());
+            outputStream.close();
+        }
+        catch (IOException e)
+        {
+            throw new RuntimeException(e);
+        }
     }
 
 
     /**
-     * Read the bookmarks from a  SharedPreferences file
+     * Read the bookmarks from the bookmarks file
      *
      * @return a list of all the bookmarks in the bookmarks file
      */
-    static List<Bookmark> read(Context context) throws Exception
+    static List<Bookmark> read(Context context)
     {
-        String file = context.getResources().getString(BOOKMARKS_FILE);
-        //open/create the file in private mode
-        SharedPreferences sharedPref = context.getSharedPreferences(file, Context.MODE_PRIVATE);
-
-
-        List<Bookmark> bookmarks = new ArrayList<>();
-
-        //read the bookmark(s) from the file
-        String[] csvbookmarks = sharedPref.getString("bookmarks", "").split("\u0000");
-
-        for (String b : csvbookmarks)
+        try
         {
-            String[] bsplit = b.split("\n");
-            if (bsplit.length > 1)
+            FileInputStream inputStream = context.openFileInput(BOOKMARKS_FILE);
+            BufferedReader bufferedreader = new BufferedReader(new InputStreamReader(inputStream));
+
+            //read the bookmark(s) from the file
+            List<Bookmark> bookmarks = new ArrayList<>();
+            String b;
+            while ((b = bufferedreader.readLine()) != null)
             {
-                //parse the bookmark
-                Bookmark bookmark = new Bookmark(
-                        bsplit[0], //name
-                        bsplit[1], //url
-                        Integer.parseInt(bsplit[2])
-                ); //id
+                String[] bsplit = b.split("\t");
+                if (bsplit.length > 1)
+                {
+                    //parse the bookmark
+                    Bookmark bookmark = new Bookmark(
+                            bsplit[0], //name
+                            bsplit[1], //url
+                            Integer.parseInt(bsplit[2]) //id
+                    );
 
-                //add it to the list of bookmarks
-                bookmarks.add(bookmark);
+                    //add it to the list of bookmarks
+                    bookmarks.add(bookmark);
+                }
             }
-        }
 
-        return bookmarks;
+            return bookmarks;
+        }
+        catch (IOException e)
+        {
+            return null;
+        }
+    }
+
+    public void remove(Context context)
+    {
+        try
+        {
+            List<Bookmark> bookmarks = Bookmark.read(context);
+
+            //clear the file
+            context.openFileOutput(BOOKMARKS_FILE, Context.MODE_PRIVATE ).write("".getBytes());
+
+            for (Bookmark b : bookmarks)
+            {
+                if (b.id != this.id)
+                {
+                    b.add(context);
+                }
+            }
+
+        }
+        catch (Exception e)
+        {
+            throw new RuntimeException(e);
+        }
     }
 
 
@@ -163,6 +196,7 @@ public class Bookmark
         //apply the layout
         dialog.setView(layout);
 
+        final Bookmark bookmark = this;
 
         dialog.setPositiveButton("Save",
                 new DialogInterface.OnClickListener()
@@ -172,35 +206,11 @@ public class Bookmark
                     {
                         try
                         {
-                            //list of current bookmarks
-                            List<Bookmark> bookmarks = Bookmark.read(context);
+                            bookmark.name = editName.getText().toString();
+                            bookmark.url = editUrl.getText().toString();
 
-                            //if editing a bookmark that already exists
-                            if (id != 0)
-                            {
-                                //remove the old bookmark
-                                for (Bookmark b : bookmarks)
-                                {
-                                    if (b.id.equals(id))
-                                    {
-                                        bookmarks.remove(b);
-                                    }
-                                }
-                            }
-                            //create the new bookmark
-                            Bookmark b = new Bookmark(
-                                    context,
-                                    editName.getText().toString(),
-                                    editUrl.getText().toString()
-                            );
+                            bookmark.add(context);
 
-                            //add it to the list
-                            bookmarks.add(b);
-
-                            //save the changes to the file
-                            Bookmark.save(context, bookmarks);
-
-                            //show "Bookmark saved" and exit this activity
                             Toast.makeText(context, "Bookmark saved", Toast.LENGTH_SHORT)
                                     .show();
                             dialog.cancel();
@@ -230,20 +240,7 @@ public class Bookmark
                     {
                         try
                         {
-                            List<Bookmark> bookmarks = Bookmark.read(context);
-
-                            //remove the bookmark from bookmarks (if it exists)
-                            for (Bookmark bookmark : bookmarks)
-                            {
-                                if (bookmark.id.equals(id))
-                                {
-                                    bookmarks.remove(bookmark);
-                                    break;
-                                }
-                            }
-
-                            //save the edited bookmarks list
-                            Bookmark.save(context, bookmarks);
+                            bookmark.remove(context);
 
                             dialog.cancel();
                         }
