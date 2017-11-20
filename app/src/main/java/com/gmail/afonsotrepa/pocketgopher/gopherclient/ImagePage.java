@@ -157,8 +157,6 @@ public class ImagePage extends Page
                 intent.setDataAndType(Uri.fromFile(file), "image/*");
                 ((Activity) context).setResult(Activity.RESULT_OK, intent);
                 context.startActivity(intent);
-
-                //TODO: delete the file after intent is finished
             }
         }).start();
     }

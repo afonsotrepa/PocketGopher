@@ -183,10 +183,6 @@ public abstract class Page implements Serializable
                                             ).show();
                                         }
                                     });
-
-                                    ///TODO: need to add some code so the files get detected
-                                    /// by DownloadManager or something (not possible??)
-
                                 }
                                 catch (
                                         final IOException e)

@@ -156,8 +156,6 @@ public class VideoPage extends Page
                 intent.setDataAndType(Uri.fromFile(file), "video/*");
                 ((Activity) context).setResult(Activity.RESULT_OK, intent);
                 context.startActivity(intent);
-
-                //TODO: delete the file after intent is finished
             }
         }).start();
     }
