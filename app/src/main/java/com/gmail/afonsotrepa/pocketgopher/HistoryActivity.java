@@ -27,6 +27,11 @@ public class HistoryActivity extends AppCompatActivity
 
         //get the history and display it on the ListView
         List<String> history = History.read(this);
+        if (history == null)
+        {
+            return;
+        }
+
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this,
                 R.layout.activity_listview,

@@ -4,8 +4,13 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +20,7 @@ import java.util.List;
 
 public abstract class History
 {
-    private static final Integer HISTORY_FILE = R.string.history_file;
+    private static final String HISTORY_FILE = "history_file";
 
 
     /**
@@ -26,43 +31,49 @@ public abstract class History
      */
     static public void add(Context context, String url)
     {
-        //open/create the file in private mode and make the editor
-        String file = context.getResources().getString(HISTORY_FILE);
-        SharedPreferences sharedPref = context.getSharedPreferences(file, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
+        try
+        {
+            FileOutputStream outputStream = context.openFileOutput(HISTORY_FILE,
+                    Context.MODE_APPEND
+            );
 
-        //append the url to the end of the list of url's in the file
-        editor.putString("history",
-                sharedPref.getString("history", "") + url + "\u0000"
-        );
-
-        //apply the changes to the file
-        editor.apply();
+            outputStream.write((url + "\n").getBytes());
+            outputStream.close();
+        }
+        catch (IOException e)
+        {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
      * reads the history from a file
      *
      * @return the visited pages/url's in reverse (latest entry is at index 0)
-     * TODO: use an actual file instead of sharedpref
      */
     static public List<String> read(Context context)
     {
-        //open/create the file in private mode
-        String file = context.getResources().getString(HISTORY_FILE);
-        SharedPreferences sharedPref = context.getSharedPreferences(file, Context.MODE_PRIVATE);
-
-
-        //read the page(s) from the file
-        String[] csvvisited = sharedPref.getString("history", "").split("\u0000");
-
-        List<String> visited = new ArrayList<>();
-        for (String url : csvvisited)
+        try
         {
-            visited.add(0, url);
-        }
 
-        return visited;
+            FileInputStream inputStream = context.openFileInput(HISTORY_FILE);
+            BufferedReader bufferedreader = new BufferedReader(new InputStreamReader(inputStream));
+
+
+            //read the page(s) from the file
+            List<String> visited = new ArrayList<>();
+            String received;
+            while ((received = bufferedreader.readLine()) != null)
+            {
+                visited.add(0, received);
+            }
+
+            return visited;
+        }
+        catch (IOException e)
+        {
+            return null;
+        }
     }
 
     /**
@@ -81,17 +92,8 @@ public abstract class History
                     @Override
                     public void onClick(DialogInterface dialog, int which)
                     {
-                        //open/create the file in private mode and make the editor
-                        String file = context.getResources().getString(HISTORY_FILE);
-                        SharedPreferences sharedPref = context.getSharedPreferences(file, Context
-                                .MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sharedPref.edit();
-
-                        //clear the entry
-                        editor.putString("history", "");
-
-                        //apply the changes to the file
-                        editor.apply();
+                        File file = new File(HISTORY_FILE);
+                        file.delete();
 
                         ((Activity) context).recreate();
                     }
