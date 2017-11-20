@@ -1,4 +1,3 @@
-////TODO: fix all the repeated code
 package com.gmail.afonsotrepa.pocketgopher;
 
 import android.app.AlertDialog;

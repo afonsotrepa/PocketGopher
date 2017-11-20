@@ -28,8 +28,6 @@ public class HtmlPage extends Page
 {
     private static final Integer IMAGE_TAG = R.drawable.ic_web_asset_white;
 
-    String line = null;
-
     public HtmlPage(String selector, String server, Integer port, String line)
     {
         super(server, port, 'h', selector);

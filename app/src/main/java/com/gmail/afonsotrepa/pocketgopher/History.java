@@ -44,7 +44,7 @@ public abstract class History
      * reads the history from a file
      *
      * @return the visited pages/url's in reverse (latest entry is at index 0)
-     * TODO: buffer the read for memory consumption reasons?
+     * TODO: use an actual file instead of sharedpref
      */
     static public List<String> read(Context context)
     {
