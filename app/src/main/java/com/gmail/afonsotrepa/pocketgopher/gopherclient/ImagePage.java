@@ -154,6 +154,7 @@ public class ImagePage extends Page
                 //make and start an intent to call the media player
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); //needed for API 19
                 intent.setDataAndType(Uri.fromFile(file), "image/*");
                 ((Activity) context).setResult(Activity.RESULT_OK, intent);
                 context.startActivity(intent);

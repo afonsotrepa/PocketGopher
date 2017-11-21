@@ -87,6 +87,7 @@ public class MenuPage extends Page
 
         Intent intent = new Intent(context, MenuActivity.class);
         intent.putExtra("page", this);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); //needed for API 19
         context.startActivity(intent);
     }
 }

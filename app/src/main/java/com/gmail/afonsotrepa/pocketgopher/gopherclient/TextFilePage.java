@@ -82,6 +82,7 @@ public class TextFilePage extends Page
 
         Intent intent = new Intent(context, TextFileActivity.class);
         intent.putExtra("page", this);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); //needed for API 19
         context.startActivity(intent);
     }
 }

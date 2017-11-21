@@ -97,6 +97,7 @@ public class HtmlPage extends Page
                 //open the url in the browser
                 String url = "http://" + server + selector.substring(selector.indexOf('T') + 2);
                 Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); //needed for API 19
                 intent.setData(Uri.parse(url));
                 context.startActivity(intent);
 
