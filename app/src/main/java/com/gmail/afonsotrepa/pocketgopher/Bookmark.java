@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -14,7 +13,6 @@ import android.widget.Toast;
 import com.gmail.afonsotrepa.pocketgopher.gopherclient.Page;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -147,7 +145,7 @@ public class Bookmark
             List<Bookmark> bookmarks = Bookmark.read(context);
 
             //clear the file
-            context.openFileOutput(BOOKMARKS_FILE, Context.MODE_PRIVATE ).write("".getBytes());
+            context.openFileOutput(BOOKMARKS_FILE, Context.MODE_PRIVATE).write("".getBytes());
 
             for (Bookmark b : bookmarks)
             {

@@ -66,7 +66,14 @@ public class TextFileActivity extends AppCompatActivity
                 port = p.port;
                 url = p.url;
 
-                setTitle(url);
+                handler.post(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        setTitle(url);
+                    }
+                });
 
                 ///Network stuff
                 final String lines;
@@ -193,7 +200,7 @@ public class TextFileActivity extends AppCompatActivity
                                 //setup the page
                                 Page page = Page.makePage(input.getText().toString());
 
-                                page.open(getApplicationContext());
+                                page.open(TextFileActivity.this);
                             }
                         }
                 );

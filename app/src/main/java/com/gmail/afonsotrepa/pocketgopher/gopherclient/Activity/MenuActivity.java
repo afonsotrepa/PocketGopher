@@ -48,10 +48,9 @@ public class MenuActivity extends AppCompatActivity
         super.onCreate(savedInstaceState);
         setContentView(R.layout.activity_menu);
 
-        //widget to write to
         final TextView textView = findViewById(R.id.textView);
-        //set the font
         textView.setTextAppearance(this, MainActivity.font);
+        textView.setMovementMethod(LinkMovementMethod.getInstance());
 
         final Context context = this;
 
@@ -72,7 +71,14 @@ public class MenuActivity extends AppCompatActivity
                 port = p.port;
                 url = p.url;
 
-                setTitle(url);
+                handler.post(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        setTitle(url);
+                    }
+                });
 
                 ///Network stuff
                 List<Page> lines;
@@ -190,7 +196,7 @@ public class MenuActivity extends AppCompatActivity
                                 //setup the page
                                 Page page = Page.makePage(input.getText().toString());
 
-                                page.open(getApplicationContext());
+                                page.open(MenuActivity.this);
                             }
                         }
                 );
@@ -208,6 +214,11 @@ public class MenuActivity extends AppCompatActivity
                 );
 
                 alertDialog.show();
+
+                return true;
+
+            case R.id.refresh:
+                this.recreate();
 
                 return true;
 
