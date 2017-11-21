@@ -1,29 +1,23 @@
 # PocketGopher
-Pocket Gopher - the small but powerful ~~rodent~~ gopher client that fits in your pocket!
+A fast, elegant and modern Gopher Client for Android.
 
-Requires Android 4.4 or above. (for API level 19)
+(Built for Android 4.4 and above)
 
-# Installation
-Pocket Gopher is currently only available as an apk here:
-https://github.com/afonsotrepa/PocketGopher/releases
+### Features
+* A Tiny client based on material design, with a Dark theme.
+* Bookmarks and History for intuitive navigation.
+* Modular support for Video, Sound, HTML and Text files (and more in future updates).
+* Ability to edit URLs on the fly, unlike other clients.
+* Designed for modern Android ecosystem, with fluid interaction, Ad free.
 
-I do plan on releasing it on f-droid (and maybe even the google play store) in a few days though.
+### Installation
+Grab the latest APK build [here](https://github.com/afonsotrepa/PocketGopher/releases).
 
-# Unlicense
+Coming soon to F-Droid and Google Play Store.
+
+
+### License
 This is free and unencumbered software released into the public domain.
-
-Anyone is free to copy, modify, publish, use, compile, sell, or
-distribute this software, either in source code form or as a compiled
-binary, for any purpose, commercial or non-commercial, and by any
-means.
-
-In jurisdictions that recognize copyright laws, the author or authors
-of this software dedicate any and all copyright interest in the
-software to the public domain. We make this dedication for the benefit
-of the public at large and to the detriment of our heirs and
-successors. We intend this dedication to be an overt act of
-relinquishment in perpetuity of all present and future rights to this
-software under copyright law.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
@@ -33,4 +27,5 @@ OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 
-For more information, please refer to <http://unlicense.org>
+
+For more information, please refer to <http://unlicense.org/> or the accompanying UNLICENSE file.
