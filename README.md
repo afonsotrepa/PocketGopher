@@ -7,8 +7,9 @@ A fast, elegant and modern Gopher Client for Android.
 * A Tiny client based on material design, with a Dark theme.
 * Bookmarks and History for intuitive navigation.
 * Modular support for Video, Sound, HTML and Text files (and more in future updates).
-* Ability to edit URLs on the fly, unlike other clients.
-* Designed for modern Android ecosystem, with fluid interaction, Ad free.
+* Ability to easily edit URLs on the fly, unlike other clients.
+* Designed for the modern Android ecosystem, with fluid interaction.
+* Ad free.
 
 ### Installation
 Grab the latest APK build [here](https://github.com/afonsotrepa/PocketGopher/releases).
