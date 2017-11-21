@@ -12,5 +12,8 @@ build/*
 */.gitignore
 gradlew*
 local.properties
+app/release
 
-keystore.properties
+
+#never remove!!
+keystore.properties 
