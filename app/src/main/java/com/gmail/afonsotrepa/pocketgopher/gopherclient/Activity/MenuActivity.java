@@ -190,7 +190,7 @@ public class MenuActivity extends AppCompatActivity
                                 //setup the page
                                 Page page = Page.makePage(input.getText().toString());
 
-                                page.open(getApplicationContext());
+                                page.open(MenuActivity.this);
                             }
                         }
                 );

@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity
                     @Override
                     public void run()
                     {
-                        bookmark.open(getApplicationContext());
+                        bookmark.open(MainActivity.this);
                     }
                 }).start();
             }
@@ -219,7 +219,7 @@ public class MainActivity extends AppCompatActivity
                                 //setup the page
                                 Page page = Page.makePage(input.getText().toString());
 
-                                page.open(getApplicationContext());
+                                page.open(MainActivity.this);
                             }
                         }
                 );
@@ -241,7 +241,7 @@ public class MainActivity extends AppCompatActivity
                 return true;
 
             case R.id.history:
-                Intent intent = new Intent(getApplicationContext(), HistoryActivity.class);
+                Intent intent = new Intent(MainActivity.this, HistoryActivity.class);
                 startActivity(intent);
 
                 return true;

@@ -53,7 +53,7 @@ public class HistoryActivity extends AppCompatActivity
                     @Override
                     public void run()
                     {
-                        Page.makePage(url).open(getApplicationContext());
+                        Page.makePage(url).open(HistoryActivity.this);
                     }
                 }).start();
             }
