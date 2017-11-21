@@ -48,10 +48,9 @@ public class MenuActivity extends AppCompatActivity
         super.onCreate(savedInstaceState);
         setContentView(R.layout.activity_menu);
 
-        //widget to write to
         final TextView textView = findViewById(R.id.textView);
-        //set the font
         textView.setTextAppearance(this, MainActivity.font);
+        textView.setMovementMethod(LinkMovementMethod.getInstance());
 
         final Context context = this;
 
