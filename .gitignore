@@ -12,3 +12,5 @@ build/*
 */.gitignore
 gradlew*
 local.properties
+
+keystore.properties

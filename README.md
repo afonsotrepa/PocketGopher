@@ -1,7 +1,7 @@
 # PocketGopher
 Pocket Gopher - the small but powerful ~~rodent~~ gopher client that fits in your pocket!
 
-Requires Android 4.1 or above. (for API level 16)
+Requires Android 4.4 or above. (for API level 19)
 
 # Installation
 Pocket Gopher is currently only available as an apk here:
