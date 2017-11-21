@@ -71,7 +71,14 @@ public class MenuActivity extends AppCompatActivity
                 port = p.port;
                 url = p.url;
 
-                setTitle(url);
+                handler.post(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        setTitle(url);
+                    }
+                });
 
                 ///Network stuff
                 List<Page> lines;
@@ -207,6 +214,11 @@ public class MenuActivity extends AppCompatActivity
                 );
 
                 alertDialog.show();
+
+                return true;
+
+            case R.id.refresh:
+                this.recreate();
 
                 return true;
 

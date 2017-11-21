@@ -66,7 +66,14 @@ public class TextFileActivity extends AppCompatActivity
                 port = p.port;
                 url = p.url;
 
-                setTitle(url);
+                handler.post(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        setTitle(url);
+                    }
+                });
 
                 ///Network stuff
                 final String lines;
