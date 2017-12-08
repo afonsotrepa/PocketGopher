@@ -13,6 +13,7 @@ A fast, elegant and modern Gopher Client for Android.
 
 ### Installation
 Download and install from F-droid: https://f-droid.org/en/packages/com.gmail.afonsotrepa.pocketgopher/
+
 All future releases will only be availabe on F-droid.
 
 ### License
