@@ -12,10 +12,8 @@ A fast, elegant and modern Gopher Client for Android.
 * Ad free.
 
 ### Installation
-Grab the latest APK build [here](https://github.com/afonsotrepa/PocketGopher/releases).
-
-Coming soon to F-Droid and Google Play Store.
-
+Download and install from F-droid: https://f-droid.org/en/packages/com.gmail.afonsotrepa.pocketgopher/
+All future releases will only be availabe on F-droid.
 
 ### License
 This is free and unencumbered software released into the public domain.
