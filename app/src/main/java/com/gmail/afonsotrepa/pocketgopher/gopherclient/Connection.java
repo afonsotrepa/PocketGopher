@@ -43,7 +43,7 @@ public class Connection
      */
     private void write(String message)
     {
-        os.println(message);
+        os.write(message + "\r\n");
         os.flush();
     }
 
