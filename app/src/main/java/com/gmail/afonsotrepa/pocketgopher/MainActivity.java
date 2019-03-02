@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
@@ -57,6 +58,16 @@ public class MainActivity extends AppCompatActivity
                     .add(this);
             new Bookmark(this, "SDF", "sdf.org").add(this);
             new Bookmark(this, "Khzae", "khzae.net").add(this);
+        }
+
+        Intent intent = getIntent();
+        if (Intent.ACTION_VIEW.equals(intent.getAction()))
+        {
+            Uri uri = intent.getData();
+            if (uri != null) {
+                Page page = Page.makePage(uri.toString());
+                page.open(this);
+            }
         }
     }
 
