@@ -223,6 +223,8 @@ public class MainActivity extends AppCompatActivity
                 alertDialog.setMessage("Font Size");
                 alertDialog.setView(numberPicker);
 
+                final MainActivity activity = this;
+
                 //setup the ok button callback to save the number picker value into shared preferences
                 alertDialog.setPositiveButton("OK",
                         new DialogInterface.OnClickListener()
@@ -230,9 +232,13 @@ public class MainActivity extends AppCompatActivity
                             @Override
                             public void onClick(final DialogInterface dialog, int which)
                             {
+                                // get the new font size from number picker
+                                int newFontSize = numberPicker.getValue();
                                 // store the new font size setting into shared preferences
-                                editor.putInt(FONT_SIZE_SETTING, numberPicker.getValue());
+                                editor.putInt(FONT_SIZE_SETTING, newFontSize);
                                 editor.apply();
+                                // update the current font size
+                                activity.fontSize = newFontSize;
                             }
                         }
                 );
