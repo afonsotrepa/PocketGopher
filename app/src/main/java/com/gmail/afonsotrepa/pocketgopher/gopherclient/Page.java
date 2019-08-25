@@ -109,12 +109,12 @@ public abstract class Page implements Serializable
                             public void run()
                             {
 
+                                //get the downloads directory name
+                                final String downloadDirectory =
+                                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
+
                                 //file is always saved in the download directory atm
-                                File file = new File(
-                                        Environment.getExternalStoragePublicDirectory(Environment
-                                                .DIRECTORY_DOWNLOADS) +
-                                                "/" + fileName
-                                );
+                                File file = new File(downloadDirectory + "/" + fileName);
 
                                 try
                                 {
@@ -125,26 +125,16 @@ public abstract class Page implements Serializable
 
                                         if (fileName.matches("(.*)\\.(.*)"))
                                         {
-                                            file = new File(
-                                                    Environment.getExternalStoragePublicDirectory
-                                                            (Environment
-                                                                    .DIRECTORY_DOWNLOADS) +
-                                                            "/" + fileName.substring(0, fileName
-                                                            .indexOf
-                                                                    ('.')) +
+                                            file = new File(downloadDirectory + "/" +
+                                                            fileName.substring(0, fileName.indexOf('.')) +
                                                             "(" + String.valueOf(n) + ")" +
-                                                            fileName.substring(fileName.indexOf(
-                                                                    '.'))
+                                                            fileName.substring(fileName.indexOf('.'))
                                             );
                                         }
                                         else
                                         {
-                                            file = new File(
-                                                    Environment.getExternalStoragePublicDirectory
-                                                            (Environment
-                                                                    .DIRECTORY_DOWNLOADS) +
-                                                            fileName +
-                                                            "(" + String.valueOf(n) + ")"
+                                            file = new File(downloadDirectory + "/" +
+                                                            fileName + "(" + String.valueOf(n) + ")"
                                             );
                                         }
                                     }
@@ -179,7 +169,7 @@ public abstract class Page implements Serializable
                                         public void run()
                                         {
                                             Toast.makeText(context,
-                                                    "File saved saved as: " + f.getName(),
+                                                    "File saved as: " + f.getName(),
                                                     Toast.LENGTH_SHORT
                                             ).show();
                                         }
