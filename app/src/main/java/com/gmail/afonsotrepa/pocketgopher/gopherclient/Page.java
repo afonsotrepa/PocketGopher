@@ -123,7 +123,7 @@ public abstract class Page implements Serializable
                                     {
                                         n += 1;
 
-                                        if (fileName.matches("(.*).(.*)"))
+                                        if (fileName.matches("(.*)\\.(.*)"))
                                         {
                                             file = new File(
                                                     Environment.getExternalStoragePublicDirectory
