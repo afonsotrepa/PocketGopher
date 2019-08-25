@@ -92,7 +92,6 @@ public abstract class Page implements Serializable
         input.setText(selector.substring(selector.lastIndexOf("/") + 1)); //default file name
         input.setTextAppearance(context, MainActivity.font);
         alertDialog.setView(input);
-        final String fileName = input.getText().toString();
 
         // create the handler for running UI code on main thread
         final Handler handler = new Handler(Looper.getMainLooper());
@@ -114,6 +113,7 @@ public abstract class Page implements Serializable
                                     Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
 
                                 //file is always saved in the download directory atm
+                                final String fileName = input.getText().toString();
                                 File file = new File(downloadDirectory + "/" + fileName);
 
                                 try
