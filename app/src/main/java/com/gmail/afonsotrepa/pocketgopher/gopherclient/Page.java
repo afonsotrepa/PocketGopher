@@ -79,7 +79,7 @@ public abstract class Page implements Serializable
         }
 
         //AlertDialog to be shown when method gets called
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
         alertDialog.setTitle("Save as:");
 
         //the EditText where the user will input the name of the file
@@ -94,6 +94,8 @@ public abstract class Page implements Serializable
         alertDialog.setView(input);
         final String fileName = input.getText().toString();
 
+        // create the handler for running UI code on main thread
+        final Handler handler = new Handler(Looper.getMainLooper());
 
         alertDialog.setPositiveButton("Save",
                 new DialogInterface.OnClickListener()
@@ -106,7 +108,6 @@ public abstract class Page implements Serializable
                             @Override
                             public void run()
                             {
-                                Handler handler = new Handler(Looper.getMainLooper());
 
                                 //file is always saved in the download directory atm
                                 File file = new File(
@@ -216,7 +217,15 @@ public abstract class Page implements Serializable
                 }
         );
 
-        alertDialog.show();
+        // show the alert dialog
+        handler.post(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                alertDialog.show();
+            }
+        });
     }
 
 
