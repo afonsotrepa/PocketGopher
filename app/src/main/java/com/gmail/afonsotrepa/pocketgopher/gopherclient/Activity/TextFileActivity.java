@@ -49,6 +49,7 @@ public class TextFileActivity extends AppCompatActivity
         final TextView textView = (TextView) findViewById(R.id.textView);
         //set the font
         textView.setTextAppearance(this, MainActivity.font);
+        textView.setTextSize(MainActivity.fontSize);
 
         //start a new thread to do network stuff
         new Thread(new Runnable()
