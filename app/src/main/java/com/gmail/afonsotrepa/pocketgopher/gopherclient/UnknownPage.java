@@ -39,7 +39,7 @@ public class UnknownPage extends Page
             public void run()
             {
                 //set the image tag behind (left of) the text
-                text.setSpan(new ImageSpan(context, IMAGE_TAG), 0, 1, 0);
+                text.setSpan(Page.formatIcon(context, textView, IMAGE_TAG), 0, 1, 0);
                 textView.append(text);
             }
         });
