@@ -127,9 +127,9 @@ public class Connection
                             linesplit[0].substring(1) //remove the type tag
                     ));
                 }
-                catch (NumberFormatException e)
+                catch (StringIndexOutOfBoundsException | NumberFormatException e)
                 {
-                    // the port is not a valid integer, add an unknown page
+                    // something went wrong, show an unknown page entry
                     response.add(new UnknownPage(line));
                 }
 
