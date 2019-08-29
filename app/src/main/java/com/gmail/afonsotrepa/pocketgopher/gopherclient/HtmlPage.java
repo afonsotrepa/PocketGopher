@@ -118,11 +118,17 @@ public class HtmlPage extends Page
                     {
                         try
                         {
+                            // attempt file connect/download (possible IOEXception)
                             Connection conn = new Connection(page.server, page.port);
                             conn.getBinary(page.selector, file);
 
+                            // attempt view intent (possible ActivityNotFoundException)
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                            intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                            intent.setData(Uri.fromFile(file));
+                            context.startActivity(intent);
                         }
-                        catch (final IOException e)
+                        catch (final IOException | ActivityNotFoundException e)
                         {
                             e.printStackTrace();
                             //inform the user of the error
@@ -139,11 +145,6 @@ public class HtmlPage extends Page
                                 }
                             });
                         }
-
-                        Intent intent = new Intent(Intent.ACTION_VIEW);
-                        intent.addCategory(Intent.CATEGORY_BROWSABLE);
-                        intent.setData(Uri.fromFile(file));
-                        context.startActivity(intent);
                     }
                 }).start();
             }
