@@ -18,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.NumberPicker;
 
 import com.gmail.afonsotrepa.pocketgopher.gopherclient.Page;
 
@@ -28,7 +29,9 @@ public class MainActivity extends AppCompatActivity
 {
     private Menu menu;
     public static int font = R.style.monospace;
+    public static int fontSize = 14; // 14sp is the default textview text size
 
+    private static final String FONT_SIZE_SETTING = "font_size";
     private static final String MONOSPACE_FONT_SETTING = "monospace_font";
     private static final String FIRST_RUN = "first_run";
 
@@ -48,6 +51,8 @@ public class MainActivity extends AppCompatActivity
         {
             font = R.style.serif;
         }
+
+        fontSize = sharedPreferences.getInt(FONT_SIZE_SETTING, fontSize);
 
         if (sharedPreferences.getBoolean(FIRST_RUN, true))
         {
@@ -179,13 +184,15 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
+        // get the preferences editor
+        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        final SharedPreferences.Editor editor = sharedPreferences.edit();
+        // get a dialog builder
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+
         switch (item.getItemId())
         {
             case R.id.monospace_font:
-                SharedPreferences sharedPreferences = PreferenceManager
-                        .getDefaultSharedPreferences(this);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-
                 if (font == R.style.serif)
                 {
                     font = R.style.monospace;
@@ -205,9 +212,44 @@ public class MainActivity extends AppCompatActivity
 
                 return true;
 
+            case R.id.font_size:
+                //create the font size number picker
+                final NumberPicker numberPicker = new NumberPicker(this);
+                numberPicker.setMinValue(1);
+                numberPicker.setMaxValue(64);
+                numberPicker.setValue(sharedPreferences.getInt(FONT_SIZE_SETTING, 12));
+
+                //setup the dialog with the number picker
+                alertDialog.setMessage("Font Size");
+                alertDialog.setView(numberPicker);
+
+                final MainActivity activity = this;
+
+                //setup the ok button callback to save the number picker value into shared preferences
+                alertDialog.setPositiveButton("OK",
+                        new DialogInterface.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(final DialogInterface dialog, int which)
+                            {
+                                // get the new font size from number picker
+                                int newFontSize = numberPicker.getValue();
+                                // store the new font size setting into shared preferences
+                                editor.putInt(FONT_SIZE_SETTING, newFontSize);
+                                editor.apply();
+                                // update the current font size
+                                activity.fontSize = newFontSize;
+                            }
+                        }
+                );
+
+                // show the dialog
+                alertDialog.show();
+
+                return true;
+
             case R.id.link:
                 //create the dialog to be shown when the button gets clicked
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
                 alertDialog.setMessage("URL:");
 
                 //setup the EditText where the user will input url to the page
@@ -219,7 +261,6 @@ public class MainActivity extends AppCompatActivity
                 input.setLayoutParams(layoutParams);
                 input.setInputType(InputType.TYPE_TEXT_VARIATION_URI);
                 alertDialog.setView(input);
-
 
                 alertDialog.setPositiveButton("Go",
                         new DialogInterface.OnClickListener()

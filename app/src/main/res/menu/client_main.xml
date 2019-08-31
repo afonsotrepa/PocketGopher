@@ -11,6 +11,12 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/font_size"
+        android:title="Font size"
+        android:visible="true"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/link"
         android:enabled="true"
         android:icon="@drawable/ic_link_white"

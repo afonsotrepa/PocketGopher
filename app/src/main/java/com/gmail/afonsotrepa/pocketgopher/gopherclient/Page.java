@@ -6,12 +6,14 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.text.style.ImageSpan;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -55,6 +57,12 @@ public abstract class Page implements Serializable
         this(server, port, type, selector, null);
     }
 
+    public static ImageSpan formatIcon(Context context, TextView textView, int resourceID) {
+        Drawable icon = context.getDrawable(resourceID);
+        int iconSize = (int)((double)textView.getLineHeight()*2.5);
+        icon.setBounds(0, 0, iconSize, iconSize);
+        return new ImageSpan(icon, 0);
+    }
 
     public abstract void open(final Context context);
 

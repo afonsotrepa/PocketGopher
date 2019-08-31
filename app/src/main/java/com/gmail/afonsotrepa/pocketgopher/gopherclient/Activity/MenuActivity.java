@@ -50,6 +50,7 @@ public class MenuActivity extends AppCompatActivity
 
         final TextView textView = findViewById(R.id.textView);
         textView.setTextAppearance(this, MainActivity.font);
+        textView.setTextSize(MainActivity.fontSize);
         textView.setMovementMethod(LinkMovementMethod.getInstance());
 
         final Context context = this;
