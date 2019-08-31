@@ -114,13 +114,25 @@ public class Connection
             }
             else
             {
-                response.add(Page.makePage(
-                        line.charAt(0), //type
-                        linesplit[1],
-                        linesplit[2],
-                        Integer.parseInt(linesplit[3]),
-                        linesplit[0].substring(1) //remove the type tag
-                ));
+                try
+                {
+                    // verify the port parses as an integer
+                    int port = Integer.parseInt(linesplit[3].trim());
+                    // add the response
+                    response.add(Page.makePage(
+                            line.charAt(0), //type
+                            linesplit[1],
+                            linesplit[2],
+                            port,
+                            linesplit[0].substring(1) //remove the type tag
+                    ));
+                }
+                catch (StringIndexOutOfBoundsException | NumberFormatException e)
+                {
+                    // something went wrong, show an unknown page entry
+                    response.add(new UnknownPage(line));
+                }
+
             }
         }
 
