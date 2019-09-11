@@ -17,6 +17,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,8 +87,8 @@ public class Bookmark
             );
 
             outputStream.write((
-                    this.name + "\t" +
-                            this.url + "\t" +
+                            this.name + "\t" +
+                            URLEncoder.encode(this.url, "UTF-8") + "\t" +
                             this.id.toString() + "\n"
             ).getBytes());
             outputStream.close();
@@ -121,7 +123,7 @@ public class Bookmark
                     //parse the bookmark
                     Bookmark bookmark = new Bookmark(
                             bsplit[0], //name
-                            bsplit[1], //url
+                            URLDecoder.decode(bsplit[1], "UTF-8"), //url
                             Integer.parseInt(bsplit[2]) //id
                     );
 
